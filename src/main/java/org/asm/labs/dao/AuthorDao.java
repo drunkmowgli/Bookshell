@@ -1,6 +1,8 @@
 package org.asm.labs.dao;
 
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
+
+import java.util.List;
 
 public interface AuthorDao {
 
@@ -9,6 +11,12 @@ public interface AuthorDao {
      * @param author - Author
      */
     void add(Author author);
+
+    /**
+     * Get all Authors from DB
+     * @return List of Authors
+     */
+    List<Author> getAll();
 
     /**
      * Get Author from DB by Name.

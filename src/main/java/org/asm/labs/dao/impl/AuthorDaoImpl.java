@@ -1,16 +1,16 @@
 package org.asm.labs.dao.impl;
 
 import org.asm.labs.dao.AuthorDao;
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.EmptySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -34,6 +34,15 @@ public class AuthorDaoImpl implements AuthorDao {
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return jdbc.query(
+                "select * from authors",
+                new HashMap<>(),
+                new AuthorMapper()
+        );
     }
 
     @Override
@@ -76,7 +85,7 @@ public class AuthorDaoImpl implements AuthorDao {
     public int count() {
         return jdbc.queryForObject(
                 "select count(*) from authors",
-                EmptySqlParameterSource.INSTANCE,
+                new HashMap<>(),
                 Integer.class
         );
     }

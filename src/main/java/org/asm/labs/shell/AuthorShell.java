@@ -1,7 +1,7 @@
 package org.asm.labs.shell;
 
 
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -32,6 +32,16 @@ public class AuthorShell {
     @ShellMethod("get by id")
     public void get_author_by_id(@ShellOption int id) {
         System.out.println(authorService.getById(id));
+    }
+
+    @ShellMethod("get all")
+    public void get_all() {
+        authorService.getAll().forEach(System.out::println);
+    }
+
+    @ShellMethod("remove_author")
+    public void remove_author(@ShellOption Author author) {
+        authorService.remove(author);
     }
 
     @ShellMethod("count")

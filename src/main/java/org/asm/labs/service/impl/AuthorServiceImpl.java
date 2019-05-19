@@ -1,11 +1,13 @@
 package org.asm.labs.service.impl;
 
 import org.asm.labs.dao.AuthorDao;
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -20,6 +22,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void add(Author author) {
         authorDao.add(author);
+    }
+
+    @Override
+    public List<Author> getAll() {
+        return authorDao.getAll();
     }
 
     @Override
@@ -42,6 +49,11 @@ public class AuthorServiceImpl implements AuthorService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public void remove(Author author) {
+        authorDao.remove(author);
     }
 
     @Override

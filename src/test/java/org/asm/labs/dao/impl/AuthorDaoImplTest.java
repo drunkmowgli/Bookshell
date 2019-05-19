@@ -1,7 +1,7 @@
 package org.asm.labs.dao.impl;
 
 import org.asm.labs.dao.AuthorDao;
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +58,10 @@ class AuthorDaoImplTest {
         assertEquals(3, authorDao.count());
     }
 
+    @DisplayName("This test should return all authors")
+    @Test
+    void getAll() {
+        assertEquals(2, authorDao.getAll().size());
+        assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
+    }
 }

@@ -1,6 +1,8 @@
 package org.asm.labs.service;
 
-import org.asm.labs.entities.Author;
+import org.asm.labs.entity.Author;
+
+import java.util.List;
 
 public interface AuthorService {
 
@@ -9,6 +11,12 @@ public interface AuthorService {
      * @param author - Author
      */
     void add(Author author);
+
+    /**
+     * Get all Authors from DB
+     * @return List of Authors
+     */
+    List<Author> getAll();
 
     /**
      * Get Author from DB by Name.
@@ -23,6 +31,12 @@ public interface AuthorService {
      * @return Author
      */
     Author getById(int id);
+
+    /**
+     * Remove Author from DB.
+     * @param author - Author
+     */
+    void remove(Author author);
 
     /**
      * Count number of Authors in DB.

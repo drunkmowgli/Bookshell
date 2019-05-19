@@ -1,4 +1,4 @@
-package org.asm.labs.entities;
+package org.asm.labs.entity;
 
 import java.util.List;
 
