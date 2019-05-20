@@ -1,7 +1,5 @@
 package org.asm.labs.entity;
 
-import java.util.List;
-
 public class Book {
 
     private final int id;
@@ -10,35 +8,20 @@ public class Book {
 
     private final String description;
 
-    private final List<Author> authors;
-    
-    
-    public Book(String title, String description) {
-        this.id = -1;
-        this.title = title;
-        this.description = description;
-        this.authors = null;
-    }
+    private final Author author;
     
     public Book(int id, String title, String decription) {
         this.id = id;
         this.title = title;
         this.description = decription;
-        this.authors = null;
+        this.author = null;
     }
     
-    public Book(Book book, List<Author> authors) {
-        this.id = book.id;
-        this.title = book.title;
-        this.description = book.description;
-        this.authors = authors;
-    }
-    
-    public Book(String title, String decription, List<Author> authors) {
+    public Book(String title, String decription, Author author) {
         this.id = -1;
         this.title = title;
         this.description = decription;
-        this.authors = authors;
+        this.author = author;
     }
 
     public int getId() {
@@ -53,8 +36,8 @@ public class Book {
         return description;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public Author getAuthor() {
+        return author;
     }
 
 
@@ -64,7 +47,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", authors=" + authors +
+                ", author=" + author +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package org.asm.labs.dao.impl;
 
+import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.dao.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
@@ -11,8 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-
 
 @DisplayName("Book DAO/Repository test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,8 +22,10 @@ class BookDaoImplTest {
     @Autowired
     BookDao bookDao;
     
-    private Book book = new Book("Test Comic Book", "#Test Add", Collections.singletonList(
-            new Author("Jack Kirby")));
+    @Autowired
+    AuthorDao authorDao;
+    
+    private Book book = new Book("Test Comic Book", "#Test Add", new Author(1,"Stan Lee"));
     
     @Test
     void add() {

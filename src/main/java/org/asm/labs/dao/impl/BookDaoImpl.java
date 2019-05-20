@@ -2,11 +2,9 @@ package org.asm.labs.dao.impl;
 
 import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.dao.BookDao;
-import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -34,43 +32,14 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> params = new HashMap<>();
         params.put("title", book.getTitle());
         params.put("description", book.getDescription());
-        int bookId = book.getId();
+        params.put("author_id", book.getAuthor().getId());
         try {
             jdbc.update(
-                    "insert into books (title, description) values (:title, :description)",
+                    "insert into books (title, description, author_id) values (:title, :description, :author_id)",
                     params
             );
         } catch (DataAccessException e) {
             e.printStackTrace();
-        }
-        book.getAuthors().forEach(author -> {
-            Author authorWithId = checkAuthor(book, author);
-            Map<String, Object> authorParams = new HashMap<>();
-            if (authorWithId != null) {
-                authorParams.put("author_id", authorWithId.getId());
-                authorParams.put("book_id", bookId);
-            }
-            jdbc.update(
-                    "insert into books (id, author_id) values (:book_id, :author_id)",
-                    authorParams
-            );
-        });
-    }
-    
-    private Author checkAuthor(Book book, Author author) {
-        Author authorWithId;
-        try {
-            authorWithId = authorDao.getByName(author.getName());
-            return authorWithId;
-        } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
-            Map<String, Object> removeParams = new HashMap<>();
-            removeParams.put("title", book.getTitle());
-            jdbc.update(
-                    "delete from books where title = :title",
-                    removeParams
-            );
-            return null;
         }
     }
     
