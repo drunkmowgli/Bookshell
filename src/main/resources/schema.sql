@@ -13,7 +13,6 @@ CREATE TABLE books (
     id  SERIAL NOT NULL ,
     author_id SERIAL references authors (id) ,
     title varchar(255),
-    description varchar(255),
 
     primary key (id)
 )

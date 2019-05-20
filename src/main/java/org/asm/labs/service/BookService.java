@@ -1,32 +1,32 @@
-package org.asm.labs.dao;
+package org.asm.labs.service;
 
 import org.asm.labs.entity.Book;
 
 import java.util.List;
 
-public interface BookDao {
-    
+public interface BookService {
+
     /**
-     * Insert book to Books.
+     * Add book to DB
      * @param book - Book
      */
     void add(Book book);
 
     /**
-     * Get all books from DB.
+     * Get all Books from DB
      * @return List of Books
      */
     List<Book> getAll();
 
     /**
-     * Get book from DB by Title.
+     * Get Book by Title
      * @param title - Book's title
      * @return Book
      */
     Book getByTitle(String title);
 
     /**
-     * Get book from DB by ID.
+     * Get Book by Id
      * @param id - Book's id
      * @return Book
      */
@@ -39,7 +39,7 @@ public interface BookDao {
     void remove(Book book);
 
     /**
-     * Count number of Books.
+     * Count number of Books in DB.
      * @return number of Books
      */
     int count();

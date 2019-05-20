@@ -33,6 +33,13 @@ public interface AuthorDao {
     Author getById(int id);
 
     /**
+     * Get Author from DB by Book's id.
+     * @param id - Book's id
+     * @return Author
+     */
+    Author getByBookId(int id);
+
+    /**
      * Remove Author from DB.
      * @param author - Author
      */
@@ -40,7 +47,7 @@ public interface AuthorDao {
 
     /**
      * Count number of Authors.
-     * @return number if Authors
+     * @return number of Authors
      */
     int count();
 

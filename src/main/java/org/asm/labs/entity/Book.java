@@ -6,21 +6,23 @@ public class Book {
 
     private final String title;
 
-    private final String description;
-
     private final Author author;
     
-    public Book(int id, String title, String decription) {
+    public Book(int id, String title) {
         this.id = id;
         this.title = title;
-        this.description = decription;
         this.author = null;
     }
     
-    public Book(String title, String decription, Author author) {
+    public Book(String title, Author author) {
         this.id = -1;
         this.title = title;
-        this.description = decription;
+        this.author = author;
+    }
+
+    public Book(Book book, Author author) {
+        this.id = book.id;
+        this.title = book.title;
         this.author = author;
     }
 
@@ -30,10 +32,6 @@ public class Book {
 
     public String getTitle() {
         return title;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Author getAuthor() {
@@ -46,7 +44,6 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
                 ", author=" + author +
                 '}';
     }

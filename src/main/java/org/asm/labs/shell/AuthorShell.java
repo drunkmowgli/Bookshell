@@ -35,17 +35,17 @@ public class AuthorShell {
     }
 
     @ShellMethod("get all")
-    public void get_all() {
+    public void get_all_authors() {
         authorService.getAll().forEach(System.out::println);
     }
 
-    @ShellMethod("remove_author")
+    @ShellMethod("remove author")
     public void remove_author(@ShellOption Author author) {
         authorService.remove(author);
     }
 
     @ShellMethod("count")
-    public void count() {
+    public void count_authors() {
         System.out.println(authorService.count());
     }
 }
