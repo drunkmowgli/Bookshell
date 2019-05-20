@@ -11,15 +11,34 @@ public class Book {
     private final String description;
 
     private final List<Author> authors;
-
-    private final List<Genre> genres;
-
-    public Book(int id, String title, String description, List<Author> authors, List<Genre> genres) {
-        this.id = id;
+    
+    
+    public Book(String title, String description) {
+        this.id = -1;
         this.title = title;
         this.description = description;
+        this.authors = null;
+    }
+    
+    public Book(int id, String title, String decription) {
+        this.id = id;
+        this.title = title;
+        this.description = decription;
+        this.authors = null;
+    }
+    
+    public Book(Book book, List<Author> authors) {
+        this.id = book.id;
+        this.title = book.title;
+        this.description = book.description;
         this.authors = authors;
-        this.genres = genres;
+    }
+    
+    public Book(String title, String decription, List<Author> authors) {
+        this.id = -1;
+        this.title = title;
+        this.description = decription;
+        this.authors = authors;
     }
 
     public int getId() {
@@ -38,9 +57,6 @@ public class Book {
         return authors;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
-    }
 
     @Override
     public String toString() {
@@ -49,7 +65,6 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", authors=" + authors +
-                ", genres=" + genres +
                 '}';
     }
 }
