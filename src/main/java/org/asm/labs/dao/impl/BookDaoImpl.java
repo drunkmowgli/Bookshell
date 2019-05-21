@@ -1,6 +1,5 @@
 package org.asm.labs.dao.impl;
 
-import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.dao.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
@@ -18,25 +17,22 @@ import java.util.Map;
 
 @Repository
 public class BookDaoImpl implements BookDao {
-
-    private final AuthorDao authorDao;
-
+    
     private final NamedParameterJdbcOperations jdbc;
 
     @Autowired
-    public BookDaoImpl(AuthorDao authorDao, NamedParameterJdbcOperations jdbc) {
-        this.authorDao = authorDao;
+    public BookDaoImpl(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
     }
 
     @Override
     public void add(Book book) {
         Map<String, Object> params = new HashMap<>();
-        params.put("title", book.getTitle());
+        params.put("bookTitle", book.getTitle());
         params.put("author_id", book.getAuthor().getId());
         try {
             jdbc.update(
-                    "insert into books (title, author_id) values (:title, :author_id)",
+                    "insert into books (title, author_id) values (:bookTitle, :author_id)",
                     params
             );
         } catch (DataAccessException e) {
@@ -56,9 +52,9 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book getByTitle(String title) {
         Map<String, Object> params = new HashMap<>();
-        params.put("title", title);
+        params.put("bookTitle", title);
         return jdbc.queryForObject(
-                "select * from books where title = :title",
+                "select * from books b inner join authors a on b.author_id = a.id where b.title = :bookTitle",
                 params,
                 new BookMapper()
         );
@@ -67,9 +63,9 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book getById(int id) {
         Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
+        params.put("bookId", id);
         return jdbc.queryForObject(
-                "select * from books where id = :id",
+                "select * from books b inner join authors a on b.author_id = a.id where b.id = :bookId",
                 params,
                 new BookMapper()
         );
