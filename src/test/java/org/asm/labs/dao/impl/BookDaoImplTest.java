@@ -37,6 +37,7 @@ class BookDaoImplTest {
     @DisplayName("Get all books from testDB")
     @Test
     void getAll() {
+        System.out.println(bookDao.getAll());
         assertEquals(2, bookDao.getAll().size());
     }
 

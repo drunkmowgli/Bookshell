@@ -65,10 +65,5 @@ class AuthorDaoImplTest {
         assertEquals(2, authorDao.getAll().size());
         assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
     }
-
-    @DisplayName("Get author by book's id")
-    @Test
-    void getByBookId() {
-        assertEquals("Stan Lee", authorDao.getByBookId(1).getName());
-    }
+    
 }

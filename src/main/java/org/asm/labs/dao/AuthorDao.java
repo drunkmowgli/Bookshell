@@ -33,13 +33,6 @@ public interface AuthorDao {
     Author getById(int id);
 
     /**
-     * Get Author from DB by Book's id.
-     * @param id - Book's id
-     * @return Author
-     */
-    Author getByBookId(int id);
-
-    /**
      * Remove Author from DB.
      * @param author - Author
      */

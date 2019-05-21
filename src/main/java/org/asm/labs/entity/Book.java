@@ -8,10 +8,10 @@ public class Book {
 
     private final Author author;
     
-    public Book(int id, String title) {
+    public Book(int id, String title, Author author) {
         this.id = id;
         this.title = title;
-        this.author = null;
+        this.author = author;
     }
     
     public Book(String title, Author author) {
@@ -19,13 +19,7 @@ public class Book {
         this.title = title;
         this.author = author;
     }
-
-    public Book(Book book, Author author) {
-        this.id = book.id;
-        this.title = book.title;
-        this.author = author;
-    }
-
+    
     public int getId() {
         return id;
     }

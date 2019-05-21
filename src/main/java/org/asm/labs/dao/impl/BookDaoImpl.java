@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -47,23 +46,11 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> getAll() {
-        List<Book> books = jdbc.query(
-                "select * from books",
+        return jdbc.query(
+                "select * from books b inner join authors a on b.author_id = a.id",
                 new HashMap<>(),
                 new BookMapper()
         );
-
-        return books.stream().map(this::setAuthor).collect(Collectors.toList());
-    }
-
-    /**
-     * Set Author to Book
-     * @param book - Book
-     * @return Book with Author
-     */
-    private Book setAuthor(Book book) {
-        Author author = authorDao.getByBookId(book.getId());
-        return new Book(book, author);
     }
 
     @Override
@@ -117,7 +104,10 @@ public class BookDaoImpl implements BookDao {
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             int id = resultSet.getInt("id");
             String title = resultSet.getString("title");
-            return new Book(id, title);
+            int authorId = resultSet.getInt("author_id");
+            String authorName = resultSet.getString("author_name");
+            Author author = new Author(authorId, authorName);
+            return new Book(id, title, author);
         }
     }
 }

@@ -68,16 +68,6 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getByBookId(int id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("book_id", id);
-        return jdbc.queryForObject(
-                "select * from books inner join authors on books.author_id = authors.id where books.id = :book_id",
-                params,
-                new AuthorMapper());
-    }
-
-    @Override
     public void remove(Author author) {
         Map<String, Object> params = new HashMap<>();
         params.put("authorName", author.getName());
