@@ -13,7 +13,7 @@ CREATE TABLE authors (
 
 CREATE TABLE genres (
     id  serial NOT NULL ,
-    genre varchar(255),
+    genre varchar(255) unique ,
 
     primary key (id)
 );

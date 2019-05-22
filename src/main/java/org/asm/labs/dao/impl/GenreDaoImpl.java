@@ -28,7 +28,7 @@ public class GenreDaoImpl implements GenreDao {
         params.put("genreName", genre.getGenreName());
         try {
             jdbc.update(
-                    "insert into genres (genre) values (:genreName)",
+                    "insert into genres (genre) values (:genreName) on conflict do nothing",
                     params
             );
         } catch (DataAccessException e) {

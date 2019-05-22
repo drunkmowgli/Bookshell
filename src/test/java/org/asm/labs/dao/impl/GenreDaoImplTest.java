@@ -25,11 +25,13 @@ class GenreDaoImplTest {
     GenreDao genreDao;
 
     private Genre genre = new Genre("Roman");
+    private Genre genreConflict = new Genre("Roman");
 
     @DisplayName("Add Genre to testDB")
     @Test
     void add() {
         genreDao.add(genre);
+        genreDao.add(genreConflict);
         assertEquals(3, genreDao.getAll().size());
     }
 
