@@ -3,6 +3,7 @@ package org.asm.labs.dao.impl;
 import org.asm.labs.dao.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
+import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,9 +31,10 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", book.getTitle());
         params.put("author_id", book.getAuthor().getId());
+        params.put("genre_id", book.getGenre().getId());
         try {
             jdbc.update(
-                    "insert into books (title, author_id) values (:bookTitle, :author_id)",
+                    "insert into books (title, author_id, genre_id) values (:bookTitle, :author_id, :genre_id)",
                     params
             );
         } catch (DataAccessException e) {
@@ -43,7 +45,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> getAll() {
         return jdbc.query(
-                "select * from books b inner join authors a on b.author_id = a.id",
+                "select * from books b inner join authors a on b.author_id = a.id inner join genres g on b.genre_id = g.id",
                 new HashMap<>(),
                 new BookMapper()
         );
@@ -54,7 +56,20 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", title);
         return jdbc.queryForObject(
-                "select * from books b inner join authors a on b.author_id = a.id where b.title = :bookTitle",
+                "select * from books b inner join authors a on b.author_id = a.id " +
+                        "inner join genres g on b.genre_id = g.id where b.title = :bookTitle",
+                params,
+                new BookMapper()
+        );
+    }
+
+    @Override
+    public List<Book> getAllByGenre(Genre genre) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("genreName", genre.getGenreName());
+        return jdbc.query(
+                "select * from books b inner join authors a on b.author_id = a.id " +
+                        "inner join genres g on b.genre_id = g.id where g.genre = :genreName",
                 params,
                 new BookMapper()
         );
@@ -65,7 +80,8 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> params = new HashMap<>();
         params.put("bookId", id);
         return jdbc.queryForObject(
-                "select * from books b inner join authors a on b.author_id = a.id where b.id = :bookId",
+                "select * from books b inner join authors a on b.author_id = a.id " +
+                        "inner join genres g on b.genre_id = g.id where b.id = :bookId",
                 params,
                 new BookMapper()
         );
@@ -103,7 +119,10 @@ public class BookDaoImpl implements BookDao {
             int authorId = resultSet.getInt("author_id");
             String authorName = resultSet.getString("author_name");
             Author author = new Author(authorId, authorName);
-            return new Book(id, title, author);
+            int genreId = resultSet.getInt("genre_id");
+            String genreName = resultSet.getString("genre");
+            Genre genre = new Genre(genreId, genreName);
+            return new Book(id, title, author, genre);
         }
     }
 }

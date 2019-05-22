@@ -7,17 +7,21 @@ public class Book {
     private final String title;
 
     private final Author author;
+
+    private final Genre genre;
     
-    public Book(int id, String title, Author author) {
+    public Book(int id, String title, Author author, Genre genre) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.genre = genre;
     }
     
-    public Book(String title, Author author) {
+    public Book(String title, Author author, Genre genre) {
         this.id = -1;
         this.title = title;
         this.author = author;
+        this.genre = genre;
     }
     
     public int getId() {
@@ -32,6 +36,9 @@ public class Book {
         return author;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
 
     @Override
     public String toString() {
@@ -39,6 +46,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author=" + author +
+                ", genre=" + genre +
                 '}';
     }
 }

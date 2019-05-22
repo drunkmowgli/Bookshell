@@ -1,6 +1,7 @@
 package org.asm.labs.dao;
 
 import org.asm.labs.entity.Book;
+import org.asm.labs.entity.Genre;
 
 import java.util.List;
 
@@ -24,6 +25,13 @@ public interface BookDao {
      * @return Book
      */
     Book getByTitle(String title);
+
+    /**
+     * Get books from DB by Genre
+     * @param genre - Genre
+     * @return Book
+     */
+    List<Book> getAllByGenre(Genre genre);
 
     /**
      * Get book from DB by ID.

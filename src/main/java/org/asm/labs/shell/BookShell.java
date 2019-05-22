@@ -22,12 +22,12 @@ public class BookShell {
         this.authorService = authorService;
     }
 
-    @ShellMethod("add book")
-    public void add_book(@ShellOption String title,
-                         @ShellOption String authorName) {
-        Author author = authorService.getByName(authorName);
-        bookService.add(new Book(title, author));
-    }
+//    @ShellMethod("add book")
+//    public void add_book(@ShellOption String title,
+//                         @ShellOption String authorName) {
+//        Author author = authorService.getByName(authorName);
+//        bookService.add(new Book(title, author));
+//    }
 
     @ShellMethod("get by title")
     public void get_book(@ShellOption String title) {

@@ -2,6 +2,7 @@ package org.asm.labs.service.impl;
 
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
+import org.asm.labs.entity.Genre;
 import org.asm.labs.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class BookServiceImplTest {
     BookService bookService;
 
 
-    private Book book = new Book("Test Comic Book #1", new Author(1,"Stan Lee"));
+    private Book book = new Book("Test Comic Book #1", new Author(1,"Stan Lee"), new Genre("Comics"));
 
     @DisplayName("Add book")
     @Test
