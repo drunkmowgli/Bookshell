@@ -1,6 +1,5 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.service.AuthorService;
 import org.asm.labs.service.BookService;
@@ -15,6 +14,7 @@ public class BookShell {
     private final BookService bookService;
 
     private final AuthorService authorService;
+    
 
     @Autowired
     public BookShell(BookService bookService, AuthorService authorService) {
@@ -24,7 +24,8 @@ public class BookShell {
 
 //    @ShellMethod("add book")
 //    public void add_book(@ShellOption String title,
-//                         @ShellOption String authorName) {
+//                         @ShellOption String authorName,
+//                         @ShellOption String genreName) {
 //        Author author = authorService.getByName(authorName);
 //        bookService.add(new Book(title, author));
 //    }

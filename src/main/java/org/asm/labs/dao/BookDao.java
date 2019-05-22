@@ -14,7 +14,7 @@ public interface BookDao {
     void add(Book book);
 
     /**
-     * Get all books from DB.
+     * Get all books from DB
      * @return List of Books
      */
     List<Book> getAll();

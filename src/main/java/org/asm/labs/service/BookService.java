@@ -1,6 +1,7 @@
 package org.asm.labs.service;
 
 import org.asm.labs.entity.Book;
+import org.asm.labs.entity.Genre;
 
 import java.util.List;
 
@@ -24,6 +25,13 @@ public interface BookService {
      * @return Book
      */
     Book getByTitle(String title);
+    
+    /**
+     * Get all books by Genre
+     * @param genre - Genre
+     * @return List of Books by Genre
+     */
+    List<Book> getAllByGenre(Genre genre);
 
     /**
      * Get Book by Id

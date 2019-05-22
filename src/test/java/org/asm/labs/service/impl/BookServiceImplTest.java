@@ -12,6 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -25,8 +27,10 @@ class BookServiceImplTest {
     BookService bookService;
 
 
-    private Book book = new Book("Test Comic Book #1", new Author(1,"Stan Lee"), new Genre("Comics"));
-
+    private Book book = new Book("Test Comic Book #1",
+                        new Author(1,"Stan Lee"),
+                        new Genre(1, "Comics"));
+    
     @DisplayName("Add book")
     @Test
     void add() {
@@ -65,5 +69,12 @@ class BookServiceImplTest {
     @Test
     void count() {
         assertEquals(3, bookService.count());
+    }
+    
+    @DisplayName("Get books by Genre")
+    @Test
+    void getAllByGenre() {
+        List<Book> books = bookService.getAllByGenre(new Genre("Comics"));
+        assertEquals(2, books.size());
     }
 }

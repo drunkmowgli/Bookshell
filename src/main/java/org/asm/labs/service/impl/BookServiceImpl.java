@@ -2,6 +2,7 @@ package org.asm.labs.service.impl;
 
 import org.asm.labs.dao.BookDao;
 import org.asm.labs.entity.Book;
+import org.asm.labs.entity.Genre;
 import org.asm.labs.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,12 @@ public class BookServiceImpl implements BookService {
     public Book getByTitle(String title) {
         return bookDao.getByTitle(title);
     }
-
+    
+    @Override
+    public List<Book> getAllByGenre(Genre genre) {
+        return bookDao.getAllByGenre(genre);
+    }
+    
     @Override
     public Book getById(int id) {
         return bookDao.getById(id);

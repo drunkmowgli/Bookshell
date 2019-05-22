@@ -1,7 +1,7 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.service.impl;
 
-import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Genre;
+import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +13,27 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@DisplayName("Book DAO/Repository test")
+@DisplayName("Book Service test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-class GenreDaoImplTest {
-
+class GenreServiceImplTest {
+    
     @Autowired
-    GenreDao genreDao;
-
-    private Genre genre = new Genre("Roman");
-    private Genre genreConflict = new Genre("Roman");
-
+    GenreService genreService;
+    
+    private Genre genre = new Genre(3, "Fantasy");
+    
     @DisplayName("Add Genre to testDB")
     @Test
     void add() {
-        genreDao.add(genre);
-        genreDao.add(genreConflict);
-        assertEquals(3, genreDao.getAll().size());
+        genreService.add(genre);
+        assertEquals(3, genreService.getAll().size());
     }
-
+    
     @DisplayName("Get all genres from testDB")
     @Test
     void getAll() {
-        assertEquals(2, genreDao.getAll().size());
+        assertEquals(2, genreService.getAll().size());
     }
 }
