@@ -24,21 +24,28 @@ class AuthorDaoImplTest {
 
     private Author author = new Author(2,"Author DAO #Test");
 
-    @DisplayName("Add new record to testDB")
+    @DisplayName("Add new author to testDB")
     @Test
     void add() {
         authorDao.add(author);
         assertEquals(3, authorDao.getAll().size());
     }
 
-    @DisplayName("Get record about Author by author name")
+    @DisplayName("Get all authors from testDB")
+    @Test
+    void getAll() {
+        assertEquals(2, authorDao.getAll().size());
+        assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
+    }
+
+    @DisplayName("Get author by name from testDB")
     @Test
     void getByName() {
         Author author = authorDao.getByName("Stan Lee");
         assertEquals("Stan Lee", author.getName());
     }
 
-    @DisplayName("Get record about Author by author id")
+    @DisplayName("Get author by id from testDB")
     @Test
     void getById() {
         Author author = authorDao.getById(1);
@@ -46,24 +53,17 @@ class AuthorDaoImplTest {
         assertEquals("Stan Lee", author.getName());
     }
 
-    @DisplayName("Delete a record")
+    @DisplayName("Remove author from testDB")
     @Test
     void remove() {
         authorDao.remove(author);
         assertEquals(2, authorDao.getAll().size());
     }
 
-    @DisplayName("Count of authors")
+    @DisplayName("Count authors in testDB")
     @Test
     void count() {
         assertEquals(3, authorDao.count());
-    }
-
-    @DisplayName("Get all authors")
-    @Test
-    void getAll() {
-        assertEquals(2, authorDao.getAll().size());
-        assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
     }
     
 }

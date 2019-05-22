@@ -45,6 +45,37 @@ public class GenreDaoImpl implements GenreDao {
         );
     }
 
+    @Override
+    public Genre getByGenreName(String genreName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("genreName", genreName);
+        return jdbc.queryForObject(
+                "select * from genres where genre = :genreName",
+                params,
+                new GenreMapper()
+        );
+    }
+
+    @Override
+    public Genre getById(int id) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("genreId", id);
+        return jdbc.queryForObject(
+                "select * from genres where id = :genreId",
+                params,
+                new GenreMapper()
+        );
+    }
+
+    @Override
+    public int count() {
+        return jdbc.queryForObject(
+                "select count(*) from genres",
+                new HashMap<>(),
+                Integer.class
+        );
+    }
+
     private static class GenreMapper implements RowMapper<Genre> {
 
         @Override

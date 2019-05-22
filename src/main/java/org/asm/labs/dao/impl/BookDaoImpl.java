@@ -34,7 +34,9 @@ public class BookDaoImpl implements BookDao {
         params.put("genre_id", book.getGenre().getId());
         try {
             jdbc.update(
-                    "insert into books (title, author_id, genre_id) values (:bookTitle, :author_id, :genre_id)",
+                    "insert into books (title, author_id, genre_id) values (:bookTitle, :author_id, :genre_id)" +
+                            "on conflict (title)" +
+                            "do nothing",
                     params
             );
         } catch (DataAccessException e) {
@@ -64,24 +66,24 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getAllByGenre(Genre genre) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("genreName", genre.getGenreName());
-        return jdbc.query(
-                "select * from books b inner join authors a on b.author_id = a.id " +
-                        "inner join genres g on b.genre_id = g.id where g.genre = :genreName",
-                params,
-                new BookMapper()
-        );
-    }
-
-    @Override
     public Book getById(int id) {
         Map<String, Object> params = new HashMap<>();
         params.put("bookId", id);
         return jdbc.queryForObject(
                 "select * from books b inner join authors a on b.author_id = a.id " +
                         "inner join genres g on b.genre_id = g.id where b.id = :bookId",
+                params,
+                new BookMapper()
+        );
+    }
+
+    @Override
+    public List<Book> getAllByGenre(Genre genre) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("genreName", genre.getGenreName());
+        return jdbc.query(
+                "select * from books b inner join authors a on b.author_id = a.id " +
+                        "inner join genres g on b.genre_id = g.id where g.genre = :genreName",
                 params,
                 new BookMapper()
         );

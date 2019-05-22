@@ -44,16 +44,25 @@ class BookDaoImplTest {
         assertEquals(2, bookDao.getAll().size());
     }
 
-    @DisplayName("Get book by title")
+    @DisplayName("Get book by title from testDB")
     @Test
     void getByTitle() {
         assertEquals("Spider-Man #1", bookDao.getByTitle("Spider-Man #1").getTitle());
     }
 
-    @DisplayName("Get book by id")
+    @DisplayName("Get book by id from testDB")
     @Test
     void getById() {
         assertEquals(1, bookDao.getById(1).getId());
+    }
+
+    @DisplayName("Get all books by genre from testDB")
+    @Test
+    void getAllByGenre() {
+        assertEquals(2, bookDao.getAllByGenre(new Genre("Comics")).size());
+        assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics")).get(0)
+                .getGenre()
+                .getGenreName());
     }
 
     @DisplayName("Remove book from testDB")
@@ -63,18 +72,10 @@ class BookDaoImplTest {
         assertEquals(2, bookDao.getAll().size());
     }
 
-    @DisplayName("Count all books in testDB")
+    @DisplayName("Count books in testDB")
     @Test
     void count() {
         assertEquals(3, bookDao.count());
     }
 
-    @DisplayName("Get all books by genre")
-    @Test
-    void getAllByGenre() {
-        assertEquals(2, bookDao.getAllByGenre(new Genre("Comics")).size());
-        assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics")).get(0)
-                .getGenre()
-                .getGenreName());
-    }
 }

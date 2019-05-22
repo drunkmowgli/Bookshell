@@ -17,4 +17,24 @@ public interface GenreService {
      * @return List of Genres
      */
     List<Genre> getAll();
+
+    /**
+     * Get Genre by Genre's name from DB.
+     * @param genreName - genreName
+     * @return Genre
+     */
+    Genre getByGenreName(String genreName);
+
+    /**
+     * Get Genre from DB by id.
+     * @param id - Genre's id
+     * @return Genre
+     */
+    Genre getById(int id);
+
+    /**
+     * Count number of Genres.
+     * @return number of Genres
+     */
+    int count();
 }

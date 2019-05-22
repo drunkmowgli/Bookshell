@@ -41,7 +41,7 @@ class BookServiceImplTest {
     @DisplayName("Get all books")
     @Test
     void getAll() {
-        assertEquals(2, bookService.getAll().size());
+        assertEquals(3, bookService.getAll().size());
         assertEquals("Hulk #2", bookService.getAll().get(1).getTitle());
     }
 
@@ -49,6 +49,13 @@ class BookServiceImplTest {
     @Test
     void getByTitle() {
         assertEquals("Test Comic Book #1", bookService.getByTitle("Test Comic Book #1").getTitle());
+    }
+
+    @DisplayName("Get books by Genre")
+    @Test
+    void getAllByGenre() {
+        List<Book> books = bookService.getAllByGenre(new Genre("Comics"));
+        assertEquals(2, books.size());
     }
 
     @DisplayName("Get book by id")
@@ -70,11 +77,5 @@ class BookServiceImplTest {
     void count() {
         assertEquals(3, bookService.count());
     }
-    
-    @DisplayName("Get books by Genre")
-    @Test
-    void getAllByGenre() {
-        List<Book> books = bookService.getAllByGenre(new Genre("Comics"));
-        assertEquals(2, books.size());
-    }
+
 }

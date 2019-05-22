@@ -28,7 +28,7 @@ public class AuthorDaoImpl implements AuthorDao {
         params.put("authorName", author.getName());
         try {
             jdbc.update(
-                    "insert into authors (author_name) values (:authorName)",
+                    "insert into authors (author_name) values (:authorName) on conflict do nothing",
                     params);
 
         } catch (DataAccessException e) {

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@DisplayName("Book Service test")
+@DisplayName("Genre Service test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -28,12 +28,30 @@ class GenreServiceImplTest {
     @Test
     void add() {
         genreService.add(genre);
-        assertEquals(3, genreService.getAll().size());
+        assertEquals(4, genreService.getAll().size());
     }
     
     @DisplayName("Get all genres from testDB")
     @Test
     void getAll() {
-        assertEquals(2, genreService.getAll().size());
+        assertEquals(3, genreService.getAll().size());
+    }
+
+    @DisplayName("Get genre by genre's name from testDB")
+    @Test
+    void getByGenreName() {
+        assertEquals("Comics", genreService.getByGenreName("Comics").getGenreName());
+    }
+
+    @DisplayName("Get genre by id from testDB")
+    @Test
+    void getById() {
+        assertEquals(1, genreService.getById(1).getId());
+    }
+
+    @DisplayName("Count genres in testDB")
+    @Test
+    void count() {
+        assertEquals(4, genreService.count());
     }
 }

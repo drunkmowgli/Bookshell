@@ -8,13 +8,13 @@ import java.util.List;
 public interface BookDao {
     
     /**
-     * Insert book to Books.
+     * Insert book to DB.
      * @param book - Book
      */
     void add(Book book);
 
     /**
-     * Get all books from DB
+     * Get all books from DB.
      * @return List of Books
      */
     List<Book> getAll();
@@ -27,18 +27,18 @@ public interface BookDao {
     Book getByTitle(String title);
 
     /**
-     * Get books from DB by Genre
-     * @param genre - Genre
-     * @return Book
-     */
-    List<Book> getAllByGenre(Genre genre);
-
-    /**
      * Get book from DB by ID.
      * @param id - Book's id
      * @return Book
      */
     Book getById(int id);
+
+    /**
+     * Get books from DB by Genre
+     * @param genre - Genre
+     * @return Book
+     */
+    List<Book> getAllByGenre(Genre genre);
 
     /**
      * Remove Book from DB

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-@DisplayName("Book DAO/Repository test")
+@DisplayName("Genre DAO/Repository test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
@@ -25,7 +25,7 @@ class GenreDaoImplTest {
     private Genre genre = new Genre("Roman");
     private Genre genreConflict = new Genre("Roman");
 
-    @DisplayName("Add Genre to testDB")
+    @DisplayName("Add new genre to testDB")
     @Test
     void add() {
         genreDao.add(genre);
@@ -37,5 +37,23 @@ class GenreDaoImplTest {
     @Test
     void getAll() {
         assertEquals(2, genreDao.getAll().size());
+    }
+
+    @DisplayName("Get genre by Genre's name from testDB")
+    @Test
+    void getByGenreName() {
+        assertEquals("Comics", genreDao.getByGenreName("Comics").getGenreName());
+    }
+
+    @DisplayName("Get genre by id from testDB")
+    @Test
+    void getById() {
+        assertEquals("Comics", genreDao.getById(1).getGenreName());
+    }
+
+    @DisplayName("Count genres in testDB")
+    @Test
+    void count() {
+        assertEquals(3, genreDao.count());
     }
 }

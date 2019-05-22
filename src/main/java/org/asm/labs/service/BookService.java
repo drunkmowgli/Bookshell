@@ -8,26 +8,26 @@ import java.util.List;
 public interface BookService {
 
     /**
-     * Add book to DB
+     * Add book to DB.
      * @param book - Book
      */
     void add(Book book);
 
     /**
-     * Get all Books from DB
+     * Get all Books from DB.
      * @return List of Books
      */
     List<Book> getAll();
 
     /**
-     * Get Book by Title
+     * Get Book from DB by Title.
      * @param title - Book's title
      * @return Book
      */
     Book getByTitle(String title);
     
     /**
-     * Get all books by Genre
+     * Get all books by Genre.
      * @param genre - Genre
      * @return List of Books by Genre
      */
@@ -41,7 +41,7 @@ public interface BookService {
     Book getById(int id);
 
     /**
-     * Remove Book from DB
+     * Remove Book from DB.
      * @param book - Book
      */
     void remove(Book book);

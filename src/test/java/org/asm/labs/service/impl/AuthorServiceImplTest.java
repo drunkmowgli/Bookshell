@@ -28,13 +28,13 @@ class AuthorServiceImplTest {
     @Test
     void add() {
         authorService.add(author);
-        assertEquals(3, authorService.getAll().size());
+        assertEquals(4, authorService.getAll().size());
     }
 
     @DisplayName("Get all authors")
     @Test
     void getAll() {
-        assertEquals(2, authorService.getAll().size());
+        assertEquals(3, authorService.getAll().size());
         assertEquals("Stan Lee", authorService.getAll().get(0).getName());
     }
 
@@ -55,12 +55,12 @@ class AuthorServiceImplTest {
     @Test
     void remove() {
         authorService.remove(author);
-        assertEquals(2, authorService.getAll().size());
+        assertEquals(3, authorService.getAll().size());
     }
 
     @DisplayName("Count authors in TestDB")
     @Test
     void count() {
-        assertEquals(3, authorService.count());
+        assertEquals(4, authorService.count());
     }
 }

@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS GENRES cascade;
 
 CREATE TABLE authors (
     id   serial NOT NULL ,
-    author_name varchar(255),
+    author_name varchar(255) unique ,
 
     primary key (id)
 );
@@ -22,7 +22,7 @@ CREATE TABLE genres (
 CREATE TABLE books (
     id  serial NOT NULL ,
     author_id integer references authors (id) ,
-    title varchar(255),
+    title varchar(255) unique ,
     genre_id integer references genres (id) ,
 
     primary key (id)

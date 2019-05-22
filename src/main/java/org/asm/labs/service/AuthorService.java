@@ -7,13 +7,13 @@ import java.util.List;
 public interface AuthorService {
 
     /**
-     * Add Author to DB
+     * Add Author to DB.
      * @param author - Author
      */
     void add(Author author);
 
     /**
-     * Get all Authors from DB
+     * Get all Authors from DB.
      * @return List of Authors
      */
     List<Author> getAll();
