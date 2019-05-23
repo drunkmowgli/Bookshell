@@ -7,7 +7,11 @@ import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -15,6 +19,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -29,22 +34,24 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void add(Book book) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("bookTitle", book.getTitle());
-        params.put("genre_id", book.getGenre().getId());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("bookTitle", book.getTitle())
+                .addValue("genre_id", book.getGenre().getId());
         try {
             jdbc.update(
                     "insert into books (title, genre_id) values (:bookTitle, :genre_id)" +
                             "on conflict (title)" +
                             "do nothing",
-                    params
+                    parameterSource,
+                    keyHolder
             );
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
         
         Map<String, Object> referenceParams = new HashMap<>();
-        referenceParams.put("book_id", book.getId());
+        referenceParams.put("book_id", keyHolder.getKeys().get("id"));
         referenceParams.put("author_id", book.getAuthor().getId());
         try {
             jdbc.update(
