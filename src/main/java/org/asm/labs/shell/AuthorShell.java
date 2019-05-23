@@ -40,7 +40,8 @@ public class AuthorShell {
     }
 
     @ShellMethod("remove author")
-    public void remove_author(@ShellOption Author author) {
+    public void remove_author(@ShellOption String authorName) {
+        Author author = authorService.getByName(authorName);
         authorService.remove(author);
     }
 

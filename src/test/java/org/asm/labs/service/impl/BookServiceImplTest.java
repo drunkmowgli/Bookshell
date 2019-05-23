@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.annotation.Order;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ class BookServiceImplTest {
     
     @DisplayName("Add book")
     @Test
+    @Order(1)
     void add() {
         bookService.add(book);
         assertEquals(3, bookService.getAll().size());
