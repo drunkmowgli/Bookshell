@@ -25,11 +25,11 @@ class BookServiceImplTest {
 
     @Autowired
     BookService bookService;
-
-
-    private Book book = new Book("Test Comic Book #1",
-                        new Author(1,"Stan Lee"),
-                        new Genre(1, "Comics"));
+    
+    
+    private Book book = new Book(3, "Test Horror Book #1",
+            new Author(1,"Test Author from BookService"),
+            new Genre(2, "Horror"));
     
     @DisplayName("Add book")
     @Test
@@ -48,7 +48,7 @@ class BookServiceImplTest {
     @DisplayName("Get book by Title")
     @Test
     void getByTitle() {
-        assertEquals("Test Comic Book #1", bookService.getByTitle("Test Comic Book #1").getTitle());
+        assertEquals("Test Horror Book #1", bookService.getByTitle("Test Horror Book #1").getTitle());
     }
 
     @DisplayName("Get books by Genre")

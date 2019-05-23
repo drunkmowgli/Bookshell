@@ -25,9 +25,9 @@ class BookDaoImplTest {
     BookDao bookDao;
 
     
-    private Book book = new Book("Test Comic Book #1",
-                        new Author(1,"Test Stan Lee"),
-                        new Genre(1, "Comics"));
+    private Book book = new Book(3, "Test Horror Book #1",
+                        new Author(1,"Test Author from BookDao"),
+                        new Genre(2, "Horror"));
 
 
     @DisplayName("Add new book to testDB")
