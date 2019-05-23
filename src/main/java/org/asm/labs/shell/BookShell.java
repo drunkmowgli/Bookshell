@@ -53,7 +53,8 @@ public class BookShell {
     }
 
     @ShellMethod("remove book")
-    public void remove_book(@ShellOption Book book) {
+    public void remove_book(@ShellOption String title) {
+        Book book = bookService.getByTitle(title);
         bookService.remove(book);
     }
 
