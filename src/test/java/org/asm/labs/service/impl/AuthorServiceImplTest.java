@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AuthorServiceImplTest {
 
     @Autowired
@@ -28,20 +30,20 @@ class AuthorServiceImplTest {
     @Test
     void add() {
         authorService.add(author);
-        assertEquals(4, authorService.getAll().size());
+        assertEquals(3, authorService.getAll().size());
     }
 
     @DisplayName("Get all authors")
     @Test
     void getAll() {
-        assertEquals(3, authorService.getAll().size());
+        assertEquals(2, authorService.getAll().size());
         assertEquals("Stan Lee", authorService.getAll().get(0).getName());
     }
 
     @DisplayName("Get author by name")
     @Test
     void getByName() {
-        assertEquals("Author Service #Test", authorService.getByName(author.getName()).getName());
+        assertEquals("Stan Lee", authorService.getByName("Stan Lee").getName());
     }
 
     @DisplayName("Get author by id")
@@ -54,13 +56,14 @@ class AuthorServiceImplTest {
     @DisplayName("Remove author from TestDB")
     @Test
     void remove() {
+        Author author = authorService.getByName("Stan Lee");
         authorService.remove(author);
-        assertEquals(3, authorService.getAll().size());
+        assertEquals(1, authorService.getAll().size());
     }
 
     @DisplayName("Count authors in TestDB")
     @Test
     void count() {
-        assertEquals(4, authorService.count());
+        assertEquals(2, authorService.count());
     }
 }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.annotation.Order;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookServiceImplTest {
 
     @Autowired
@@ -31,26 +32,28 @@ class BookServiceImplTest {
     private Book book = new Book(3, "Test Horror Book #1",
             new Author(1,"Test Author from BookService"),
             new Genre(2, "Horror"));
-    
+
+
+
     @DisplayName("Add book")
     @Test
-    @Order(1)
     void add() {
         bookService.add(book);
         assertEquals(3, bookService.getAll().size());
     }
 
+
     @DisplayName("Get all books")
     @Test
     void getAll() {
-        assertEquals(3, bookService.getAll().size());
+        assertEquals(2, bookService.getAll().size());
         assertEquals("Hulk #2", bookService.getAll().get(1).getTitle());
     }
 
     @DisplayName("Get book by Title")
     @Test
     void getByTitle() {
-        assertEquals("Test Horror Book #1", bookService.getByTitle("Test Horror Book #1").getTitle());
+        assertEquals("Spider-Man #1", bookService.getByTitle("Spider-Man #1").getTitle());
     }
 
     @DisplayName("Get books by Genre")
@@ -70,14 +73,15 @@ class BookServiceImplTest {
     @DisplayName("Remove book from TestDB")
     @Test
     void remove() {
+        Book book = bookService.getById(1);
         bookService.remove(book);
-        assertEquals(2, bookService.getAll().size());
+        assertEquals(1, bookService.getAll().size());
     }
 
     @DisplayName("Count books in TestDB")
     @Test
     void count() {
-        assertEquals(3, bookService.count());
+        assertEquals(2, bookService.count());
     }
 
 }

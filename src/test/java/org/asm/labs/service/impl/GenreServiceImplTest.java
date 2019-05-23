@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreServiceImplTest {
     
     @Autowired
@@ -28,13 +30,13 @@ class GenreServiceImplTest {
     @Test
     void add() {
         genreService.add(genre);
-        assertEquals(4, genreService.getAll().size());
+        assertEquals(3, genreService.getAll().size());
     }
     
     @DisplayName("Get all genres from testDB")
     @Test
     void getAll() {
-        assertEquals(3, genreService.getAll().size());
+        assertEquals(2, genreService.getAll().size());
     }
 
     @DisplayName("Get genre by genre's name from testDB")
@@ -52,6 +54,6 @@ class GenreServiceImplTest {
     @DisplayName("Count genres in testDB")
     @Test
     void count() {
-        assertEquals(4, genreService.count());
+        assertEquals(2, genreService.count());
     }
 }

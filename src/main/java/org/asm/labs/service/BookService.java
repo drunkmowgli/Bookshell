@@ -1,5 +1,6 @@
 package org.asm.labs.service;
 
+import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 
@@ -25,7 +26,14 @@ public interface BookService {
      * @return Book
      */
     Book getByTitle(String title);
-    
+
+    /**
+     * Get Book by Id
+     * @param id - Book's id
+     * @return Book
+     */
+    Book getById(int id);
+
     /**
      * Get all books by Genre.
      * @param genre - Genre
@@ -34,11 +42,11 @@ public interface BookService {
     List<Book> getAllByGenre(Genre genre);
 
     /**
-     * Get Book by Id
-     * @param id - Book's id
-     * @return Book
+     * Get all books from DB by Author
+     * @param author - Author
+     * @return List of Books
      */
-    Book getById(int id);
+    List<Book> getAllByAuthor(Author author);
 
     /**
      * Remove Book from DB.

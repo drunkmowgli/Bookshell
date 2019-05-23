@@ -2,9 +2,9 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: prod_user
-    password: prod_password
+    url: jdbc:postgresql://localhost:6543/testdb
+    username: test_user
+    password: test_password
     data: testdata.sql
   shell:
     interactive:

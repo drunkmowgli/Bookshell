@@ -1,5 +1,6 @@
 package org.asm.labs.dao.impl;
 
+import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.dao.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,13 +21,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookDaoImplTest {
-    
+
+    @Autowired
+    AuthorDao authorDao;
+
     @Autowired
     BookDao bookDao;
 
     
-    private Book book = new Book(3, "Test Horror Book #1",
+    private Book book = new Book("Test Horror Book #1",
                         new Author(1,"Test Author from BookDao"),
                         new Genre(2, "Horror"));
 
@@ -65,17 +71,25 @@ class BookDaoImplTest {
                 .getGenreName());
     }
 
+    @DisplayName("Get all books by author from testDB")
+    @Test
+    void getAllByAuthor() {
+        Author author = authorDao.getByName("Stan Lee");
+        assertEquals(1, bookDao.getAllByAuthor(author).size());
+    }
+
     @DisplayName("Remove book from testDB")
     @Test
     void remove() {
+        Book book = bookDao.getById(1);
         bookDao.remove(book);
-        assertEquals(2, bookDao.getAll().size());
+        assertEquals(1, bookDao.getAll().size());
     }
 
     @DisplayName("Count books in testDB")
     @Test
     void count() {
-        assertEquals(3, bookDao.count());
+        assertEquals(2, bookDao.count());
     }
 
 }

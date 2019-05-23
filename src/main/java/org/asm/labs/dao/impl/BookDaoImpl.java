@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -110,6 +109,19 @@ public class BookDaoImpl implements BookDao {
                 "select * from books b inner join genres g on b.genre_id = g.id" +
                         "                 inner join reference r on b.id = r.book_id" +
                         "                 inner join authors a on r.author_id = a.id where g.genre = :genreName",
+                params,
+                new BookMapper()
+        );
+    }
+
+    @Override
+    public List<Book> getAllByAuthor(Author author) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("author_id", author.getId());
+        return jdbc.query(
+                "select * from books b inner join genres g on b.genre_id = g.id " +
+                        "inner join reference r on b.id = r.book_id " +
+                        "inner join authors a on r.author_id = a.id where a.id = :author_id",
                 params,
                 new BookMapper()
         );

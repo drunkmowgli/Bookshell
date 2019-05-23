@@ -1,5 +1,6 @@
 package org.asm.labs.dao;
 
+import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 
@@ -34,11 +35,18 @@ public interface BookDao {
     Book getById(int id);
 
     /**
-     * Get books from DB by Genre
+     * Get all books from DB by Genre
      * @param genre - Genre
      * @return Book
      */
     List<Book> getAllByGenre(Genre genre);
+
+    /**
+     * Get all books from DB by Author
+     * @param author - Author
+     * @return List of Books
+     */
+    List<Book> getAllByAuthor(Author author);
 
     /**
      * Remove Book from DB

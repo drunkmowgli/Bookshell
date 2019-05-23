@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,12 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(properties = "spring.profiles.active=test")
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AuthorDaoImplTest {
 
     @Autowired
     AuthorDao authorDao;
 
-    private Author author = new Author(2,"Author DAO #Test");
+    private Author author = new Author("Author DAO #Test");
 
     @DisplayName("Add new author to testDB")
     @Test
@@ -56,14 +58,15 @@ class AuthorDaoImplTest {
     @DisplayName("Remove author from testDB")
     @Test
     void remove() {
+        Author author = authorDao.getById(1);
         authorDao.remove(author);
-        assertEquals(2, authorDao.getAll().size());
+        assertEquals(1, authorDao.getAll().size());
     }
 
     @DisplayName("Count authors in testDB")
     @Test
     void count() {
-        assertEquals(3, authorDao.count());
+        assertEquals(2, authorDao.count());
     }
     
 }

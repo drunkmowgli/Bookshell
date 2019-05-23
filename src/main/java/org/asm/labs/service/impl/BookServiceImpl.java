@@ -1,6 +1,7 @@
 package org.asm.labs.service.impl;
 
 import org.asm.labs.dao.BookDao;
+import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 import org.asm.labs.service.BookService;
@@ -38,7 +39,12 @@ public class BookServiceImpl implements BookService {
     public List<Book> getAllByGenre(Genre genre) {
         return bookDao.getAllByGenre(genre);
     }
-    
+
+    @Override
+    public List<Book> getAllByAuthor(Author author) {
+        return bookDao.getAllByAuthor(author);
+    }
+
     @Override
     public Book getById(int id) {
         return bookDao.getById(id);

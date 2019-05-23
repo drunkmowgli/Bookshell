@@ -71,7 +71,6 @@ public class AuthorDaoImpl implements AuthorDao {
     public void remove(Author author) {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("author_id", author.getId());
-        System.out.println(author.getId());
         try {
             jdbc.update(
                     "delete from reference where author_id = :author_id",

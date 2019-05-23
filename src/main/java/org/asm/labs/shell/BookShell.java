@@ -52,6 +52,18 @@ public class BookShell {
         bookService.getAll().forEach(System.out::println);
     }
 
+    @ShellMethod("get all by genre")
+    public void get_all_books_by_genre(@ShellOption String genreName) {
+        Genre genre = genreService.getByGenreName(genreName);
+        bookService.getAllByGenre(genre).forEach(System.out::println);
+    }
+
+    @ShellMethod("get all by author")
+    public void get_all_books_by_author(@ShellOption String authorName) {
+        Author author = authorService.getByName(authorName);
+        bookService.getAllByAuthor(author).forEach(System.out::println);
+    }
+
     @ShellMethod("remove book")
     public void remove_book(@ShellOption String title) {
         Book book = bookService.getByTitle(title);
