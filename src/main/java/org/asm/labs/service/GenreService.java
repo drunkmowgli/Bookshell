@@ -37,4 +37,10 @@ public interface GenreService {
      * @return number of Genres
      */
     int count();
+
+    /**
+     * Remove genre from DB.
+     * @param genre - Genre
+     */
+    void remove(Genre genre);
 }

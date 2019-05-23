@@ -76,6 +76,31 @@ public class GenreDaoImpl implements GenreDao {
         );
     }
 
+    @Override
+    public void remove(Genre genre) {
+        Map<String, Object> booksParam = new HashMap<>();
+        booksParam.put("genre_id", genre.getId());
+        try {
+            jdbc.update(
+                    "update books set genre_id = NULL where genre_id = :genre_id",
+                    booksParam
+            );
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("genreName", genre.getGenreName());
+        try {
+            jdbc.update(
+                    "delete from genres where genre = :genreName",
+                    params
+            );
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static class GenreMapper implements RowMapper<Genre> {
 
         @Override

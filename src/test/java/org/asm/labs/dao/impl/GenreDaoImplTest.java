@@ -58,4 +58,11 @@ class GenreDaoImplTest {
     void count() {
         assertEquals(2, genreDao.count());
     }
+
+    @DisplayName("Remove genre from testDB")
+    @Test
+    void remove() {
+        Genre genre = genreDao.getByGenreName("Comics");
+        genreDao.remove(genre);
+    }
 }

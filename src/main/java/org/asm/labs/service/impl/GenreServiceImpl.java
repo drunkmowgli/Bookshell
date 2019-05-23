@@ -42,4 +42,9 @@ public class GenreServiceImpl implements GenreService {
     public int count() {
         return genreDao.count();
     }
+
+    @Override
+    public void remove(Genre genre) {
+        genreDao.remove(genre);
+    }
 }

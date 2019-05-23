@@ -40,4 +40,10 @@ public class GenreShell {
     public void count_genres() {
         System.out.println(genreService.count());
     }
+
+    @ShellMethod("remove genre")
+    public void remove_genre(String genreName) {
+        Genre genre = genreService.getByGenreName(genreName);
+        genreService.remove(genre);
+    }
 }

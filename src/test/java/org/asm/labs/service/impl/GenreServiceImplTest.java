@@ -56,4 +56,12 @@ class GenreServiceImplTest {
     void count() {
         assertEquals(2, genreService.count());
     }
+
+    @DisplayName("Remove genre from testDB")
+    @Test
+    void remove() {
+        Genre genre = genreService.getByGenreName("Comics");
+        genreService.remove(genre);
+        assertEquals(1, genreService.getAll().size());
+    }
 }

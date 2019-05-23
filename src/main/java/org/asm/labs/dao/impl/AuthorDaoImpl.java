@@ -73,7 +73,8 @@ public class AuthorDaoImpl implements AuthorDao {
         referenceParams.put("author_id", author.getId());
         try {
             jdbc.update(
-                    "delete from reference where author_id = :author_id",
+//                    "delete from reference where author_id = :author_id",
+                    "update reference set author_id = NULL where author_id = :author_id",
                     referenceParams
             );
         } catch (DataAccessException e) {
