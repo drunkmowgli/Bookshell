@@ -13,6 +13,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,10 +29,11 @@ class BookServiceImplTest {
 
     @Autowired
     BookService bookService;
-    
+
+    List<Author> authors = new ArrayList<>(Collections.singleton(new Author(1, "Test Author from BookService")));
     
     private Book book = new Book(3, "Test Horror Book #1",
-            new Author(1,"Test Author from BookService"),
+            authors,
             new Genre(2, "Horror"));
 
 

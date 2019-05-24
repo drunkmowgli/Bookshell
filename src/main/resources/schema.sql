@@ -30,7 +30,7 @@ CREATE TABLE books (
 
 CREATE TABLE reference (
     id  serial NOT NULL ,
-    book_id integer references books (id) unique ,
+    book_id integer references books (id) ,
     author_id integer references authors (id),
 
     primary key (id)

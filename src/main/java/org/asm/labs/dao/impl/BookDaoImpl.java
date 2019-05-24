@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void add(Book book) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder booksKeyHolder = new GeneratedKeyHolder();
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("bookTitle", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId());
@@ -43,25 +44,31 @@ public class BookDaoImpl implements BookDao {
                             "on conflict (title)" +
                             "do nothing",
                     parameterSource,
-                    keyHolder
+                    booksKeyHolder
             );
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
-        
-        Map<String, Object> referenceParams = new HashMap<>();
-        referenceParams.put("book_id", keyHolder.getKeys().get("id"));
-        referenceParams.put("author_id", book.getAuthor().getId());
-        try {
-            jdbc.update(
-                    "insert into reference (book_id, author_id) values (:book_id, :author_id)" +
-                            "on conflict (book_id)" +
-                            "do nothing",
-                    referenceParams
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+
+        KeyHolder authorsKeyHolder = new GeneratedKeyHolder();
+        for (Author author:
+             book.getAuthors()) {
+            SqlParameterSource authorsParameterSource = new MapSqlParameterSource()
+                    .addValue("book_id", booksKeyHolder.getKeys().get("id"))
+                    .addValue("author_id", author.getId());
+            //TODO: Debug
+            System.out.println(author.getId());
+            try {
+                jdbc.update(
+                        "insert into reference (book_id, author_id) values (:book_id, :author_id)",
+                        authorsParameterSource,
+                        authorsKeyHolder
+                );
+            } catch (DataAccessException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     @Override
@@ -171,8 +178,10 @@ public class BookDaoImpl implements BookDao {
             int genreId = resultSet.getInt("genre_id");
             String genreName = resultSet.getString("genre");
             Author author = new Author(authorId, authorName);
+            List<Author> authors = new ArrayList<>();
+            authors.add(author);
             Genre genre = new Genre(genreId, genreName);
-            return new Book(id, title, author, genre);
+            return new Book(id, title, authors, genre);
         }
     }
 }

@@ -11,6 +11,11 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @ShellComponent
 public class BookShell {
 
@@ -30,11 +35,21 @@ public class BookShell {
 
     @ShellMethod("add book")
     public void add_book(@ShellOption String title,
-                         @ShellOption String authorName,
+                         @ShellOption String authorsNames,
                          @ShellOption String genreName) {
-        authorService.add(new Author(authorName));
+
+        List<Author> authors = Arrays.stream(authorsNames.split(","))
+                .map(Author::new).collect(Collectors.toList());
+        List<Author> authorList = new ArrayList<>();
+        for (Author author:
+             authors) {
+            authorService.add(author);
+            authorList.add(authorService.getByName(author.getName()));
+        }
+        //TODO Clean debug
+        System.out.println(authorList);
         genreService.add(new Genre(genreName));
-        bookService.add(new Book(title, authorService.getByName(authorName), genreService.getByGenreName(genreName)));
+        bookService.add(new Book(title, authorList, genreService.getByGenreName(genreName)));
     }
 
     @ShellMethod("get by title")

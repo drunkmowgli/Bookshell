@@ -19,6 +19,13 @@ public interface AuthorDao {
     List<Author> getAll();
 
     /**
+     * Get all authors by book's id from DB.
+     * @param id - book's id
+     * @return List of Authors
+     */
+    List<Author> getByBookId(int id);
+
+    /**
      * Get Author from DB by Name.
      * @param name - Author's name
      * @return Author

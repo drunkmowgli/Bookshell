@@ -69,5 +69,9 @@ class AuthorDaoImplTest {
     void count() {
         assertEquals(2, authorDao.count());
     }
-    
+
+    @Test
+    void getByBookId() {
+        System.out.println(authorDao.getByBookId(1));
+    }
 }

@@ -1,26 +1,28 @@
 package org.asm.labs.entity;
 
+import java.util.List;
+
 public class Book {
 
     private final int id;
 
     private final String title;
 
-    private final Author author;
+    private final List<Author> authors;
 
     private final Genre genre;
     
-    public Book(int id, String title, Author author, Genre genre) {
+    public Book(int id, String title, List<Author> authors, Genre genre) {
         this.id = id;
         this.title = title;
-        this.author = author;
+        this.authors = authors;
         this.genre = genre;
     }
     
-    public Book(String title, Author author, Genre genre) {
+    public Book(String title, List<Author> authors, Genre genre) {
         this.id = -1;
         this.title = title;
-        this.author = author;
+        this.authors = authors;
         this.genre = genre;
     }
     
@@ -32,8 +34,8 @@ public class Book {
         return title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
     public Genre getGenre() {
@@ -45,7 +47,7 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author=" + author +
+                ", authors=" + authors +
                 ", genre=" + genre +
                 '}';
     }
