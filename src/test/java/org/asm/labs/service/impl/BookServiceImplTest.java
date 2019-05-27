@@ -30,7 +30,7 @@ class BookServiceImplTest {
     @Autowired
     BookService bookService;
 
-    List<Author> authors = new ArrayList<>(Collections.singleton(new Author(1, "Test Author from BookService")));
+    private List<Author> authors = new ArrayList<>(Collections.singleton(new Author(1, "Test Author from BookService")));
     
     private Book book = new Book(3, "Test Horror Book #1",
             authors,
@@ -41,7 +41,7 @@ class BookServiceImplTest {
     @DisplayName("Add book")
     @Test
     void add() {
-        bookService.add(book);
+        bookService.add(book.getTitle(), book.getAuthors().toString(), book.getGenre().toString());
         assertEquals(3, bookService.getAll().size());
     }
 

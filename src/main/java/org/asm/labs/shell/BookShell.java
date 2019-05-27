@@ -37,19 +37,7 @@ public class BookShell {
     public void add_book(@ShellOption String title,
                          @ShellOption String authorsNames,
                          @ShellOption String genreName) {
-
-        List<Author> authors = Arrays.stream(authorsNames.split(","))
-                .map(Author::new).collect(Collectors.toList());
-        List<Author> authorList = new ArrayList<>();
-        for (Author author:
-             authors) {
-            authorService.add(author);
-            authorList.add(authorService.getByName(author.getName()));
-        }
-        //TODO Clean debug
-        System.out.println(authorList);
-        genreService.add(new Genre(genreName));
-        bookService.add(new Book(title, authorList, genreService.getByGenreName(genreName)));
+        bookService.add(title, authorsNames, genreName);
     }
 
     @ShellMethod("get by title")

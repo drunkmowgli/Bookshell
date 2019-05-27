@@ -10,9 +10,11 @@ public interface BookService {
 
     /**
      * Add book to DB.
-     * @param book - Book
+     * @param title - Book's title
+     * @param authorsNames - List of Authors
+     * @param genreName - Genre's name
      */
-    void add(Book book);
+    void add(String title, String authorsNames, String genreName);
 
     /**
      * Get all Books from DB.
