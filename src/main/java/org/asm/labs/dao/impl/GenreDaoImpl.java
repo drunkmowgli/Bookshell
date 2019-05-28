@@ -23,17 +23,14 @@ public class GenreDaoImpl implements GenreDao {
     public GenreDaoImpl(NamedParameterJdbcOperations jdbc) {this.jdbc = jdbc;}
 
     @Override
-    public void add(Genre genre) {
+    public void add(Genre genre) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("genreName", genre.getGenreName());
-        try {
-            jdbc.update(
-                    "insert into genres (genre) values (:genreName) on conflict do nothing",
-                    params
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "insert into genres (genre) values (:genreName)",
+                params
+        );
+
     }
 
     @Override
@@ -80,25 +77,17 @@ public class GenreDaoImpl implements GenreDao {
     public void remove(Genre genre) {
         Map<String, Object> booksParam = new HashMap<>();
         booksParam.put("genre_id", genre.getId());
-        try {
-            jdbc.update(
-                    "update books set genre_id = NULL where genre_id = :genre_id",
-                    booksParam
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "update books set genre_id = NULL where genre_id = :genre_id",
+                booksParam
+        );
 
         Map<String, Object> params = new HashMap<>();
         params.put("genreName", genre.getGenreName());
-        try {
-            jdbc.update(
-                    "delete from genres where genre = :genreName",
-                    params
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "delete from genres where genre = :genreName",
+                params
+        );
     }
 
     private static class GenreMapper implements RowMapper<Genre> {

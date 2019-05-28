@@ -23,19 +23,13 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void add(Author author) {
+    public void add(Author author) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("authorName", author.getName());
-        try {
-            jdbc.update(
-                    "insert into authors (author_name) select :authorName " +
-                            "where not exists (select author_name from authors " +
-                            "where author_name = :authorName)",
-                    params);
 
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "insert into authors (author_name) values (:authorName)",
+                params);
     }
 
     @Override
@@ -60,7 +54,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getByName(String name) {
+    public Author getByName(String name) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("authorName", name);
         return jdbc.queryForObject(
@@ -85,26 +79,17 @@ public class AuthorDaoImpl implements AuthorDao {
     public void remove(Author author) {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("author_id", author.getId());
-        try {
-            jdbc.update(
-//                    "delete from reference where author_id = :author_id",
-                    "update reference set author_id = NULL where author_id = :author_id",
-                    referenceParams
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
-        
+        jdbc.update(
+                "update reference set author_id = NULL where author_id = :author_id",
+                referenceParams
+        );
+
         Map<String, Object> params = new HashMap<>();
         params.put("authorName", author.getName());
-        try {
-            jdbc.update(
-                    "delete from authors where (author_name) = :authorName",
-                    params
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "delete from authors where (author_name) = :authorName",
+                params
+        );
     }
 
     @Override

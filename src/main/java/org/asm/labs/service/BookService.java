@@ -52,9 +52,9 @@ public interface BookService {
 
     /**
      * Remove Book from DB.
-     * @param book - Book
+     * @param bookName - Book's name
      */
-    void remove(Book book);
+    void remove(String bookName);
 
     /**
      * Count number of Books in DB.

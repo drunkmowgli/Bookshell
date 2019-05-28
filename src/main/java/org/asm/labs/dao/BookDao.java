@@ -18,6 +18,7 @@ public interface BookDao {
      * Get all books from DB.
      * @return List of Books
      */
+    //TODO: Need fix this method. (Incorrect result for book with multiple authors)
     List<Book> getAll();
 
     /**

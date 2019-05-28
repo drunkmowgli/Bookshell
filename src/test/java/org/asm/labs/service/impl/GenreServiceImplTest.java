@@ -1,6 +1,7 @@
 package org.asm.labs.service.impl;
 
 import org.asm.labs.entity.Genre;
+import org.asm.labs.service.GenreAlreadyExistException;
 import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Genre Service test")
@@ -20,19 +22,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreServiceImplTest {
-    
+
     @Autowired
     GenreService genreService;
-    
+
     private Genre genre = new Genre(3, "Fantasy");
-    
+
     @DisplayName("Add Genre to testDB")
     @Test
     void add() {
         genreService.add(genre);
         assertEquals(3, genreService.getAll().size());
     }
-    
+
+    @DisplayName("Check Exception on add to testDB")
+    @Test
+    void addException() {
+        genreService.add(genre);
+        assertThrows(GenreAlreadyExistException.class,
+                () -> {genreService.add(genre);});
+    }
+
     @DisplayName("Get all genres from testDB")
     @Test
     void getAll() {

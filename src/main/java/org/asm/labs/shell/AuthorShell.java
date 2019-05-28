@@ -2,6 +2,8 @@ package org.asm.labs.shell;
 
 
 import org.asm.labs.entity.Author;
+import org.asm.labs.service.AuthorAlreadyExistException;
+import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -21,7 +23,11 @@ public class AuthorShell {
 
     @ShellMethod("add author")
     public void add_author(@ShellOption String name) {
-        authorService.add(new Author(name));
+        try {
+            authorService.add(new Author(name));
+        } catch (AuthorAlreadyExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("get by name")
@@ -41,8 +47,12 @@ public class AuthorShell {
 
     @ShellMethod("remove author")
     public void remove_author(@ShellOption String authorName) {
-        Author author = authorService.getByName(authorName);
-        authorService.remove(author);
+        try {
+            authorService.remove(authorName);
+        } catch (AuthorDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @ShellMethod("count")

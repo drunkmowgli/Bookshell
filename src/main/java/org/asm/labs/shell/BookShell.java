@@ -3,18 +3,11 @@ package org.asm.labs.shell;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
-import org.asm.labs.service.AuthorService;
-import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreService;
+import org.asm.labs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @ShellComponent
 public class BookShell {
@@ -24,7 +17,7 @@ public class BookShell {
     private final AuthorService authorService;
 
     private final GenreService genreService;
-    
+
 
     @Autowired
     public BookShell(BookService bookService, AuthorService authorService, GenreService genreService) {
@@ -37,7 +30,11 @@ public class BookShell {
     public void add_book(@ShellOption String title,
                          @ShellOption String authorsNames,
                          @ShellOption String genreName) {
-        bookService.add(title, authorsNames, genreName);
+        try {
+            bookService.add(title, authorsNames, genreName);
+        } catch (BookAlreadyExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("get by title")
@@ -69,8 +66,12 @@ public class BookShell {
 
     @ShellMethod("remove book")
     public void remove_book(@ShellOption String title) {
-        Book book = bookService.getByTitle(title);
-        bookService.remove(book);
+        try {
+            bookService.remove(title);
+        } catch (BookDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @ShellMethod("count")

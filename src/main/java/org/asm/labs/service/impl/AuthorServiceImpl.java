@@ -2,8 +2,11 @@ package org.asm.labs.service.impl;
 
 import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.entity.Author;
+import org.asm.labs.service.AuthorAlreadyExistException;
+import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +23,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void add(Author author) {
-        authorDao.add(author);
+    public void add(Author author) throws AuthorAlreadyExistException {
+
+        try {
+            authorDao.add(author);
+        } catch (DuplicateKeyException e) {
+            throw new AuthorAlreadyExistException();
+        }
     }
 
     @Override
@@ -30,14 +38,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getByName(String name) {
-        Author result = null;
+    public Author getByName(String name) throws AuthorDoesntExistException {
         try {
-            result = authorDao.getByName(name);
+            return authorDao.getByName(name);
         } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
+            throw new AuthorDoesntExistException();
         }
-        return result;
     }
 
     @Override
@@ -52,8 +58,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void remove(Author author) {
-        authorDao.remove(author);
+    public void remove(String authorName) throws AuthorDoesntExistException {
+        try {
+            Author author = authorDao.getByName(authorName);
+            authorDao.remove(author);
+        } catch (EmptyResultDataAccessException e) {
+            throw new AuthorDoesntExistException();
+        }
     }
 
     @Override

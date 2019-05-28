@@ -23,52 +23,39 @@ import java.util.Map;
 
 @Repository
 public class BookDaoImpl implements BookDao {
-    
+
     private final NamedParameterJdbcOperations jdbc;
-    
-    
+
+
     @Autowired
     public BookDaoImpl(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
     }
 
     @Override
-    public void add(Book book) {
+    public void add(Book book) throws DataAccessException {
         KeyHolder booksKeyHolder = new GeneratedKeyHolder();
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("bookTitle", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId());
-        try {
-            jdbc.update(
-                    "insert into books (title, genre_id) values (:bookTitle, :genre_id)" +
-                            "on conflict (title)" +
-                            "do nothing",
-                    parameterSource,
-                    booksKeyHolder
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "insert into books (title, genre_id) values (:bookTitle, :genre_id)",
+                parameterSource,
+                booksKeyHolder
+        );
 
         KeyHolder authorsKeyHolder = new GeneratedKeyHolder();
-        for (Author author:
-             book.getAuthors()) {
+        for (Author author :
+                book.getAuthors()) {
             SqlParameterSource authorsParameterSource = new MapSqlParameterSource()
                     .addValue("book_id", booksKeyHolder.getKeys().get("id"))
                     .addValue("author_id", author.getId());
-            //TODO: Debug
-            System.out.println(author.getId());
-            try {
-                jdbc.update(
-                        "insert into reference (book_id, author_id) values (:book_id, :author_id)",
-                        authorsParameterSource,
-                        authorsKeyHolder
-                );
-            } catch (DataAccessException e) {
-                e.printStackTrace();
-            }
+            jdbc.update(
+                    "insert into reference (book_id, author_id) values (:book_id, :author_id)",
+                    authorsParameterSource,
+                    authorsKeyHolder
+            );
         }
-
     }
 
     @Override
@@ -83,7 +70,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book getByTitle(String title) {
+    public Book getByTitle(String title) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", title);
         return jdbc.queryForObject(
@@ -138,24 +125,16 @@ public class BookDaoImpl implements BookDao {
     public void remove(Book book) {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("book_id", book.getId());
-        try {
-            jdbc.update(
-                    "delete from reference where book_id = :book_id",
-                    referenceParams
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "delete from reference where book_id = :book_id",
+                referenceParams
+        );
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", book.getTitle());
-        try {
-            jdbc.update(
-                    "delete from books where title = :bookTitle",
-                    params
-            );
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-        }
+        jdbc.update(
+                "delete from books where title = :bookTitle",
+                params
+        );
     }
 
     @Override

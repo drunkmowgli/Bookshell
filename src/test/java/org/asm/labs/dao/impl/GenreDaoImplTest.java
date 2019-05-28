@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Genre DAO/Repository test")
@@ -25,14 +27,21 @@ class GenreDaoImplTest {
     GenreDao genreDao;
 
     private Genre genre = new Genre("Roman");
-    private Genre genreConflict = new Genre("Roman");
+    private Genre genreException = new Genre("Roman");
 
     @DisplayName("Add new genre to testDB")
     @Test
     void add() {
         genreDao.add(genre);
-        genreDao.add(genreConflict);
         assertEquals(3, genreDao.getAll().size());
+    }
+
+    @DisplayName("Check Exception on add to testDB")
+    @Test
+    void addException() {
+        genreDao.add(genre);
+        assertThrows(DataAccessException.class,
+                () -> {genreDao.add(genreException);});
     }
 
     @DisplayName("Get all genres from testDB")
@@ -65,4 +74,5 @@ class GenreDaoImplTest {
         Genre genre = genreDao.getByGenreName("Comics");
         genreDao.remove(genre);
     }
+
 }

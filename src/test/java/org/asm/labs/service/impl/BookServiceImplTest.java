@@ -1,9 +1,8 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
-import org.asm.labs.service.BookService;
+import org.asm.labs.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Book Service test")
@@ -30,19 +28,32 @@ class BookServiceImplTest {
     @Autowired
     BookService bookService;
 
-    private List<Author> authors = new ArrayList<>(Collections.singleton(new Author(1, "Test Author from BookService")));
-    
-    private Book book = new Book(3, "Test Horror Book #1",
-            authors,
-            new Genre(2, "Horror"));
+    @Autowired
+    AuthorService authorService;
 
+    @Autowired
+    GenreService genreService;
 
 
     @DisplayName("Add book")
     @Test
     void add() {
-        bookService.add(book.getTitle(), book.getAuthors().toString(), book.getGenre().toString());
-        assertEquals(3, bookService.getAll().size());
+        String bookTitle = "Test title from BookService";
+        String authorsNames = "Stan Lee,Jack Kirby";
+        String genreName = "Comics";
+        bookService.add(bookTitle, authorsNames, genreName);
+        assertEquals(3, bookService.count());
+    }
+
+    @DisplayName("Check Exception on add to testDB")
+    @Test
+    void addException() {
+        String bookTitle = "Test title from BookService";
+        String authorsNames = "Stan Lee,Jack Kirby";
+        String genreName = "Comics";
+        bookService.add(bookTitle, authorsNames, genreName);
+        assertThrows(BookAlreadyExistException.class,
+                () -> {bookService.add(bookTitle, authorsNames, genreName);});
     }
 
 
@@ -57,6 +68,8 @@ class BookServiceImplTest {
     @Test
     void getByTitle() {
         assertEquals("Spider-Man #1", bookService.getByTitle("Spider-Man #1").getTitle());
+        assertThrows(BookDoesntExistException.class,
+                () -> {bookService.getByTitle("Doesnt exist book");});
     }
 
     @DisplayName("Get books by Genre")
@@ -76,9 +89,10 @@ class BookServiceImplTest {
     @DisplayName("Remove book from TestDB")
     @Test
     void remove() {
-        Book book = bookService.getById(1);
-        bookService.remove(book);
+        bookService.remove("Hulk #2");
         assertEquals(1, bookService.getAll().size());
+        assertThrows(BookDoesntExistException.class,
+                () -> {bookService.remove("Doesnt Exists Book");});
     }
 
     @DisplayName("Count books in TestDB")

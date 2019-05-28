@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Author DAO/Repository test")
@@ -32,6 +34,14 @@ class AuthorDaoImplTest {
     void add() {
         authorDao.add(author);
         assertEquals(3, authorDao.getAll().size());
+    }
+
+    @DisplayName("Check Exception on add to testDB")
+    @Test
+    void addException() {
+        authorDao.add(author);
+        assertThrows(DataAccessException.class,
+                () -> {authorDao.add(author);});
     }
 
     @DisplayName("Get all authors from testDB")

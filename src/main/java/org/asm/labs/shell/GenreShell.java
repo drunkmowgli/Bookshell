@@ -1,6 +1,7 @@
 package org.asm.labs.shell;
 
 import org.asm.labs.entity.Genre;
+import org.asm.labs.service.GenreAlreadyExistException;
 import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -18,7 +19,11 @@ public class GenreShell {
     @ShellMethod("add genre")
     public void add_genre(@ShellOption String genreName) {
         Genre genre = new Genre(genreName);
-        genreService.add(genre);
+        try {
+            genreService.add(genre);
+        } catch (GenreAlreadyExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("get all genres")

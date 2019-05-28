@@ -2,6 +2,7 @@ package org.asm.labs.dao.impl;
 
 import org.asm.labs.dao.AuthorDao;
 import org.asm.labs.dao.BookDao;
+import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
@@ -10,15 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Book DAO/Repository test")
@@ -32,20 +34,33 @@ class BookDaoImplTest {
     AuthorDao authorDao;
 
     @Autowired
-    BookDao bookDao;
+    GenreDao genreDao;
 
-    List<Author> authors = new ArrayList<>(Collections.singletonList(new Author("Test Author from BookDao")));
-    
-    private Book book = new Book("Test Horror Book #1",
-                        authors,
-                        new Genre(2, "Horror"));
+    @Autowired
+    BookDao bookDao;
 
 
     @DisplayName("Add new book to testDB")
     @Test
     void add() {
+        authorDao.add(new Author("Test author from BookDao"));
+        genreDao.add(new Genre("Test Genre from BookDao"));
+        List<Author> authors = Collections.singletonList(authorDao.getByName("Test author from BookDao"));
+        Book book = new Book("Test book from BookDao", authors, genreDao.getByGenreName("Test Genre from BookDao"));
         bookDao.add(book);
         assertEquals(3, bookDao.getAll().size());
+    }
+
+    @DisplayName("Check Exception on add to testDB")
+    @Test
+    void addException() {
+        authorDao.add(new Author("Test author from BookDao"));
+        genreDao.add(new Genre("Test Genre from BookDao"));
+        List<Author> authors = Collections.singletonList(authorDao.getByName("Test author from BookDao"));
+        Book book = new Book("Test book from BookDao", authors, genreDao.getByGenreName("Test Genre from BookDao"));
+        bookDao.add(book);
+        assertThrows(DataAccessException.class,
+                () -> {bookDao.add(book);});
     }
 
     @DisplayName("Get all books from testDB")
