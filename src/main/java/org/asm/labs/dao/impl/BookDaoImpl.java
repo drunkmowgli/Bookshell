@@ -6,6 +6,7 @@ import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -63,11 +64,31 @@ public class BookDaoImpl implements BookDao {
         return jdbc.query(
                 "select * from books b inner join genres g on b.genre_id = g.id " +
                         "                 inner join reference r on b.id = r.book_id " +
-                        "                 inner join authors a on r.author_id = a.id",
+                        "                 inner join authors a on r.author_id = a.id " +
+                        "                 order by b.id ASC," +
+                        "                          g.id ASC," +
+                        "                          a.id ASC",
                 new HashMap<>(),
-                new BookMapper()
+                new ResultSetExtractor<List<Book>>() {
+                    @Override
+                    public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+                        Map<Integer, List<Author>> bookToAuthors = new HashMap<>();
+                        while (rs.next()) {
+                            int checkingKey = rs.getInt("book_id");
+                            if (!bookToAuthors.containsKey(checkingKey)) {
+                                bookToAuthors.put(checkingKey, new ArrayList<>());
+                            }
+                            List<Author> authors = bookToAuthors.get(checkingKey);
+                            Author author = new Author(rs.getInt("author_id"), rs.getString("author_name"));
+                            authors.add(author);
+                        }
+                        System.out.println(bookToAuthors);
+                        return null;
+                    }
+                }
         );
     }
+    
 
     @Override
     public Book getByTitle(String title) throws DataAccessException {

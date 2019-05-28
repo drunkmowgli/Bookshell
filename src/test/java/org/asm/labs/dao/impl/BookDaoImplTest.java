@@ -48,7 +48,7 @@ class BookDaoImplTest {
         List<Author> authors = Collections.singletonList(authorDao.getByName("Test author from BookDao"));
         Book book = new Book("Test book from BookDao", authors, genreDao.getByGenreName("Test Genre from BookDao"));
         bookDao.add(book);
-        assertEquals(3, bookDao.getAll().size());
+        assertEquals(6, bookDao.getAll().size());
     }
 
     @DisplayName("Check Exception on add to testDB")
@@ -67,7 +67,7 @@ class BookDaoImplTest {
     @Test
     void getAll() {
         System.out.println(bookDao.getAll());
-        assertEquals(2, bookDao.getAll().size());
+        assertEquals(5, bookDao.getAll().size());
     }
 
     @DisplayName("Get book by title from testDB")
@@ -85,7 +85,7 @@ class BookDaoImplTest {
     @DisplayName("Get all books by genre from testDB")
     @Test
     void getAllByGenre() {
-        assertEquals(2, bookDao.getAllByGenre(new Genre("Comics")).size());
+        assertEquals(5, bookDao.getAllByGenre(new Genre("Comics")).size());
         assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics")).get(0)
                 .getGenre()
                 .getGenreName());
@@ -95,7 +95,7 @@ class BookDaoImplTest {
     @Test
     void getAllByAuthor() {
         Author author = authorDao.getByName("Stan Lee");
-        assertEquals(1, bookDao.getAllByAuthor(author).size());
+        assertEquals(2, bookDao.getAllByAuthor(author).size());
     }
 
     @DisplayName("Remove book from testDB")
@@ -103,13 +103,13 @@ class BookDaoImplTest {
     void remove() {
         Book book = bookDao.getById(1);
         bookDao.remove(book);
-        assertEquals(1, bookDao.getAll().size());
+        assertEquals(4, bookDao.getAll().size());
     }
 
     @DisplayName("Count books in testDB")
     @Test
     void count() {
-        assertEquals(2, bookDao.count());
+        assertEquals(5, bookDao.count());
     }
 
 }
