@@ -40,7 +40,7 @@ public interface GenreService {
 
     /**
      * Remove genre from DB.
-     * @param genre - Genre
+     * @param genreName - Genre's name
      */
-    void remove(Genre genre);
+    void remove(String genreName);
 }

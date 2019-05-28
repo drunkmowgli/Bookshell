@@ -43,7 +43,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Genre getByGenreName(String genreName) {
+    public Genre getByGenreName(String genreName) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("genreName", genreName);
         return jdbc.queryForObject(

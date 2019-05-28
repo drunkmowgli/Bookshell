@@ -3,9 +3,11 @@ package org.asm.labs.service.impl;
 import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Genre;
 import org.asm.labs.service.GenreAlreadyExistException;
+import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,8 +38,12 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getByGenreName(String genreName) {
-        return genreDao.getByGenreName(genreName);
+    public Genre getByGenreName(String genreName) throws GenreDoesntExistException {
+        try {
+            return genreDao.getByGenreName(genreName);
+        } catch (EmptyResultDataAccessException e) {
+            throw new GenreDoesntExistException();
+        }
     }
 
     @Override
@@ -51,7 +57,12 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void remove(Genre genre) {
-        genreDao.remove(genre);
+    public void remove(String genreName) {
+        try {
+            Genre genre = genreDao.getByGenreName(genreName);
+            genreDao.remove(genre);
+        } catch (EmptyResultDataAccessException e) {
+            throw new GenreDoesntExistException();
+        }
     }
 }

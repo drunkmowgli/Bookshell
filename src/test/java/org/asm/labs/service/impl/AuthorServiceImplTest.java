@@ -64,6 +64,8 @@ class AuthorServiceImplTest {
     void getById() {
         assertEquals(1, authorService.getById(1).getId());
         assertEquals("Stan Lee", authorService.getById(1).getName());
+        assertThrows(AuthorDoesntExistException.class,
+                () -> {authorService.getById(3);});
     }
 
     @DisplayName("Remove author from TestDB")

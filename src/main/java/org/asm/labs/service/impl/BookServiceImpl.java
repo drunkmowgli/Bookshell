@@ -69,8 +69,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getAllByAuthor(Author author) {
-        return bookDao.getAllByAuthor(author);
+    public List<Book> getAllByAuthor(String authorName) throws AuthorDoesntExistException {
+        try {
+            Author author = authorService.getByName(authorName);
+            return bookDao.getAllByAuthor(author);
+        } catch (AuthorDoesntExistException e) {
+            throw new AuthorDoesntExistException();
+        }
+        
     }
 
     @Override

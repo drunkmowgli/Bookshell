@@ -1,7 +1,5 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.entity.Author;
-import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 import org.asm.labs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +58,12 @@ public class BookShell {
 
     @ShellMethod("get all by author")
     public void get_all_books_by_author(@ShellOption String authorName) {
-        Author author = authorService.getByName(authorName);
-        bookService.getAllByAuthor(author).forEach(System.out::println);
+        try {
+            bookService.getAllByAuthor(authorName).forEach(System.out::println);
+        } catch (AuthorDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
+        
     }
 
     @ShellMethod("remove book")

@@ -65,7 +65,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getById(int id) {
+    public Author getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("ID", id);
         return jdbc.queryForObject(

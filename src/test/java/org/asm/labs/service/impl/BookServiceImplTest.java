@@ -78,6 +78,15 @@ class BookServiceImplTest {
         List<Book> books = bookService.getAllByGenre(new Genre("Comics"));
         assertEquals(2, books.size());
     }
+    
+    @DisplayName("Get all by author")
+    @Test
+    void getAllByAuthor() {
+        String authorName = "Stan Lee";
+        assertEquals(1, bookService.getAllByAuthor(authorName).size());
+        assertThrows(AuthorDoesntExistException.class,
+                () -> {bookService.getAllByAuthor("Author doesnt exist");});
+    }
 
     @DisplayName("Get book by id")
     @Test
@@ -100,5 +109,6 @@ class BookServiceImplTest {
     void count() {
         assertEquals(2, bookService.count());
     }
+    
 
 }

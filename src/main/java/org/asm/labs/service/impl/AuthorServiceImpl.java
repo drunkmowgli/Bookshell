@@ -47,14 +47,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(int id) {
-        Author result = null;
+    public Author getById(int id) throws AuthorDoesntExistException {
         try {
-            result = authorDao.getById(id);
+            return authorDao.getById(id);
         } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
+            throw new AuthorDoesntExistException();
         }
-        return result;
+        
     }
 
     @Override

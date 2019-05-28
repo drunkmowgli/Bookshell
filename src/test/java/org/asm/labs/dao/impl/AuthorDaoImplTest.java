@@ -64,6 +64,8 @@ class AuthorDaoImplTest {
         Author author = authorDao.getById(1);
         assertEquals(1, author.getId());
         assertEquals("Stan Lee", author.getName());
+        assertThrows(DataAccessException.class,
+                () -> {authorDao.getById(3);});
     }
 
     @DisplayName("Remove author from testDB")

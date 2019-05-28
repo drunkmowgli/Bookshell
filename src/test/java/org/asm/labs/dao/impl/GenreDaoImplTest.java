@@ -54,6 +54,8 @@ class GenreDaoImplTest {
     @Test
     void getByGenreName() {
         assertEquals("Comics", genreDao.getByGenreName("Comics").getGenreName());
+        assertThrows(DataAccessException.class,
+                () -> {genreDao.getByGenreName("Genre doesnt exists");});
     }
 
     @DisplayName("Get genre by id from testDB")

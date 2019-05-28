@@ -109,7 +109,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public List<Book> getAllByAuthor(Author author) {
+    public List<Book> getAllByAuthor(Author author) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("author_id", author.getId());
         return jdbc.query(

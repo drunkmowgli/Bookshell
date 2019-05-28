@@ -2,6 +2,7 @@ package org.asm.labs.service.impl;
 
 import org.asm.labs.entity.Genre;
 import org.asm.labs.service.GenreAlreadyExistException;
+import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,8 @@ class GenreServiceImplTest {
     @Test
     void getByGenreName() {
         assertEquals("Comics", genreService.getByGenreName("Comics").getGenreName());
+        assertThrows(GenreDoesntExistException.class,
+                () -> {genreService.getByGenreName("Genre doesnt exist");});
     }
 
     @DisplayName("Get genre by id from testDB")
@@ -70,8 +73,9 @@ class GenreServiceImplTest {
     @DisplayName("Remove genre from testDB")
     @Test
     void remove() {
-        Genre genre = genreService.getByGenreName("Comics");
-        genreService.remove(genre);
+        genreService.remove("Comics");
         assertEquals(1, genreService.getAll().size());
+        assertThrows(GenreDoesntExistException.class,
+                () -> {genreService.remove("Doesnt Exists Genre");});
     }
 }
