@@ -64,7 +64,7 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public void remove(Author author) {
+    public void remove(Author author) throws DataAccessException {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("author_id", author.getId());
         jdbc.update(

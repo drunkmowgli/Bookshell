@@ -7,7 +7,6 @@ import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -15,22 +14,21 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
 @Repository
 public class BookDaoImpl implements BookDao {
-
+    
     private final NamedParameterJdbcOperations jdbc;
-
-
+    
+    
     @Autowired
     public BookDaoImpl(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
     }
-
+    
     @Override
     public void add(Book book) throws DataAccessException {
         KeyHolder booksKeyHolder = new GeneratedKeyHolder();
@@ -42,7 +40,7 @@ public class BookDaoImpl implements BookDao {
                 parameterSource,
                 booksKeyHolder
         );
-
+        
         KeyHolder authorsKeyHolder = new GeneratedKeyHolder();
         for (Author author :
                 book.getAuthors()) {
@@ -56,7 +54,7 @@ public class BookDaoImpl implements BookDao {
             );
         }
     }
-
+    
     @Override
     public List<Book> getAll() {
         return jdbc.query(
@@ -67,13 +65,13 @@ public class BookDaoImpl implements BookDao {
                         "                          g.id ASC," +
                         "                          a.id ASC",
                 new HashMap<>(),
-                new BookExtractor()
+                new ListResultSetExtractor()
         );
     }
-
-
+    
+    
     @Override
-    public List<Book> getByTitle(String title) throws DataAccessException {
+    public List<Book> getByTitle(String title) {
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", title);
         return jdbc.query(
@@ -84,23 +82,27 @@ public class BookDaoImpl implements BookDao {
                         "         g.id ASC," +
                         "         a.id ASC",
                 params,
-                new BookExtractor()
+                new ListResultSetExtractor()
         );
     }
-
+    
     @Override
-    public Book getById(int id) throws DataAccessException {
+    public Optional<Book> getById(int id) {
         Map<String, Object> params = new HashMap<>();
         params.put("bookId", id);
-        return jdbc.queryForObject(
+        List<Book> books = jdbc.query(
                 "select * from books b inner join genres g on b.genre_id = g.id" +
                         "                 inner join reference r on b.id = r.book_id" +
-                        "                 inner join authors a on r.author_id = a.id where b.id = :bookId",
+                        "                 inner join authors a on r.author_id = a.id where b.id = :bookId " +
+                        "order by b.id ASC," +
+                        "         g.id ASC," +
+                        "         a.id ASC",
                 params,
-                new BookMapper()
+                new ListResultSetExtractor()
         );
+        return books.isEmpty() ? Optional.empty() : Optional.of(books.get(0));
     }
-
+    
     @Override
     public List<Book> getAllByGenre(Genre genre) {
         Map<String, Object> params = new HashMap<>();
@@ -110,10 +112,10 @@ public class BookDaoImpl implements BookDao {
                         "                 inner join reference r on b.id = r.book_id" +
                         "                 inner join authors a on r.author_id = a.id where g.genre = :genreName",
                 params,
-                new BookExtractor()
+                new ListResultSetExtractor()
         );
     }
-
+    
     @Override
     public List<Book> getAllByAuthor(Author author) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
@@ -123,10 +125,10 @@ public class BookDaoImpl implements BookDao {
                         "inner join reference r on b.id = r.book_id " +
                         "inner join authors a on r.author_id = a.id where a.id = :author_id",
                 params,
-                new BookExtractor()
+                new ListResultSetExtractor()
         );
     }
-
+    
     @Override
     public void remove(Book book) {
         Map<String, Object> referenceParams = new HashMap<>();
@@ -142,7 +144,7 @@ public class BookDaoImpl implements BookDao {
                 params
         );
     }
-
+    
     @Override
     public int count() {
         return jdbc.queryForObject(
@@ -151,9 +153,8 @@ public class BookDaoImpl implements BookDao {
                 Integer.class
         );
     }
-
-    private static class BookExtractor implements ResultSetExtractor<List<Book>> {
-
+    
+    private static class ListResultSetExtractor implements ResultSetExtractor<List<Book>> {
         @Override
         public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
             Map<Integer, List<Author>> bookToAuthors = new HashMap<>();
@@ -171,11 +172,11 @@ public class BookDaoImpl implements BookDao {
                 Genre genre = new Genre(rs.getInt("genre_id"), rs.getString("genre"));
                 bookToGenre.put(checkingKey, genre);
             }
-
+            
             Set<Integer> booksKeySet = bookToAuthors.keySet();
-
+            
             List<Book> books = new ArrayList<>();
-
+            
             for (Integer key : booksKeySet) {
                 int bookId = key;
                 String title = bootToTitle.get(key);
@@ -184,26 +185,8 @@ public class BookDaoImpl implements BookDao {
                 Book book = new Book(bookId, title, authors, genre);
                 books.add(book);
             }
-
+            
             return books;
-        }
-    }
-
-    private static class BookMapper implements RowMapper<Book> {
-
-        @Override
-        public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("id");
-            String title = resultSet.getString("title");
-            int authorId = resultSet.getInt("author_id");
-            String authorName = resultSet.getString("author_name");
-            int genreId = resultSet.getInt("genre_id");
-            String genreName = resultSet.getString("genre");
-            Author author = new Author(authorId, authorName);
-            List<Author> authors = new ArrayList<>();
-            authors.add(author);
-            Genre genre = new Genre(genreId, genreName);
-            return new Book(id, title, authors, genre);
         }
     }
 }

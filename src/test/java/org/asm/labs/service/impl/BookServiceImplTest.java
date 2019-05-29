@@ -42,7 +42,7 @@ class BookServiceImplTest {
         String authorsNames = "Stan Lee,Jack Kirby";
         String genreName = "Comics";
         bookService.add(bookTitle, authorsNames, genreName);
-        assertEquals(3, bookService.count());
+        assertEquals(6, bookService.count());
     }
 
     @DisplayName("Check Exception on add to testDB")
@@ -60,30 +60,29 @@ class BookServiceImplTest {
     @DisplayName("Get all books")
     @Test
     void getAll() {
-        assertEquals(2, bookService.getAll().size());
-        assertEquals("Hulk #2", bookService.getAll().get(1).getTitle());
+        assertEquals(5, bookService.getAll().size());
+        assertEquals("Dark Horse Comics #1", bookService.getAll().get(1).getTitle());
     }
 
     @DisplayName("Get book by Title")
     @Test
     void getByTitle() {
         assertEquals("Spider-Man #1", bookService.getByTitle("Spider-Man #1").get(0).getTitle());
-        assertThrows(BookDoesntExistException.class,
-                () -> {bookService.getByTitle("Doesnt exist book");});
+
     }
 
     @DisplayName("Get books by Genre")
     @Test
     void getAllByGenre() {
         List<Book> books = bookService.getAllByGenre(new Genre("Comics"));
-        assertEquals(2, books.size());
+        assertEquals(5, books.size());
     }
     
     @DisplayName("Get all by author")
     @Test
     void getAllByAuthor() {
         String authorName = "Stan Lee";
-        assertEquals(1, bookService.getAllByAuthor(authorName).size());
+        assertEquals(2, bookService.getAllByAuthor(authorName).size());
         assertThrows(AuthorDoesntExistException.class,
                 () -> {bookService.getAllByAuthor("Author doesnt exist");});
     }
@@ -92,22 +91,20 @@ class BookServiceImplTest {
     @Test
     void getById() {
         assertEquals(2, bookService.getById(2).getId());
-        assertEquals("Hulk #2", bookService.getById(2).getTitle());
+        assertEquals("Dark Horse Comics #1", bookService.getById(2).getTitle());
     }
 
     @DisplayName("Remove book from TestDB")
     @Test
     void remove() {
         bookService.remove("Hulk #2");
-        assertEquals(1, bookService.getAll().size());
-        assertThrows(BookDoesntExistException.class,
-                () -> {bookService.remove("Doesnt Exists Book");});
+        assertEquals(4, bookService.getAll().size());
     }
 
     @DisplayName("Count books in TestDB")
     @Test
     void count() {
-        assertEquals(2, bookService.count());
+        assertEquals(5, bookService.count());
     }
     
 

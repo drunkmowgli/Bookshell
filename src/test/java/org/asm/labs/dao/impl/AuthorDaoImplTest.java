@@ -34,14 +34,8 @@ class AuthorDaoImplTest {
     void add() {
         authorDao.add(author);
         assertEquals(4, authorDao.getAll().size());
-    }
-
-    @DisplayName("Check Exception on add to testDB")
-    @Test
-    void addException() {
-        authorDao.add(author);
         assertThrows(DataAccessException.class,
-                () -> {authorDao.add(author);});
+                () -> authorDao.add(author));
     }
 
     @DisplayName("Get all authors from testDB")
@@ -56,6 +50,8 @@ class AuthorDaoImplTest {
     void getByName() {
         Author author = authorDao.getByName("Stan Lee");
         assertEquals("Stan Lee", author.getName());
+        assertThrows(DataAccessException.class,
+                () -> authorDao.getByName("Author doesnt exist"));
     }
 
     @DisplayName("Get author by id from testDB")

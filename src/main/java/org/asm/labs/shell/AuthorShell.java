@@ -32,7 +32,12 @@ public class AuthorShell {
 
     @ShellMethod("get by name")
     public void get_author(@ShellOption String name) {
-        System.out.println(authorService.getByName(name));
+        
+        try {
+            System.out.println(authorService.getByName(name));
+        } catch (AuthorDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("get by id")

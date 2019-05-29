@@ -12,25 +12,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class BookServiceImpl implements BookService {
-
-
+    
+    
     private final BookDao bookDao;
-
+    
     private final AuthorService authorService;
-
+    
     private final GenreService genreService;
-
+    
     @Autowired
     public BookServiceImpl(BookDao bookDao, AuthorService authorService, GenreService genreService) {
         this.bookDao = bookDao;
         this.authorService = authorService;
         this.genreService = genreService;
     }
-
-
+    
+    
     @Override
     public void add(String title, String authorsNames, String genreName) throws BookAlreadyExistException {
         String[] authorsString = authorsNames.split(",");
@@ -48,26 +49,22 @@ public class BookServiceImpl implements BookService {
             throw new BookAlreadyExistException();
         }
     }
-
+    
     @Override
     public List<Book> getAll() {
         return bookDao.getAll();
     }
-
+    
     @Override
-    public List<Book> getByTitle(String title) throws BookDoesntExistException {
-        try {
-            return bookDao.getByTitle(title);
-        } catch (EmptyResultDataAccessException e) {
-            throw new BookDoesntExistException();
-        }
+    public List<Book> getByTitle(String title) {
+        return bookDao.getByTitle(title);
     }
-
+    
     @Override
     public List<Book> getAllByGenre(Genre genre) {
         return bookDao.getAllByGenre(genre);
     }
-
+    
     @Override
     public List<Book> getAllByAuthor(String authorName) throws AuthorDoesntExistException {
         try {
@@ -76,31 +73,24 @@ public class BookServiceImpl implements BookService {
         } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();
         }
-
+        
     }
-
+    
     @Override
     public Book getById(int id) throws BookDoesntExistException {
-        try {
-            return bookDao.getById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new BookDoesntExistException();
-        }
+        return bookDao.getById(id)
+                      .orElseThrow(BookDoesntExistException::new);
     }
-
+    
     @Override
-    public void remove(String bookName) throws BookDoesntExistException {
-        try {
-            List<Book> books = bookDao.getByTitle(bookName);
-            for (Book book :
-                    books) {
-                bookDao.remove(book);
-            }
-        } catch (EmptyResultDataAccessException e) {
-            throw new BookDoesntExistException();
+    public void remove(String bookName) {
+        List<Book> books = bookDao.getByTitle(bookName);
+        for (Book book :
+                books) {
+            bookDao.remove(book);
         }
     }
-
+    
     @Override
     public int count() {
         return bookDao.count();

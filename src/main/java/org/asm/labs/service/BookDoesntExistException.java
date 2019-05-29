@@ -1,9 +1,9 @@
 package org.asm.labs.service;
 
-import org.springframework.dao.DataAccessException;
+import java.util.NoSuchElementException;
 
-public class BookDoesntExistException extends DataAccessException {
-
+public class BookDoesntExistException extends NoSuchElementException {
+    
     public BookDoesntExistException() {
         super("Book doesn't exist.");
     }

@@ -53,7 +53,6 @@ public interface BookService {
      * Remove Book from DB.
      * @param bookName - Book's name
      */
-    //TODO: Need thinking about Delete all books or throwing Exception on Duplicate bookName
     void remove(String bookName);
 
     /**

@@ -33,13 +33,7 @@ class AuthorServiceImplTest {
     @Test
     void add() {
         authorService.add(author);
-        assertEquals(3, authorService.getAll().size());
-    }
-
-    @DisplayName("Check Exception on add to testDB")
-    @Test
-    void addException() {
-        authorService.add(author);
+        assertEquals(4, authorService.getAll().size());
         assertThrows(AuthorAlreadyExistException.class,
                 () -> {authorService.add(author);});
     }
@@ -47,7 +41,7 @@ class AuthorServiceImplTest {
     @DisplayName("Get all authors")
     @Test
     void getAll() {
-        assertEquals(2, authorService.getAll().size());
+        assertEquals(3, authorService.getAll().size());
         assertEquals("Stan Lee", authorService.getAll().get(0).getName());
     }
 
@@ -65,14 +59,14 @@ class AuthorServiceImplTest {
         assertEquals(1, authorService.getById(1).getId());
         assertEquals("Stan Lee", authorService.getById(1).getName());
         assertThrows(AuthorDoesntExistException.class,
-                () -> {authorService.getById(3);});
+                () -> {authorService.getById(4);});
     }
 
     @DisplayName("Remove author from TestDB")
     @Test
     void remove() {
         authorService.remove("Stan Lee");
-        assertEquals(1, authorService.getAll().size());
+        assertEquals(2, authorService.getAll().size());
         assertThrows(AuthorDoesntExistException.class,
                 () -> {authorService.remove("Doesnt Exists Author");});
     }
@@ -80,6 +74,6 @@ class AuthorServiceImplTest {
     @DisplayName("Count authors in TestDB")
     @Test
     void count() {
-        assertEquals(2, authorService.count());
+        assertEquals(3, authorService.count());
     }
 }

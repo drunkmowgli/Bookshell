@@ -5,6 +5,7 @@ import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookDao {
 
@@ -38,8 +39,7 @@ public interface BookDao {
      *
      * @return Book
      */
-    //TODO: Need thinking about ResultExecutor for Book and what need to do with duplicate book_id
-    Book getById(int id);
+    Optional<Book> getById(int id);
 
     /**
      * Get all books from DB by Genre
@@ -57,7 +57,6 @@ public interface BookDao {
      *
      * @return List of Books
      */
-    //TODO: Need thinking about ResultExecutor for Book
     List<Book> getAllByAuthor(Author author);
 
     /**
