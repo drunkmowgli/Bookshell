@@ -33,7 +33,7 @@ class AuthorDaoImplTest {
     @Test
     void add() {
         authorDao.add(author);
-        assertEquals(3, authorDao.getAll().size());
+        assertEquals(4, authorDao.getAll().size());
     }
 
     @DisplayName("Check Exception on add to testDB")
@@ -47,7 +47,7 @@ class AuthorDaoImplTest {
     @DisplayName("Get all authors from testDB")
     @Test
     void getAll() {
-        assertEquals(2, authorDao.getAll().size());
+        assertEquals(3, authorDao.getAll().size());
         assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
     }
 
@@ -65,7 +65,7 @@ class AuthorDaoImplTest {
         assertEquals(1, author.getId());
         assertEquals("Stan Lee", author.getName());
         assertThrows(DataAccessException.class,
-                () -> {authorDao.getById(3);});
+                () -> {authorDao.getById(4);});
     }
 
     @DisplayName("Remove author from testDB")
@@ -73,17 +73,13 @@ class AuthorDaoImplTest {
     void remove() {
         Author author = authorDao.getById(1);
         authorDao.remove(author);
-        assertEquals(1, authorDao.getAll().size());
+        assertEquals(2, authorDao.getAll().size());
     }
 
     @DisplayName("Count authors in testDB")
     @Test
     void count() {
-        assertEquals(2, authorDao.count());
+        assertEquals(3, authorDao.count());
     }
 
-    @Test
-    void getByBookId() {
-        System.out.println(authorDao.getByBookId(1));
-    }
 }

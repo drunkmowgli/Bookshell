@@ -2,6 +2,8 @@
 INSERT INTO authors (author_name) VALUES ('Stan Lee') ON CONFLICT DO NOTHING;
 INSERT INTO authors (author_name) VALUES ('Jack Kirby') ON CONFLICT DO NOTHING;
 INSERT INTO authors (author_name) VALUES ('Chris Claremont') ON CONFLICT DO NOTHING;
+INSERT INTO authors (author_name) VALUES ('Stephen King') ON CONFLICT DO NOTHING;
+
 
 --Genres table contents
 insert into genres (genre) values ('Comics');
@@ -11,9 +13,11 @@ insert into genres (genre) values ('Horror');
 insert into BOOKS (title, genre_id) values ('Captain America Comics (1941) #3', 1);
 insert into BOOKS (title, genre_id) values ('Adventure Comics (Sandman) #72', 1);
 insert into books (title, genre_id) values ('Dark Horse Comics #1', 1);
+insert into books (title, genre_id) values ('The Shining', 2);
 
 --Reference table contents
 insert into reference (book_id, author_id) values (1, 1);
 insert into reference (book_id, author_id) values (2, 2);
 insert into reference (book_id, author_id) values (3, 3);
 insert into reference (book_id, author_id) values (3, 1);
+insert into reference (book_id, author_id) values (4, 4);

@@ -67,7 +67,7 @@ class BookServiceImplTest {
     @DisplayName("Get book by Title")
     @Test
     void getByTitle() {
-        assertEquals("Spider-Man #1", bookService.getByTitle("Spider-Man #1").getTitle());
+        assertEquals("Spider-Man #1", bookService.getByTitle("Spider-Man #1").get(0).getTitle());
         assertThrows(BookDoesntExistException.class,
                 () -> {bookService.getByTitle("Doesnt exist book");});
     }

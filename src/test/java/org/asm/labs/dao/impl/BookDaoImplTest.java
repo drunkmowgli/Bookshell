@@ -60,7 +60,7 @@ class BookDaoImplTest {
         Book book = new Book("Test book from BookDao", authors, genreDao.getByGenreName("Test Genre from BookDao"));
         bookDao.add(book);
         assertThrows(DataAccessException.class,
-                () -> {bookDao.add(book);});
+                () -> bookDao.add(book));
     }
 
     @DisplayName("Get all books from testDB")
@@ -73,7 +73,7 @@ class BookDaoImplTest {
     @DisplayName("Get book by title from testDB")
     @Test
     void getByTitle() {
-        assertEquals("Spider-Man #1", bookDao.getByTitle("Spider-Man #1").getTitle());
+        assertEquals("Spider-Man #1", bookDao.getByTitle("Spider-Man #1").get(0).getTitle());
     }
 
     @DisplayName("Get book by id from testDB")
@@ -86,7 +86,8 @@ class BookDaoImplTest {
     @Test
     void getAllByGenre() {
         assertEquals(5, bookDao.getAllByGenre(new Genre("Comics")).size());
-        assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics")).get(0)
+        assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics"))
+                .get(0)
                 .getGenre()
                 .getGenreName());
     }

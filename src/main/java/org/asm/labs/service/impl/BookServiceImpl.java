@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getByTitle(String title) throws BookDoesntExistException {
+    public List<Book> getByTitle(String title) throws BookDoesntExistException {
         try {
             return bookDao.getByTitle(title);
         } catch (EmptyResultDataAccessException e) {
@@ -73,22 +73,29 @@ public class BookServiceImpl implements BookService {
         try {
             Author author = authorService.getByName(authorName);
             return bookDao.getAllByAuthor(author);
-        } catch (AuthorDoesntExistException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();
         }
-        
+
     }
 
     @Override
-    public Book getById(int id) {
-        return bookDao.getById(id);
+    public Book getById(int id) throws BookDoesntExistException {
+        try {
+            return bookDao.getById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new BookDoesntExistException();
+        }
     }
 
     @Override
     public void remove(String bookName) throws BookDoesntExistException {
         try {
-            Book book = bookDao.getByTitle(bookName);
-            bookDao.remove(book);
+            List<Book> books = bookDao.getByTitle(bookName);
+            for (Book book :
+                    books) {
+                bookDao.remove(book);
+            }
         } catch (EmptyResultDataAccessException e) {
             throw new BookDoesntExistException();
         }

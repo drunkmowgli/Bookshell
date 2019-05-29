@@ -42,7 +42,11 @@ public class BookShell {
 
     @ShellMethod("get by id")
     public void get_book_by_id(@ShellOption int id) {
-        System.out.println(bookService.getById(id));
+        try {
+            System.out.println(bookService.getById(id));
+        } catch (BookDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("get all")

@@ -26,7 +26,7 @@ public interface BookService {
      * @param title - Book's title
      * @return Book
      */
-    Book getByTitle(String title);
+    List<Book> getByTitle(String title);
 
     /**
      * Get Book by Id
@@ -53,6 +53,7 @@ public interface BookService {
      * Remove Book from DB.
      * @param bookName - Book's name
      */
+    //TODO: Need thinking about Delete all books or throwing Exception on Duplicate bookName
     void remove(String bookName);
 
     /**

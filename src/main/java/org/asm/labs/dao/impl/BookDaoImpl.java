@@ -15,12 +15,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -69,42 +67,29 @@ public class BookDaoImpl implements BookDao {
                         "                          g.id ASC," +
                         "                          a.id ASC",
                 new HashMap<>(),
-                new ResultSetExtractor<List<Book>>() {
-                    @Override
-                    public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
-                        Map<Integer, List<Author>> bookToAuthors = new HashMap<>();
-                        while (rs.next()) {
-                            int checkingKey = rs.getInt("book_id");
-                            if (!bookToAuthors.containsKey(checkingKey)) {
-                                bookToAuthors.put(checkingKey, new ArrayList<>());
-                            }
-                            List<Author> authors = bookToAuthors.get(checkingKey);
-                            Author author = new Author(rs.getInt("author_id"), rs.getString("author_name"));
-                            authors.add(author);
-                        }
-                        System.out.println(bookToAuthors);
-                        return null;
-                    }
-                }
+                new BookExtractor()
         );
     }
-    
+
 
     @Override
-    public Book getByTitle(String title) throws DataAccessException {
+    public List<Book> getByTitle(String title) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("bookTitle", title);
-        return jdbc.queryForObject(
+        return jdbc.query(
                 "select * from books b inner join genres g on b.genre_id = g.id" +
                         "                 inner join reference r on b.id = r.book_id" +
-                        "                 inner join authors a on r.author_id = a.id where b.title = :bookTitle",
+                        "                 inner join authors a on r.author_id = a.id where b.title = :bookTitle " +
+                        "order by b.id ASC," +
+                        "         g.id ASC," +
+                        "         a.id ASC",
                 params,
-                new BookMapper()
+                new BookExtractor()
         );
     }
 
     @Override
-    public Book getById(int id) {
+    public Book getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("bookId", id);
         return jdbc.queryForObject(
@@ -125,7 +110,7 @@ public class BookDaoImpl implements BookDao {
                         "                 inner join reference r on b.id = r.book_id" +
                         "                 inner join authors a on r.author_id = a.id where g.genre = :genreName",
                 params,
-                new BookMapper()
+                new BookExtractor()
         );
     }
 
@@ -138,7 +123,7 @@ public class BookDaoImpl implements BookDao {
                         "inner join reference r on b.id = r.book_id " +
                         "inner join authors a on r.author_id = a.id where a.id = :author_id",
                 params,
-                new BookMapper()
+                new BookExtractor()
         );
     }
 
@@ -165,6 +150,43 @@ public class BookDaoImpl implements BookDao {
                 new HashMap<>(),
                 Integer.class
         );
+    }
+
+    private static class BookExtractor implements ResultSetExtractor<List<Book>> {
+
+        @Override
+        public List<Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
+            Map<Integer, List<Author>> bookToAuthors = new HashMap<>();
+            Map<Integer, String> bootToTitle = new HashMap<>();
+            Map<Integer, Genre> bookToGenre = new HashMap<>();
+            while (rs.next()) {
+                int checkingKey = rs.getInt("book_id");
+                if (!bookToAuthors.containsKey(checkingKey)) {
+                    bookToAuthors.put(checkingKey, new ArrayList<>());
+                }
+                List<Author> authors = bookToAuthors.get(checkingKey);
+                Author author = new Author(rs.getInt("author_id"), rs.getString("author_name"));
+                authors.add(author);
+                bootToTitle.put(checkingKey, rs.getString("title"));
+                Genre genre = new Genre(rs.getInt("genre_id"), rs.getString("genre"));
+                bookToGenre.put(checkingKey, genre);
+            }
+
+            Set<Integer> booksKeySet = bookToAuthors.keySet();
+
+            List<Book> books = new ArrayList<>();
+
+            for (Integer key : booksKeySet) {
+                int bookId = key;
+                String title = bootToTitle.get(key);
+                List<Author> authors = bookToAuthors.get(key);
+                Genre genre = bookToGenre.get(key);
+                Book book = new Book(bookId, title, authors, genre);
+                books.add(book);
+            }
+
+            return books;
+        }
     }
 
     private static class BookMapper implements RowMapper<Book> {
