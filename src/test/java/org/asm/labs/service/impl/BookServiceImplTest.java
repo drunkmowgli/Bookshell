@@ -87,7 +87,7 @@ class BookServiceImplTest {
 
     @DisplayName("Get book by id BookDoesntExist")
     @Test
-    void should_throw_BookDoesntExistException() {
+    void should_throw_BookDoesntExistException_when_book_not_exist() {
         assertThrows(BookDoesntExistException.class,
                 () -> bookService.getById(10));
     }

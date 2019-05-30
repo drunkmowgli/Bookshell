@@ -40,7 +40,7 @@ class GenreServiceImplTest {
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_throw_GenreDoesntExistException() {
+    void should_throw_GenreDoesntExistException_when_genre_not_exist() {
         assertThrows(GenreDoesntExistException.class,
                 () -> genreService.getById(10));
     }

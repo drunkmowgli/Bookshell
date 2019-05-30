@@ -29,7 +29,7 @@ public class BookShell {
     }
 
     @ShellMethod("get by id")
-    public void get_book_by_id(@ShellOption int id) {
+    public void get_book(@ShellOption int id) {
         try {
             System.out.println(bookService.getById(id));
         } catch (BookDoesntExistException e) {

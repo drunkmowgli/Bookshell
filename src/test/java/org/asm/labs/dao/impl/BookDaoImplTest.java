@@ -40,7 +40,7 @@ class BookDaoImplTest {
 
     @DisplayName("Add new book to testDB")
     @Test
-    void should_return_6_books_when_added_new_book() {
+    void should_6_books_when_added() {
         List<Author> authors = Collections.singletonList(authorDao.getById(1));
         Book book = new Book("Test book from BookDao", authors, genreDao.getById(1));
         System.out.println(authors.toString());
@@ -62,16 +62,16 @@ class BookDaoImplTest {
         assertEquals(5, bookDao.getAll().size());
     }
 
-    @DisplayName("Get book by ID from testDB")
+    @DisplayName("Get book by id from testDB")
     @Test
-    void should_return_book_when_book_exist() {
+    void should_return_book() {
         Book book = bookDao.getById(1).orElseThrow();
         assertEquals(1, book.getId());
         assertEquals("Spider-Man #1", book.getTitle());
         assertEquals("Comics", book.getGenre().getGenreName());
     }
 
-    @DisplayName("Get book by ID from testDB")
+    @DisplayName("Get book by id from testDB")
     @Test
     void should_return_empty_when_book_not_exist() {
         assertFalse(bookDao.getById(10).isPresent());

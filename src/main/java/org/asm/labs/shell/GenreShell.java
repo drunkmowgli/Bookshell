@@ -21,7 +21,7 @@ public class GenreShell {
     }
 
     @ShellMethod("get genre by genre's id")
-    public void get_genre_by_id(@ShellOption int id) {
+    public void get_genre(@ShellOption int id) {
         try {
             System.out.println(genreService.getById(id));
         } catch (GenreDoesntExistException e) {

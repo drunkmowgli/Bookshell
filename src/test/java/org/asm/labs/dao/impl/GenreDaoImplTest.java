@@ -40,7 +40,7 @@ class GenreDaoImplTest {
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_throw_DataAccessException() {
+    void should_throw_DataAccessException_when_genre_not_exist() {
         assertThrows(DataAccessException.class,
                 () -> genreDao.getById(10));
     }

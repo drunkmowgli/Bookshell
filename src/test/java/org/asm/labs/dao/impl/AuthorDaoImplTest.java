@@ -29,13 +29,13 @@ class AuthorDaoImplTest {
 
     @DisplayName("Add new author to testDB")
     @Test
-    void should_return_4_authors_when_added_new() {
+    void should_4_authors_when_added() {
         Author author = new Author("Author DAO #Test");
         authorDao.add(author);
         assertEquals(4, authorDao.getAll().size());
     }
 
-    @DisplayName("Add new author to testDB")
+    @DisplayName("Add new author to testDB for throwing Exception check")
     @Test
     void should_throw_DataAccessException_if_author_exist() {
         assertThrows(DataAccessException.class,
@@ -50,7 +50,7 @@ class AuthorDaoImplTest {
 
     @DisplayName("Get author by id from testDB")
     @Test
-    void should_return_author_by_id() {
+    void should_return_author() {
         Author author = authorDao.getById(1);
         assertEquals(1, author.getId());
         assertEquals("Stan Lee", author.getName());
@@ -65,7 +65,7 @@ class AuthorDaoImplTest {
 
     @DisplayName("Remove author from testDB")
     @Test
-    void should_remove_author_from_database() {
+    void should_remove_author() {
         Author author = authorDao.getById(1);
         authorDao.remove(author);
         assertEquals(2, authorDao.getAll().size());

@@ -58,7 +58,7 @@ class AuthorServiceImplTest {
 
     @DisplayName("Get author by id")
     @Test
-    void should_throw_AuthorDoesntExistException() {
+    void should_throw_AuthorDoesntExistException_when_author_not_exist() {
         assertThrows(AuthorDoesntExistException.class,
                 () -> authorService.getById(10));
     }
