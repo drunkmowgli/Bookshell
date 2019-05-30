@@ -23,9 +23,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void add(Author author) throws AuthorAlreadyExistException {
+    public void add(String authorName) throws AuthorAlreadyExistException {
 
         try {
+            Author author = new Author(authorName);
             authorDao.add(author);
         } catch (DuplicateKeyException e) {
             throw new AuthorAlreadyExistException();
@@ -38,28 +39,19 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getByName(String name) throws AuthorDoesntExistException {
+    public Author getById(int authorId) throws AuthorDoesntExistException {
         try {
-            return authorDao.getByName(name);
+            return authorDao.getById(authorId);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();
         }
+
     }
 
     @Override
-    public Author getById(int id) throws AuthorDoesntExistException {
+    public void remove(int authorId) throws AuthorDoesntExistException {
         try {
-            return authorDao.getById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new AuthorDoesntExistException();
-        }
-        
-    }
-
-    @Override
-    public void remove(String authorName) throws AuthorDoesntExistException {
-        try {
-            Author author = authorDao.getByName(authorName);
+            Author author = authorDao.getById(authorId);
             authorDao.remove(author);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();

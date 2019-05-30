@@ -1,9 +1,7 @@
 package org.asm.labs.service;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-
-public class AuthorDoesntExistException extends EmptyResultDataAccessException {
+public class AuthorDoesntExistException extends Exception {
     public AuthorDoesntExistException() {
-        super("Author doesnt exist.", 0);
+        super("Author doesnt exist.");
     }
 }

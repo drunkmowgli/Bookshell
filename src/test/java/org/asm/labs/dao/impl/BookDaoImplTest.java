@@ -5,7 +5,6 @@ import org.asm.labs.dao.BookDao;
 import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
-import org.asm.labs.entity.Genre;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,43 +27,42 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookDaoImplTest {
-    
+
     @Autowired
     AuthorDao authorDao;
-    
+
     @Autowired
     GenreDao genreDao;
-    
+
     @Autowired
     BookDao bookDao;
-    
-    
+
+
     @DisplayName("Add new book to testDB")
     @Test
-    void add() {
-        authorDao.add(new Author("Test author from BookDao"));
-        genreDao.add(new Genre("Test Genre from BookDao"));
-        List<Author> authors = Collections.singletonList(authorDao.getByName("Test author from BookDao"));
-        Book book = new Book("Test book from BookDao", authors, genreDao.getByGenreName("Test Genre from BookDao"));
+    void should_return_6_books_when_added_new_book() {
+        List<Author> authors = Collections.singletonList(authorDao.getById(1));
+        Book book = new Book("Test book from BookDao", authors, genreDao.getById(1));
+        System.out.println(authors.toString());
         bookDao.add(book);
         assertEquals(6, bookDao.getAll().size());
-        assertThrows(DataAccessException.class,
-                () -> bookDao.add(book));
     }
-    
+
+    @DisplayName("Add new book to testDB for throwing Exception check")
+    @Test
+    void should_throw_DataAccessException_if_book_exist() {
+        Book existBook = bookDao.getById(1).orElseThrow();
+        assertThrows(DataAccessException.class,
+                () -> bookDao.add(existBook));
+    }
+
     @DisplayName("Get all books from testDB")
     @Test
-    void getAll() {
-        System.out.println(bookDao.getAll());
+    void should_return_all_books() {
         assertEquals(5, bookDao.getAll().size());
     }
-    
-    @DisplayName("Get book by title from testDB")
-    @Test
-    void getByTitle() {
-        assertEquals("Spider-Man #1", bookDao.getByTitle("Spider-Man #1").get(0).getTitle());
-    }
-    
+
+    @DisplayName("Get book by ID from testDB")
     @Test
     void should_return_book_when_book_exist() {
         Book book = bookDao.getById(1).orElseThrow();
@@ -72,41 +70,25 @@ class BookDaoImplTest {
         assertEquals("Spider-Man #1", book.getTitle());
         assertEquals("Comics", book.getGenre().getGenreName());
     }
-    
+
+    @DisplayName("Get book by ID from testDB")
     @Test
     void should_return_empty_when_book_not_exist() {
         assertFalse(bookDao.getById(10).isPresent());
     }
-    
-    @DisplayName("Get all books by genre from testDB")
-    @Test
-    void getAllByGenre() {
-        assertEquals(5, bookDao.getAllByGenre(new Genre("Comics")).size());
-        assertEquals("Comics", bookDao.getAllByGenre(new Genre("Comics"))
-                                      .get(0)
-                                      .getGenre()
-                                      .getGenreName());
-    }
-    
-    @DisplayName("Get all books by author from testDB")
-    @Test
-    void getAllByAuthor() {
-        Author author = authorDao.getByName("Stan Lee");
-        assertEquals(2, bookDao.getAllByAuthor(author).size());
-    }
-    
+
     @DisplayName("Remove book from testDB")
     @Test
     void remove() {
-//        Book book = bookDao.getById(1);
-//        bookDao.remove(book);
+        Book book = bookDao.getById(1).orElseThrow();
+        bookDao.remove(book);
         assertEquals(4, bookDao.getAll().size());
     }
-    
+
     @DisplayName("Count books in testDB")
     @Test
     void count() {
         assertEquals(5, bookDao.count());
     }
-    
+
 }

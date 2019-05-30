@@ -1,8 +1,6 @@
 package org.asm.labs.service;
 
-import org.springframework.dao.DataAccessException;
-
-public class AuthorAlreadyExistException extends DataAccessException {
+public class AuthorAlreadyExistException extends Exception {
     public AuthorAlreadyExistException() {
         super("Duplicate key. Author already exist.");
     }

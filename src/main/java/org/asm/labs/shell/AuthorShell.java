@@ -1,7 +1,6 @@
 package org.asm.labs.shell;
 
 
-import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorAlreadyExistException;
 import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;
@@ -22,22 +21,17 @@ public class AuthorShell {
     }
 
     @ShellMethod("add author")
-    public void add_author(@ShellOption String name) {
+    public void add_author(@ShellOption String authorName) {
         try {
-            authorService.add(new Author(name));
+            authorService.add(authorName);
         } catch (AuthorAlreadyExistException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    @ShellMethod("get by name")
-    public void get_author(@ShellOption String name) {
-        
-        try {
-            System.out.println(authorService.getByName(name));
-        } catch (AuthorDoesntExistException e) {
-            System.out.println(e.getMessage());
-        }
+    @ShellMethod("get all")
+    public void get_all_authors() {
+        authorService.getAll().forEach(System.out::println);
     }
 
     @ShellMethod("get by id")
@@ -49,15 +43,10 @@ public class AuthorShell {
         }
     }
 
-    @ShellMethod("get all")
-    public void get_all_authors() {
-        authorService.getAll().forEach(System.out::println);
-    }
-
     @ShellMethod("remove author")
-    public void remove_author(@ShellOption String authorName) {
+    public void remove_author(@ShellOption int authorId) {
         try {
-            authorService.remove(authorName);
+            authorService.remove(authorId);
         } catch (AuthorDoesntExistException e) {
             System.out.println(e.getMessage());
         }

@@ -21,15 +21,6 @@ public interface AuthorDao {
     List<Author> getAll();
 
     /**
-     * Get Author from DB by Name.
-     *
-     * @param name - Author's name
-     *
-     * @return Author
-     */
-    Author getByName(String name);
-
-    /**
      * Get Author from DB by id.
      *
      * @param id - Author's id

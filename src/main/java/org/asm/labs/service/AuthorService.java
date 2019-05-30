@@ -9,9 +9,9 @@ public interface AuthorService {
     /**
      * Add Author to DB.
      *
-     * @param author - Author
+     * @param authorName - Author's name
      */
-    void add(Author author);
+    void add(String authorName) throws AuthorAlreadyExistException;
 
     /**
      * Get all Authors from DB.
@@ -21,29 +21,20 @@ public interface AuthorService {
     List<Author> getAll();
 
     /**
-     * Get Author from DB by Name.
-     *
-     * @param name - Author's name
-     *
-     * @return Author
-     */
-    Author getByName(String name);
-
-    /**
      * Get Author from DB by id.
      *
-     * @param id - Author's id
+     * @param authorId - Author's id
      *
      * @return Author
      */
-    Author getById(int id);
+    Author getById(int authorId) throws AuthorDoesntExistException;
 
     /**
      * Remove Author from DB.
      *
-     * @param authorName - Author
+     * @param authorId - Author's id
      */
-    void remove(String authorName);
+    void remove(int authorId) throws AuthorDoesntExistException;
 
     /**
      * Count number of Authors in DB.

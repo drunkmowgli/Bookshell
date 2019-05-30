@@ -3,7 +3,6 @@ package org.asm.labs.dao.impl;
 import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -23,32 +22,10 @@ public class GenreDaoImpl implements GenreDao {
     public GenreDaoImpl(NamedParameterJdbcOperations jdbc) {this.jdbc = jdbc;}
 
     @Override
-    public void add(Genre genre) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("genreName", genre.getGenreName());
-        jdbc.update(
-                "insert into genres (genre) values (:genreName)",
-                params
-        );
-
-    }
-
-    @Override
     public List<Genre> getAll() {
         return jdbc.query(
                 "select * from genres",
                 new HashMap<>(),
-                new GenreMapper()
-        );
-    }
-
-    @Override
-    public Genre getByGenreName(String genreName) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("genreName", genreName);
-        return jdbc.queryForObject(
-                "select * from genres where genre = :genreName",
-                params,
                 new GenreMapper()
         );
     }
@@ -70,23 +47,6 @@ public class GenreDaoImpl implements GenreDao {
                 "select count(*) from genres",
                 new HashMap<>(),
                 Integer.class
-        );
-    }
-
-    @Override
-    public void remove(Genre genre) {
-        Map<String, Object> booksParam = new HashMap<>();
-        booksParam.put("genre_id", genre.getId());
-        jdbc.update(
-                "update books set genre_id = NULL where genre_id = :genre_id",
-                booksParam
-        );
-
-        Map<String, Object> params = new HashMap<>();
-        params.put("genreName", genre.getGenreName());
-        jdbc.update(
-                "delete from genres where genre = :genreName",
-                params
         );
     }
 

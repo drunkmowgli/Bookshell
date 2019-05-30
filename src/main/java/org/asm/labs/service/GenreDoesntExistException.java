@@ -1,8 +1,6 @@
 package org.asm.labs.service;
 
-import org.springframework.dao.DataAccessException;
-
-public class GenreDoesntExistException extends DataAccessException {
+public class GenreDoesntExistException extends Exception {
     public GenreDoesntExistException() {
         super("Genre doesnt exist.");
     }

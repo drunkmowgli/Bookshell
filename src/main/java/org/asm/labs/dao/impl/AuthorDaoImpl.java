@@ -42,17 +42,6 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getByName(String name) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("authorName", name);
-        return jdbc.queryForObject(
-                "select * from authors where author_name = :authorName",
-                params,
-                new AuthorMapper()
-        );
-    }
-
-    @Override
     public Author getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("ID", id);
@@ -73,9 +62,9 @@ public class AuthorDaoImpl implements AuthorDao {
         );
 
         Map<String, Object> params = new HashMap<>();
-        params.put("authorName", author.getName());
+        params.put("author_id", author.getId());
         jdbc.update(
-                "delete from authors where (author_name) = :authorName",
+                "delete from authors where (id) = :author_id",
                 params
         );
     }

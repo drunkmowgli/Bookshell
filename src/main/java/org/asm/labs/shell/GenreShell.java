@@ -1,8 +1,5 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.entity.Genre;
-import org.asm.labs.service.GenreAlreadyExistException;
-import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,28 +14,9 @@ public class GenreShell {
     @Autowired
     public GenreShell(GenreService genreService) {this.genreService = genreService;}
 
-    @ShellMethod("add genre")
-    public void add_genre(@ShellOption String genreName) {
-        Genre genre = new Genre(genreName);
-        try {
-            genreService.add(genre);
-        } catch (GenreAlreadyExistException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
     @ShellMethod("get all genres")
     public void get_all_genres() {
         genreService.getAll().forEach(System.out::println);
-    }
-
-    @ShellMethod("get genre by genre's name")
-    public void get_genre_by_name(@ShellOption String genreName) {
-        try {
-            System.out.println(genreService.getByGenreName(genreName));
-        } catch (GenreDoesntExistException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     @ShellMethod("get genre by genre's id")
@@ -51,12 +29,4 @@ public class GenreShell {
         System.out.println(genreService.count());
     }
 
-    @ShellMethod("remove genre")
-    public void remove_genre(String genreName) {
-        try {
-            genreService.remove(genreName);
-        } catch (GenreDoesntExistException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

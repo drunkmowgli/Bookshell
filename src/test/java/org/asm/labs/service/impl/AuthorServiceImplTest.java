@@ -1,6 +1,5 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorAlreadyExistException;
 import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;
@@ -27,48 +26,55 @@ class AuthorServiceImplTest {
     @Autowired
     AuthorService authorService;
 
-    private Author author = new Author(3, "Author Service #Test");
 
-    @DisplayName("Add Author")
+    @DisplayName("Add Author to testDB")
     @Test
-    void add() {
-        authorService.add(author);
+    void should_add_author() throws AuthorAlreadyExistException {
+        authorService.add("Author Service #Test");
         assertEquals(4, authorService.getAll().size());
         assertThrows(AuthorAlreadyExistException.class,
-                () -> {authorService.add(author);});
+                () -> authorService.add("Author Service #Test"));
+    }
+
+    @DisplayName("Add author to testDB")
+    @Test
+    void should_throw_AuthorAlreadyExistException() {
+        assertThrows(AuthorAlreadyExistException.class,
+                () -> authorService.add("Stan Lee"));
     }
 
     @DisplayName("Get all authors")
     @Test
-    void getAll() {
+    void should_return_all_authors() {
         assertEquals(3, authorService.getAll().size());
-        assertEquals("Stan Lee", authorService.getAll().get(0).getName());
-    }
-
-    @DisplayName("Get author by name")
-    @Test
-    void getByName() {
-        assertEquals("Stan Lee", authorService.getByName("Stan Lee").getName());
-        assertThrows(AuthorDoesntExistException.class,
-                () -> {authorService.getByName("Author Doesnt Exist");});
     }
 
     @DisplayName("Get author by id")
     @Test
-    void getById() {
+    void should_return_author() throws AuthorDoesntExistException {
         assertEquals(1, authorService.getById(1).getId());
         assertEquals("Stan Lee", authorService.getById(1).getName());
+    }
+
+    @DisplayName("Get author by id")
+    @Test
+    void should_throw_AuthorDoesntExistException() {
         assertThrows(AuthorDoesntExistException.class,
-                () -> {authorService.getById(4);});
+                () -> authorService.getById(10));
     }
 
     @DisplayName("Remove author from TestDB")
     @Test
-    void remove() {
-        authorService.remove("Stan Lee");
+    void should_remove_author() throws AuthorDoesntExistException {
+        authorService.remove(1);
         assertEquals(2, authorService.getAll().size());
+    }
+
+    @DisplayName("Remove author from TestDB")
+    @Test
+    void should_throw_AuthorDoesntExistException_when_remove_not_exist_author() {
         assertThrows(AuthorDoesntExistException.class,
-                () -> {authorService.remove("Doesnt Exists Author");});
+                () -> {authorService.remove(10);});
     }
 
     @DisplayName("Count authors in TestDB")

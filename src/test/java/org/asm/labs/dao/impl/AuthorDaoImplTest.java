@@ -27,46 +27,45 @@ class AuthorDaoImplTest {
     AuthorDao authorDao;
 
 
-    private Author author = new Author("Author DAO #Test");
+    @DisplayName("Add new author to testDB")
+    @Test
+    void should_return_4_authors_when_added_new() {
+        Author author = new Author("Author DAO #Test");
+        authorDao.add(author);
+        assertEquals(4, authorDao.getAll().size());
+    }
 
     @DisplayName("Add new author to testDB")
     @Test
-    void add() {
-        authorDao.add(author);
-        assertEquals(4, authorDao.getAll().size());
+    void should_throw_DataAccessException_if_author_exist() {
         assertThrows(DataAccessException.class,
-                () -> authorDao.add(author));
+                () -> authorDao.add(new Author("Stan Lee")));
     }
 
     @DisplayName("Get all authors from testDB")
     @Test
-    void getAll() {
+    void should_return_all_authors() {
         assertEquals(3, authorDao.getAll().size());
-        assertEquals("Stan Lee", authorDao.getAll().get(0).getName());
-    }
-
-    @DisplayName("Get author by name from testDB")
-    @Test
-    void getByName() {
-        Author author = authorDao.getByName("Stan Lee");
-        assertEquals("Stan Lee", author.getName());
-        assertThrows(DataAccessException.class,
-                () -> authorDao.getByName("Author doesnt exist"));
     }
 
     @DisplayName("Get author by id from testDB")
     @Test
-    void getById() {
+    void should_return_author_by_id() {
         Author author = authorDao.getById(1);
         assertEquals(1, author.getId());
         assertEquals("Stan Lee", author.getName());
+    }
+
+    @DisplayName("Get nonexistent author by id from testDB")
+    @Test
+    void should_throw_DataAccessException_when_author_not_exist() {
         assertThrows(DataAccessException.class,
-                () -> {authorDao.getById(4);});
+                () -> authorDao.getById(4));
     }
 
     @DisplayName("Remove author from testDB")
     @Test
-    void remove() {
+    void should_remove_author_from_database() {
         Author author = authorDao.getById(1);
         authorDao.remove(author);
         assertEquals(2, authorDao.getAll().size());

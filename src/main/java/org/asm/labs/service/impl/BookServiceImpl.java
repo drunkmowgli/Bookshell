@@ -7,41 +7,39 @@ import org.asm.labs.entity.Genre;
 import org.asm.labs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class BookServiceImpl implements BookService {
-    
-    
+
+
     private final BookDao bookDao;
-    
+
     private final AuthorService authorService;
-    
+
     private final GenreService genreService;
-    
+
     @Autowired
     public BookServiceImpl(BookDao bookDao, AuthorService authorService, GenreService genreService) {
         this.bookDao = bookDao;
         this.authorService = authorService;
         this.genreService = genreService;
     }
-    
-    
+
+
     @Override
-    public void add(String title, String authorsNames, String genreName) throws BookAlreadyExistException {
-        String[] authorsString = authorsNames.split(",");
+    public void add(String title, String authorsIds, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException {
+        String[] authorsStringIds = authorsIds.split(",");
         List<Author> authors = new ArrayList<>();
-        for (String authorName :
-                authorsString) {
-            Author author = authorService.getByName(authorName);
+        for (String authorId :
+                authorsStringIds) {
+            Author author = authorService.getById(Integer.parseInt(authorId));
             authors.add(author);
         }
-        Genre genre = genreService.getByGenreName(genreName);
+        Genre genre = genreService.getById(genreId);
         Book book = new Book(title, authors, genre);
         try {
             bookDao.add(book);
@@ -49,48 +47,25 @@ public class BookServiceImpl implements BookService {
             throw new BookAlreadyExistException();
         }
     }
-    
+
     @Override
     public List<Book> getAll() {
         return bookDao.getAll();
     }
-    
-    @Override
-    public List<Book> getByTitle(String title) {
-        return bookDao.getByTitle(title);
-    }
-    
-    @Override
-    public List<Book> getAllByGenre(Genre genre) {
-        return bookDao.getAllByGenre(genre);
-    }
-    
-    @Override
-    public List<Book> getAllByAuthor(String authorName) throws AuthorDoesntExistException {
-        try {
-            Author author = authorService.getByName(authorName);
-            return bookDao.getAllByAuthor(author);
-        } catch (EmptyResultDataAccessException e) {
-            throw new AuthorDoesntExistException();
-        }
-        
-    }
-    
+
     @Override
     public Book getById(int id) throws BookDoesntExistException {
         return bookDao.getById(id)
-                      .orElseThrow(BookDoesntExistException::new);
+                .orElseThrow(BookDoesntExistException::new);
     }
-    
+
     @Override
-    public void remove(String bookName) {
-        List<Book> books = bookDao.getByTitle(bookName);
-        for (Book book :
-                books) {
-            bookDao.remove(book);
-        }
+    public void remove(int bookId) throws BookDoesntExistException {
+        Book book = bookDao.getById(bookId)
+                .orElseThrow(BookDoesntExistException::new);
+        bookDao.remove(book);
     }
-    
+
     @Override
     public int count() {
         return bookDao.count();

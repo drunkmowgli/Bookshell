@@ -11,21 +11,21 @@ public class Book {
     private final List<Author> authors;
 
     private final Genre genre;
-    
+
     public Book(int id, String title, List<Author> authors, Genre genre) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.genre = genre;
     }
-    
+
     public Book(String title, List<Author> authors, Genre genre) {
         this.id = -1;
         this.title = title;
         this.authors = authors;
         this.genre = genre;
     }
-    
+
     public int getId() {
         return id;
     }

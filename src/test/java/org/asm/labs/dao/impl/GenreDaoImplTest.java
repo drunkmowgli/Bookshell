@@ -1,19 +1,16 @@
 package org.asm.labs.dao.impl;
 
 import org.asm.labs.dao.GenreDao;
-import org.asm.labs.entity.Genre;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Genre DAO/Repository test")
@@ -26,55 +23,23 @@ class GenreDaoImplTest {
     @Autowired
     GenreDao genreDao;
 
-    private Genre genre = new Genre("Roman");
-    private Genre genreException = new Genre("Roman");
-
-    @DisplayName("Add new genre to testDB")
-    @Test
-    void add() {
-        genreDao.add(genre);
-        assertEquals(3, genreDao.getAll().size());
-    }
-
-    @DisplayName("Check Exception on add to testDB")
-    @Test
-    void addException() {
-        genreDao.add(genre);
-        assertThrows(DataAccessException.class,
-                () -> {genreDao.add(genreException);});
-    }
 
     @DisplayName("Get all genres from testDB")
     @Test
-    void getAll() {
+    void should_return_all_genres() {
         assertEquals(2, genreDao.getAll().size());
-    }
-
-    @DisplayName("Get genre by Genre's name from testDB")
-    @Test
-    void getByGenreName() {
-        assertEquals("Comics", genreDao.getByGenreName("Comics").getGenreName());
-        assertThrows(DataAccessException.class,
-                () -> {genreDao.getByGenreName("Genre doesnt exists");});
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void getById() {
+    void should_return_comics_genre() {
         assertEquals("Comics", genreDao.getById(1).getGenreName());
     }
 
     @DisplayName("Count genres in testDB")
     @Test
-    void count() {
+    void should_return_2genres() {
         assertEquals(2, genreDao.count());
-    }
-
-    @DisplayName("Remove genre from testDB")
-    @Test
-    void remove() {
-        Genre genre = genreDao.getByGenreName("Comics");
-        genreDao.remove(genre);
     }
 
 }
