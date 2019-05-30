@@ -3,6 +3,7 @@ package org.asm.labs.dao.impl;
 import org.asm.labs.dao.GenreDao;
 import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,7 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Genre getById(int id) {
+    public Genre getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         params.put("genreId", id);
         return jdbc.queryForObject(

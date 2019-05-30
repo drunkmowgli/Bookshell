@@ -1,5 +1,6 @@
 package org.asm.labs.shell;
 
+import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -21,7 +22,11 @@ public class GenreShell {
 
     @ShellMethod("get genre by genre's id")
     public void get_genre_by_id(@ShellOption int id) {
-        System.out.println(genreService.getById(id));
+        try {
+            System.out.println(genreService.getById(id));
+        } catch (GenreDoesntExistException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethod("count")

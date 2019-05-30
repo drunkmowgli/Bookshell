@@ -20,7 +20,7 @@ public interface GenreService {
      *
      * @return Genre
      */
-    Genre getById(int id);
+    Genre getById(int id) throws GenreDoesntExistException;
 
     /**
      * Count number of Genres.

@@ -31,7 +31,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public void add(String title, String authorsIds, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException {
+    public void add(String title, String authorsIds, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException, GenreDoesntExistException {
         String[] authorsStringIds = authorsIds.split(",");
         List<Author> authors = new ArrayList<>();
         for (String authorId :

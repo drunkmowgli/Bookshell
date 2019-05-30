@@ -1,9 +1,6 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.service.AuthorDoesntExistException;
-import org.asm.labs.service.BookAlreadyExistException;
-import org.asm.labs.service.BookDoesntExistException;
-import org.asm.labs.service.BookService;
+import org.asm.labs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -26,7 +23,7 @@ public class BookShell {
                          @ShellOption int genreId) {
         try {
             bookService.add(title, authorsNames, genreId);
-        } catch (BookAlreadyExistException | AuthorDoesntExistException e) {
+        } catch (BookAlreadyExistException | AuthorDoesntExistException | GenreDoesntExistException e) {
             System.out.println(e.getMessage());
         }
     }

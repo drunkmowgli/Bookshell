@@ -1,6 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Genre;
+import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Genre Service test")
@@ -24,18 +25,24 @@ class GenreServiceImplTest {
     @Autowired
     GenreService genreService;
 
-    private Genre genre = new Genre(3, "Fantasy");
 
     @DisplayName("Get all genres from testDB")
     @Test
-    void getAll() {
+    void should_return_all_genres() {
         assertEquals(2, genreService.getAll().size());
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void getById() {
+    void should_return_genre() throws GenreDoesntExistException {
         assertEquals(1, genreService.getById(1).getId());
+    }
+
+    @DisplayName("Get genre by id from testDB")
+    @Test
+    void should_throw_GenreDoesntExistException() {
+        assertThrows(GenreDoesntExistException.class,
+                () -> genreService.getById(10));
     }
 
     @DisplayName("Count genres in testDB")

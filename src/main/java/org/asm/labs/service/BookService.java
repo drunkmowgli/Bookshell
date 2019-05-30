@@ -13,7 +13,7 @@ public interface BookService {
      * @param authorsNames - List of Authors
      * @param genreId      - Genre's id
      */
-    void add(String title, String authorsNames, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException;
+    void add(String title, String authorsNames, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException, GenreDoesntExistException;
 
     /**
      * Get all Books from DB.
