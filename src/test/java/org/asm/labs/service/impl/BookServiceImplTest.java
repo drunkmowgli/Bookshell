@@ -1,8 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.service.AuthorService;
-import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreService;
+import org.asm.labs.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Book Service test")
@@ -32,48 +31,74 @@ class BookServiceImplTest {
     GenreService genreService;
 
 
-//    @DisplayName("Add book")
-//    @Test
-//    void add() {
-//        String bookTitle = "Test title from BookService";
-//        String authorsNames = "Stan Lee,Jack Kirby";
-//        String genreName = "Comics";
-//        bookService.add(bookTitle, authorsNames, genreName);
-//        assertEquals(6, bookService.count());
-//    }
+    @DisplayName("Add book")
+    @Test
+    void should_add_book() throws GenreDoesntExistException, AuthorDoesntExistException, BookAlreadyExistException {
+        String bookTitle = "Test title from BookService";
+        String authorsIds = "1,2";
+        int genreId = 1;
+        bookService.add(bookTitle, authorsIds, genreId);
+        assertEquals(6, bookService.count());
+    }
 
-//    @DisplayName("Check Exception on add to testDB")
-//    @Test
-//    void addException() {
-//        String bookTitle = "Test title from BookService";
-//        String authorsNames = "Stan Lee,Jack Kirby";
-//        String genreName = "Comics";
-//        bookService.add(bookTitle, authorsNames, genreName);
-//        assertThrows(BookAlreadyExistException.class,
-//                () -> {bookService.add(bookTitle, authorsNames, genreName);});
-//    }
+    @DisplayName("Add book GenreDoesntExistException")
+    @Test
+    void should_throw_GenreDoesntExistException_when_genre_doesnt_exist() {
+        String bookTitle = "Test title from BookService";
+        String authorsIds = "1,2";
+        int genreId = 10;
+        assertThrows(GenreDoesntExistException.class,
+                () -> bookService.add(bookTitle, authorsIds, genreId));
+    }
+
+    @DisplayName("Add book AuthorDoesntExist")
+    @Test
+    void should_throw_AuthorDoesntExistException_when_authors_doesnt_exist() {
+        String bookTitle = "Test title from BookService";
+        String authorsIds = "10,2";
+        int genreId = 1;
+        assertThrows(AuthorDoesntExistException.class,
+                () -> bookService.add(bookTitle, authorsIds, genreId));
+    }
+
+    @DisplayName("Add book AuthorDoesntExist")
+    @Test
+    void should_throw_BookAlreadyExistException_when_book_already_exist() {
+        String bookTitle = "Hulk #2";
+        String authorsIds = "1,2";
+        int genreId = 1;
+        assertThrows(BookAlreadyExistException.class,
+                () -> bookService.add(bookTitle, authorsIds, genreId));
+    }
 
 
     @DisplayName("Get all books")
     @Test
-    void getAll() {
+    void should_return_all_books() {
         assertEquals(5, bookService.getAll().size());
-        assertEquals("Dark Horse Comics #1", bookService.getAll().get(1).getTitle());
     }
 
-//    @DisplayName("Get book by id")
-//    @Test
-//    void getById() {
-//        assertEquals(2, bookService.getById(2).getId());
-//        assertEquals("Dark Horse Comics #1", bookService.getById(2).getTitle());
-//    }
+    @DisplayName("Get book by id")
+    @Test
+    void should_return_book() throws BookDoesntExistException {
+        assertEquals(2, bookService.getById(2).getId());
+        assertEquals("Dark Horse Comics #1", bookService.getById(2).getTitle());
+    }
 
-//    @DisplayName("Remove book from TestDB")
-//    @Test
-//    void remove() {
-//        bookService.remove("Hulk #2");
-//        assertEquals(4, bookService.getAll().size());
-//    }
+    @DisplayName("Get book by id BookDoesntExist")
+    @Test
+    void should_throw_BookDoesntExistException() {
+        assertThrows(BookDoesntExistException.class,
+                () -> bookService.getById(10));
+    }
+
+
+    @DisplayName("Remove book from TestDB")
+    @Test
+    void should_remove_book() throws BookDoesntExistException {
+        bookService.remove(1);
+        assertEquals(4, bookService.getAll().size());
+    }
 
     @DisplayName("Count books in TestDB")
     @Test

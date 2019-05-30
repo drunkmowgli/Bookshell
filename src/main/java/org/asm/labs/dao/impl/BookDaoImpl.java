@@ -33,10 +33,10 @@ public class BookDaoImpl implements BookDao {
     public void add(Book book) throws DataAccessException {
         KeyHolder booksKeyHolder = new GeneratedKeyHolder();
         SqlParameterSource parameterSource = new MapSqlParameterSource()
-                .addValue("bookTitle", book.getTitle())
+                .addValue("book_title", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId());
         jdbc.update(
-                "insert into books (title, genre_id) values (:bookTitle, :genre_id)",
+                "insert into books (title, genre_id) values (:book_title, :genre_id)",
                 parameterSource,
                 booksKeyHolder
         );
@@ -72,11 +72,11 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Optional<Book> getById(int id) {
         Map<String, Object> params = new HashMap<>();
-        params.put("bookId", id);
+        params.put("book_id", id);
         List<Book> books = jdbc.query(
                 "select * from books b inner join genres g on b.genre_id = g.id" +
                         "                 inner join reference r on b.id = r.book_id" +
-                        "                 inner join authors a on r.author_id = a.id where b.id = :bookId " +
+                        "                 inner join authors a on r.author_id = a.id where b.id = :book_id " +
                         "order by b.id ASC," +
                         "         g.id ASC," +
                         "         a.id ASC",
@@ -87,7 +87,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public void remove(Book book) {
+    public void remove(Book book) throws DataAccessException {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("book_id", book.getId());
         jdbc.update(
@@ -95,9 +95,9 @@ public class BookDaoImpl implements BookDao {
                 referenceParams
         );
         Map<String, Object> params = new HashMap<>();
-        params.put("bookTitle", book.getTitle());
+        params.put("book_id", book.getId());
         jdbc.update(
-                "delete from books where title = :bookTitle",
+                "delete from books where id = :book_id",
                 params
         );
     }
