@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
+
 @Repository
 public class GenreDaoImpl implements GenreDao {
 
@@ -25,7 +27,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public List<Genre> getAll() {
         return jdbc.query(
-                "select * from genres",
+                SELECT_ALL_GENRES,
                 new HashMap<>(),
                 new GenreMapper()
         );
@@ -34,9 +36,9 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public Genre getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
-        params.put("genreId", id);
+        params.put("genre_id", id);
         return jdbc.queryForObject(
-                "select * from genres where id = :genreId",
+                SELECT_GENRE_BY_ID,
                 params,
                 new GenreMapper()
         );
@@ -45,7 +47,7 @@ public class GenreDaoImpl implements GenreDao {
     @Override
     public int count() {
         return jdbc.queryForObject(
-                "select count(*) from genres",
+                COUNT_GENRES,
                 new HashMap<>(),
                 Integer.class
         );
