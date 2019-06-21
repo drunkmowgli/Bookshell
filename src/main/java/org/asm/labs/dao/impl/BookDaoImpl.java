@@ -18,6 +18,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
+
 @Repository
 public class BookDaoImpl implements BookDao {
 
@@ -36,7 +38,7 @@ public class BookDaoImpl implements BookDao {
                 .addValue("book_title", book.getTitle())
                 .addValue("genre_id", book.getGenre().getId());
         jdbc.update(
-                "insert into books (title, genre_id) values (:book_title, :genre_id)",
+                INSERT_BOOK,
                 parameterSource,
                 booksKeyHolder
         );
@@ -48,7 +50,7 @@ public class BookDaoImpl implements BookDao {
                     .addValue("book_id", booksKeyHolder.getKeys().get("id"))
                     .addValue("author_id", author.getId());
             jdbc.update(
-                    "insert into reference (book_id, author_id) values (:book_id, :author_id)",
+                    INSERT_BOOK_TO_REFERENCE,
                     authorsParameterSource,
                     authorsKeyHolder
             );
@@ -58,12 +60,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> getAll() {
         return jdbc.query(
-                "select * from books b inner join genres g on b.genre_id = g.id " +
-                        "                 inner join reference r on b.id = r.book_id " +
-                        "                 inner join authors a on r.author_id = a.id " +
-                        "                 order by b.id ASC," +
-                        "                          g.id ASC," +
-                        "                          a.id ASC",
+                SELECT_ALL_BOOK_BY_ORDER,
                 new HashMap<>(),
                 new ListResultSetExtractor()
         );
@@ -74,12 +71,7 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> params = new HashMap<>();
         params.put("book_id", id);
         List<Book> books = jdbc.query(
-                "select * from books b inner join genres g on b.genre_id = g.id" +
-                        "                 inner join reference r on b.id = r.book_id" +
-                        "                 inner join authors a on r.author_id = a.id where b.id = :book_id " +
-                        "order by b.id ASC," +
-                        "         g.id ASC," +
-                        "         a.id ASC",
+                SELECT_BOOK_BY_ID,
                 params,
                 new ListResultSetExtractor()
         );
@@ -91,13 +83,13 @@ public class BookDaoImpl implements BookDao {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("book_id", book.getId());
         jdbc.update(
-                "delete from reference where book_id = :book_id",
+                DELETE_BOOK_FROM_REFERENCE,
                 referenceParams
         );
         Map<String, Object> params = new HashMap<>();
         params.put("book_id", book.getId());
         jdbc.update(
-                "delete from books where id = :book_id",
+                DELETE_BOOK_BY_ID,
                 params
         );
     }
@@ -105,7 +97,7 @@ public class BookDaoImpl implements BookDao {
     @Override
     public int count() {
         return jdbc.queryForObject(
-                "select count(*) from books",
+                COUNT_BOOKS,
                 new HashMap<>(),
                 Integer.class
         );

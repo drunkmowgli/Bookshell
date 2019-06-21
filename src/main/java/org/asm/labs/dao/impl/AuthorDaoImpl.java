@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
+
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
 
@@ -28,14 +30,14 @@ public class AuthorDaoImpl implements AuthorDao {
         params.put("authorName", author.getName());
 
         jdbc.update(
-                "insert into authors (author_name) values (:authorName)",
+                INSERT_AUTHOR,
                 params);
     }
 
     @Override
     public List<Author> getAll() {
         return jdbc.query(
-                "select * from authors",
+                SELECT_ALL_AUTHORS,
                 new HashMap<>(),
                 new AuthorMapper()
         );
@@ -44,9 +46,9 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public Author getById(int id) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
-        params.put("ID", id);
+        params.put("author_id", id);
         return jdbc.queryForObject(
-                "select * from authors where id = :ID",
+                SELECT_AUTHOR_BY_ID,
                 params,
                 new AuthorMapper()
         );
@@ -57,14 +59,14 @@ public class AuthorDaoImpl implements AuthorDao {
         Map<String, Object> referenceParams = new HashMap<>();
         referenceParams.put("author_id", author.getId());
         jdbc.update(
-                "update reference set author_id = NULL where author_id = :author_id",
+                DELETE_AUTHOR_FROM_REFERENCE,
                 referenceParams
         );
 
         Map<String, Object> params = new HashMap<>();
         params.put("author_id", author.getId());
         jdbc.update(
-                "delete from authors where (id) = :author_id",
+                DELETE_AUTHOR_BY_ID,
                 params
         );
     }
@@ -72,7 +74,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public int count() {
         return jdbc.queryForObject(
-                "select count(*) from authors",
+                COUNT_AUTHORS,
                 new HashMap<>(),
                 Integer.class
         );
