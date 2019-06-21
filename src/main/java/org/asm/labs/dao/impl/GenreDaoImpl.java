@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
 
@@ -28,18 +27,16 @@ public class GenreDaoImpl implements GenreDao {
     public List<Genre> getAll() {
         return jdbc.query(
                 SELECT_ALL_GENRES,
-                new HashMap<>(),
+                Collections.EMPTY_MAP,
                 new GenreMapper()
         );
     }
 
     @Override
     public Genre getById(int id) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("genre_id", id);
         return jdbc.queryForObject(
                 SELECT_GENRE_BY_ID,
-                params,
+                Collections.singletonMap("genre_id", id),
                 new GenreMapper()
         );
     }
@@ -48,7 +45,7 @@ public class GenreDaoImpl implements GenreDao {
     public int count() {
         return jdbc.queryForObject(
                 COUNT_GENRES,
-                new HashMap<>(),
+                Collections.EMPTY_MAP,
                 Integer.class
         );
     }

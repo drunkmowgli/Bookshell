@@ -61,18 +61,16 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getAll() {
         return jdbc.query(
                 SELECT_ALL_BOOK_BY_ORDER,
-                new HashMap<>(),
+                Collections.EMPTY_MAP,
                 new ListResultSetExtractor()
         );
     }
 
     @Override
     public Optional<Book> getById(int id) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("book_id", id);
         List<Book> books = jdbc.query(
                 SELECT_BOOK_BY_ID,
-                params,
+                Collections.singletonMap("book_id", id),
                 new ListResultSetExtractor()
         );
         return books.isEmpty() ? Optional.empty() : Optional.of(books.get(0));
@@ -80,17 +78,14 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void remove(Book book) throws DataAccessException {
-        Map<String, Object> referenceParams = new HashMap<>();
-        referenceParams.put("book_id", book.getId());
         jdbc.update(
                 DELETE_BOOK_FROM_REFERENCE,
-                referenceParams
+                Collections.singletonMap("book_id", book.getId())
         );
-        Map<String, Object> params = new HashMap<>();
-        params.put("book_id", book.getId());
+
         jdbc.update(
                 DELETE_BOOK_BY_ID,
-                params
+                Collections.singletonMap("book_id", book.getId())
         );
     }
 
@@ -98,7 +93,7 @@ public class BookDaoImpl implements BookDao {
     public int count() {
         return jdbc.queryForObject(
                 COUNT_BOOKS,
-                new HashMap<>(),
+                Collections.EMPTY_MAP,
                 Integer.class
         );
     }

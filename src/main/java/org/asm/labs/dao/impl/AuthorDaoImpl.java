@@ -51,15 +51,11 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void remove(Author author) throws DataAccessException {
-//        Map<String, Object> referenceParams = new HashMap<>();
-//        referenceParams.put("author_id", author.getId());
         jdbc.update(
                 DELETE_AUTHOR_FROM_REFERENCE,
                 Collections.singletonMap("author_id", author.getId())
         );
 
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("author_id", author.getId());
         jdbc.update(
                 DELETE_AUTHOR_BY_ID,
                 Collections.singletonMap("author_id", author.getId())
