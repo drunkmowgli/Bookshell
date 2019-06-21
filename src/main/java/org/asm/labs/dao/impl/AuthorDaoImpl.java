@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
 
@@ -26,48 +26,43 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void add(Author author) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("authorName", author.getName());
-
         jdbc.update(
                 INSERT_AUTHOR,
-                params);
+                Collections.singletonMap("authorName", author.getName()));
     }
 
     @Override
     public List<Author> getAll() {
         return jdbc.query(
                 SELECT_ALL_AUTHORS,
-                new HashMap<>(),
+                Collections.EMPTY_MAP,
                 new AuthorMapper()
         );
     }
 
     @Override
     public Author getById(int id) throws DataAccessException {
-        Map<String, Object> params = new HashMap<>();
-        params.put("author_id", id);
         return jdbc.queryForObject(
                 SELECT_AUTHOR_BY_ID,
-                params,
+                Collections.singletonMap("author_id", id),
                 new AuthorMapper()
         );
     }
 
     @Override
     public void remove(Author author) throws DataAccessException {
-        Map<String, Object> referenceParams = new HashMap<>();
-        referenceParams.put("author_id", author.getId());
+//        Map<String, Object> referenceParams = new HashMap<>();
+//        referenceParams.put("author_id", author.getId());
         jdbc.update(
                 DELETE_AUTHOR_FROM_REFERENCE,
-                referenceParams
+                Collections.singletonMap("author_id", author.getId())
         );
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("author_id", author.getId());
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("author_id", author.getId());
         jdbc.update(
                 DELETE_AUTHOR_BY_ID,
-                params
+                Collections.singletonMap("author_id", author.getId())
         );
     }
 

@@ -12,8 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Author Service test")
@@ -29,50 +28,48 @@ class AuthorServiceImplTest {
 
     @DisplayName("Add Author to testDB")
     @Test
-    void should_add_author() throws AuthorAlreadyExistException {
+    void shouldAddAuthor() throws AuthorAlreadyExistException {
         authorService.add("Author Service #Test");
         assertEquals(4, authorService.getAll().size());
-        assertThrows(AuthorAlreadyExistException.class,
-                () -> authorService.add("Author Service #Test"));
     }
 
     @DisplayName("Add author to testDB")
     @Test
-    void should_throw_AuthorAlreadyExistException() {
+    void shouldThrowAuthorAlreadyExistException() {
         assertThrows(AuthorAlreadyExistException.class,
                 () -> authorService.add("Stan Lee"));
     }
 
     @DisplayName("Get all authors")
     @Test
-    void should_return_all_authors() {
-        assertEquals(3, authorService.getAll().size());
+    void shouldReturnAllAuthors() {
+        assertFalse(authorService.getAll().isEmpty());
     }
 
     @DisplayName("Get author by id")
     @Test
-    void should_return_author() throws AuthorDoesntExistException {
+    void shouldReturnAuthor() throws AuthorDoesntExistException {
         assertEquals(1, authorService.getById(1).getId());
         assertEquals("Stan Lee", authorService.getById(1).getName());
     }
 
     @DisplayName("Get author by id")
     @Test
-    void should_throw_AuthorDoesntExistException_when_author_not_exist() {
+    void shouldThrowAuthorDoesntExistExceptionWhenAuthorNotExist() {
         assertThrows(AuthorDoesntExistException.class,
                 () -> authorService.getById(10));
     }
 
     @DisplayName("Remove author from TestDB")
     @Test
-    void should_remove_author() throws AuthorDoesntExistException {
+    void shouldRemoveAuthor() throws AuthorDoesntExistException {
         authorService.remove(1);
         assertEquals(2, authorService.getAll().size());
     }
 
     @DisplayName("Remove author from TestDB")
     @Test
-    void should_throw_AuthorDoesntExistException_when_remove_not_exist_author() {
+    void shouldThrowAuthorDoesntExistExceptionWhenRemoveNotExistAuthor() {
         assertThrows(AuthorDoesntExistException.class,
                 () -> {authorService.remove(10);});
     }

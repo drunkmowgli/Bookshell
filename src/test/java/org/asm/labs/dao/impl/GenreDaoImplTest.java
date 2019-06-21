@@ -28,26 +28,26 @@ class GenreDaoImplTest {
 
     @DisplayName("Get all genres from testDB")
     @Test
-    void should_return_all_genres() {
+    void shouldReturnAllGenres() {
         assertEquals(2, genreDao.getAll().size());
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_return_comics_genre() {
+    void shouldReturnComicsGenre() {
         assertEquals("Comics", genreDao.getById(1).getGenreName());
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_throw_DataAccessException_when_genre_not_exist() {
+    void shouldThrowDataAccessExceptionWhenGenreNotExist() {
         assertThrows(DataAccessException.class,
                 () -> genreDao.getById(10));
     }
 
     @DisplayName("Count genres in testDB")
     @Test
-    void should_return_2genres() {
+    void shouldReturn2Genres() {
         assertEquals(2, genreDao.count());
     }
 

@@ -12,8 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Author DAO/Repository test")
@@ -29,28 +28,28 @@ class AuthorDaoImplTest {
 
     @DisplayName("Add new author to testDB")
     @Test
-    void should_4_authors_when_added() {
+    void should4AuthorsWhenAdded() {
         Author author = new Author("Author DAO #Test");
         authorDao.add(author);
-        assertEquals(4, authorDao.getAll().size());
+        assertFalse(authorDao.getAll().isEmpty());
     }
 
     @DisplayName("Add new author to testDB for throwing Exception check")
     @Test
-    void should_throw_DataAccessException_if_author_exist() {
+    void shouldThrowDataAccessExceptionIfAuthorExist() {
         assertThrows(DataAccessException.class,
                 () -> authorDao.add(new Author("Stan Lee")));
     }
 
     @DisplayName("Get all authors from testDB")
     @Test
-    void should_return_all_authors() {
+    void shouldReturnAllAuthors() {
         assertEquals(3, authorDao.getAll().size());
     }
 
     @DisplayName("Get author by id from testDB")
     @Test
-    void should_return_author() {
+    void shouldReturnAuthor() {
         Author author = authorDao.getById(1);
         assertEquals(1, author.getId());
         assertEquals("Stan Lee", author.getName());
@@ -58,14 +57,14 @@ class AuthorDaoImplTest {
 
     @DisplayName("Get nonexistent author by id from testDB")
     @Test
-    void should_throw_DataAccessException_when_author_not_exist() {
+    void shouldThrowDataAccessExceptionWhenAuthorNotExist() {
         assertThrows(DataAccessException.class,
                 () -> authorDao.getById(4));
     }
 
     @DisplayName("Remove author from testDB")
     @Test
-    void should_remove_author() {
+    void shouldRemoveAuthor() {
         Author author = authorDao.getById(1);
         authorDao.remove(author);
         assertEquals(2, authorDao.getAll().size());

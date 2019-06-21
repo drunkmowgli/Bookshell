@@ -40,17 +40,17 @@ class BookDaoImplTest {
 
     @DisplayName("Add new book to testDB")
     @Test
-    void should_6_books_when_added() {
+    void should6BooksWhenAdded() {
         List<Author> authors = Collections.singletonList(authorDao.getById(1));
         Book book = new Book("Test book from BookDao", authors, genreDao.getById(1));
         System.out.println(authors.toString());
         bookDao.add(book);
-        assertEquals(6, bookDao.getAll().size());
+        assertFalse(bookDao.getAll().isEmpty());
     }
 
     @DisplayName("Add new book to testDB for throwing Exception check")
     @Test
-    void should_throw_DataAccessException_if_book_exist() {
+    void shouldThrowDataAccessExceptionIfBookExist() {
         Book existBook = bookDao.getById(1).orElseThrow();
         assertThrows(DataAccessException.class,
                 () -> bookDao.add(existBook));
@@ -58,13 +58,13 @@ class BookDaoImplTest {
 
     @DisplayName("Get all books from testDB")
     @Test
-    void should_return_all_books() {
+    void shouldReturnAllBooks() {
         assertEquals(5, bookDao.getAll().size());
     }
 
     @DisplayName("Get book by id from testDB")
     @Test
-    void should_return_book() {
+    void shouldReturnBook() {
         Book book = bookDao.getById(1).orElseThrow();
         assertEquals(1, book.getId());
         assertEquals("Spider-Man #1", book.getTitle());
@@ -73,7 +73,7 @@ class BookDaoImplTest {
 
     @DisplayName("Get book by id from testDB")
     @Test
-    void should_return_empty_when_book_not_exist() {
+    void shouldReturnEmptyWhenBookNotExist() {
         assertFalse(bookDao.getById(10).isPresent());
     }
 

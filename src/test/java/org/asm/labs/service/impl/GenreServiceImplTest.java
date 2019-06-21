@@ -11,8 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Genre Service test")
@@ -28,19 +27,19 @@ class GenreServiceImplTest {
 
     @DisplayName("Get all genres from testDB")
     @Test
-    void should_return_all_genres() {
-        assertEquals(2, genreService.getAll().size());
+    void shouldReturnAllGenres() {
+        assertFalse(genreService.getAll().isEmpty());
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_return_genre() throws GenreDoesntExistException {
+    void shouldReturnGenre() throws GenreDoesntExistException {
         assertEquals(1, genreService.getById(1).getId());
     }
 
     @DisplayName("Get genre by id from testDB")
     @Test
-    void should_throw_GenreDoesntExistException_when_genre_not_exist() {
+    void shouldThrowGenreDoesntExistExceptionWhenGenreNotExist() {
         assertThrows(GenreDoesntExistException.class,
                 () -> genreService.getById(10));
     }
