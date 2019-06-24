@@ -1,0 +1,9 @@
+sudo: required
+
+language: java
+jdk: openjdk11
+
+before_script:
+  - docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres
+
+
