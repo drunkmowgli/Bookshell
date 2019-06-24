@@ -6,7 +6,7 @@ jdk: openjdk11
 services: docker
 
 before_script:
-  - docker run --name postgres -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres
+  - docker run --name postgres -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -e POSTGRES_DB=testdb -d postgres
   - docker ps
 
 
