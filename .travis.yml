@@ -6,7 +6,7 @@ jdk: openjdk11
 services: docker
 
 before_script:
-  - apt install maven
   - docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres
+  - docker ps
 
 
