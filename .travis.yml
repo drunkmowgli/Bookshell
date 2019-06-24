@@ -14,5 +14,13 @@ jobs:
       script: mvn test -B
     - stage: package
       script: mvn package -B
-    - stage: install
-      script: mvn install -B
+
+deploy:
+  if: branch = feature/ci
+  provider: releases
+  api_key: "158ce801d6475539f3a98d22066719c83eedc730"
+  file_glob: true
+  file: target/Bookshell-1.0-SNAPSHOT.jar
+  skip_cleanup: true
+  on:
+    tags: true
