@@ -12,6 +12,14 @@ cache:
   directories:
     - $HOME/.m2
 
+before_deploy:
+  - mvn clean
+  - mvn package
+  - git config --local user.name "drunkmowgli"
+  - git config --local user.email "drunkmowgli@gmail.com"
+  - export NAME="v$(git rev-parse HEAD)"
+  - git tag $NAME
+
 jobs:
   include:
     - stage: test
@@ -21,16 +29,16 @@ jobs:
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
       deploy:
-        provider: releases
-        api_key: "158ce801d6475539f3a98d22066719c83eedc730"
-        skip_cleanup: true
-        on:
-          tags: true
+        - provider: releases
+          api_key: "158ce801d6475539f3a98d22066719c83eedc730"
+          file_glob: true
+          file: "target/Bookshell-*.jar"
+          skip_cleanup: true
+          name: $NAME
+          on:
+            branch: master
+            jdk: oraclejdk11
 
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name drunkmowgli
-  - git config --local user.email drunkmowgli@gmail.com
 
 #deploy:
 #  provider: releases
