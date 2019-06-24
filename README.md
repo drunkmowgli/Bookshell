@@ -1,3 +1,5 @@
+https://travis-ci.com/drunkmowgli/Bookshell.svg?branch=master
+
 # OTUS Homework 5
 
 Создать приложение хранящее информацию о книгах в библиотеке

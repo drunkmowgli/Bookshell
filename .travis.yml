@@ -7,6 +7,16 @@ services: docker
 
 before_script:
   - docker run --name postgres -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -e POSTGRES_DB=testdb -d postgres
-  - docker ps
+
+jobs:
+  include:
+    - stage: test
+      script: mvn test -B
+    - stage: package
+      script: mvn package -B
+    - stage: install
+      script: mvn isntall -B
+
+
 
 
