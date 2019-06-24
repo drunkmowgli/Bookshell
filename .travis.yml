@@ -15,8 +15,4 @@ jobs:
     - stage: package
       script: mvn package -B
     - stage: install
-      script: mvn isntall -B
-
-
-
-
+      script: mvn install -B
