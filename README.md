@@ -1,4 +1,4 @@
-https://travis-ci.com/drunkmowgli/Bookshell.svg?branch=master
+[![Build Status](https://travis-ci.com/drunkmowgli/Bookshell.svg?branch=master)](https://travis-ci.com/drunkmowgli/Bookshell)
 
 # OTUS Homework 5
 
