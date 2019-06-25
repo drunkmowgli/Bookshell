@@ -36,6 +36,7 @@ jobs:
           skip_cleanup: true
           name: $NAME
           on:
+            repo: drunkmowgli/Bookshell
             branch: master
 
 
