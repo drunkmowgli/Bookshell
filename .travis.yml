@@ -30,7 +30,7 @@ jobs:
       script: echo "Deploying to GitHub releases ..."
       deploy:
         - provider: releases
-          api_key: "158ce801d6475539f3a98d22066719c83eedc730"
+          api_key: "f69fb45aaad3c581c7c2b949ddb543ec6050755d"
           file_glob: true
           file: "target/Bookshell-*.jar"
           skip_cleanup: true
