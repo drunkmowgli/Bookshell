@@ -30,7 +30,7 @@ jobs:
       script: echo "Deploying to GitHub releases ..."
       deploy:
         - provider: releases
-          api_key: "f69fb45aaad3c581c7c2b949ddb543ec6050755d"
+          api_key: "cec74d9e734404ae9b520577f4784a3ab12d8bda"
           file_glob: true
           file: "target/Bookshell-*.jar"
           skip_cleanup: true
@@ -38,14 +38,3 @@ jobs:
           on:
             repo: drunkmowgli/Bookshell
             branch: master
-
-
-#deploy:
-#  provider: releases
-#  overwrite: true
-#  api_key: "158ce801d6475539f3a98d22066719c83eedc730"
-#  file_glob: true
-#  file: "target/Bookshell-1.0.$TRAVIS_TAG.jar"
-#  skip_cleanup: true
-#  on:
-#    branch: master
