@@ -12,25 +12,40 @@ cache:
   directories:
     - $HOME/.m2
 
+before_deploy:
+  - mvn clean
+  - mvn package
+  - git config --local user.name "drunkmowgli"
+  - git config --local user.email "drunkmowgli@gmail.com"
+  - export NAME="v$(git rev-parse HEAD)"
+  - git tag $NAME
+
 jobs:
   include:
     - stage: test
       script: mvn test -B
     - stage: package
       script: mvn package -B
+    - stage: GitHub Release
+      script: echo "Deploying to GitHub releases ..."
+      deploy:
+        - provider: releases
+          api_key: "158ce801d6475539f3a98d22066719c83eedc730"
+          file_glob: true
+          file: "target/Bookshell-*.jar"
+          skip_cleanup: true
+          name: $NAME
+          on:
+            branch: master
+            jdk: oraclejdk11
 
-before_deploy:
-  # Set up git user name and tag this commit
-  - git config --local user.name drunkmowgli
-  - git config --local user.email drunkmowgli@gmail.com
 
-deploy:
-  provider: releases
-  overwrite: true
-  api_key: "158ce801d6475539f3a98d22066719c83eedc730"
-  file_glob: true
-  file: "target/Bookshell-1.0.$TRAVIS_TAG.jar"
-  skip_cleanup: true
-  on:
-    branch: master
-    repo: drunkmowgli/Bookshell
+#deploy:
+#  provider: releases
+#  overwrite: true
+#  api_key: "158ce801d6475539f3a98d22066719c83eedc730"
+#  file_glob: true
+#  file: "target/Bookshell-1.0.$TRAVIS_TAG.jar"
+#  skip_cleanup: true
+#  on:
+#    branch: master
