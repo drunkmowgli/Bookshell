@@ -37,7 +37,6 @@ jobs:
           name: $NAME
           on:
             branch: master
-            jdk: oraclejdk11
 
 
 #deploy:
