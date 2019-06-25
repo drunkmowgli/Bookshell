@@ -33,7 +33,7 @@ jobs:
           file_glob: true
           file: "target/Bookshell-*.jar"
           skip_cleanup: true
-          name: $NAME
+#          name: $NAME
           on:
             repo: drunkmowgli/Bookshell
             branch: master
