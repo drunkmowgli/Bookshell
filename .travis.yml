@@ -16,8 +16,8 @@ before_deploy:
   - mvn clean
   - git config --local user.name "drunkmowgli"
   - git config --local user.email "drunkmowgli@gmail.com"
-#  - export NAME="v$(git rev-parse HEAD)"
-#  - git tag $NAME
+  - export NAME="v$(git rev-parse HEAD)"
+  - git tag $NAME
 
 jobs:
   include:
@@ -29,11 +29,12 @@ jobs:
       script: echo "Deploying to GitHub releases ..."
       deploy:
         - provider: releases
+          overwrite: true
           api_key: $GITHUB_DEPLOY_KEY
           file_glob: true
           file: "target/Bookshell-*.jar"
           skip_cleanup: true
-#          name: $NAME
+          name: $NAME
           on:
             repo: drunkmowgli/Bookshell
             branch: master
