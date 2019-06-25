@@ -14,7 +14,6 @@ cache:
 
 before_deploy:
   - mvn clean
-  - mvn package
   - git config --local user.name "drunkmowgli"
   - git config --local user.email "drunkmowgli@gmail.com"
   - export NAME="v$(git rev-parse HEAD)"
@@ -25,12 +24,12 @@ jobs:
     - stage: test
       script: mvn test -B
     - stage: package
-      script: mvn package -B
+      script: mvn package -Dmaven.test.skip=true -B
     - stage: GitHub Release
       script: echo "Deploying to GitHub releases ..."
       deploy:
         - provider: releases
-          api_key: "cec74d9e734404ae9b520577f4784a3ab12d8bda"
+          api_key: "dba865711e8dd624e7a14e6781ec6003dc6e0567"
           file_glob: true
           file: "target/Bookshell-*.jar"
           skip_cleanup: true
