@@ -37,3 +37,4 @@ jobs:
           on:
             repo: drunkmowgli/Bookshell
             branch: master
+            tags: false
