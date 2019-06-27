@@ -2,8 +2,8 @@ INSERT INTO author(author_name) VALUES('Stan Lee');
 INSERT INTO author(author_name) VALUES('Jack Kirby');
 INSERT INTO author(author_name) VALUES('Chris Claremont');
 
--- insert into genres (genre) values ('Comics');
--- insert into genres (genre) values ('Horror');
+INSERT INTO genre(genre_name) VALUES('Comics');
+INSERT INTO genre(genre_name) VALUES('Horror');
 --
 -- insert into books (title, genre_id) values ('Spider-Man #1', 1);
 -- insert into books (title, genre_id) values ('Dark Horse Comics #1', 1);
