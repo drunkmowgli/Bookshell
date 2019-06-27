@@ -1,11 +1,9 @@
 package org.asm.labs.repository;
 
 import org.asm.labs.entity.Author;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface AuthorRepositoryJpa {
 
     /**
