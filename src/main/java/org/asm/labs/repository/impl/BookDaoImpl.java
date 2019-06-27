@@ -1,6 +1,6 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.repository.impl;
 
-import org.asm.labs.dao.BookDao;
+import org.asm.labs.repository.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;
@@ -18,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
+import static org.asm.labs.repository.impl.SqlQueryTemplates.*;
 
 @Repository
 public class BookDaoImpl implements BookDao {

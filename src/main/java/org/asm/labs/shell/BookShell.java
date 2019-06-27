@@ -17,7 +17,7 @@ public class BookShell {
         this.bookService = bookService;
     }
 
-    @ShellMethod("add book")
+    @ShellMethod("save book")
     public void add_book(@ShellOption String title,
                          @ShellOption String authorsNames,
                          @ShellOption int genreId) {

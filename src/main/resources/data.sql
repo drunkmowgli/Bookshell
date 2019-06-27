@@ -1,8 +1,8 @@
 --Authors table contents
-INSERT INTO authors (author_name) VALUES ('Stan Lee') ON CONFLICT DO NOTHING;
-INSERT INTO authors (author_name) VALUES ('Jack Kirby') ON CONFLICT DO NOTHING;
-INSERT INTO authors (author_name) VALUES ('Chris Claremont') ON CONFLICT DO NOTHING;
-INSERT INTO authors (author_name) VALUES ('Stephen King') ON CONFLICT DO NOTHING;
+INSERT INTO author (author_name) VALUES ('Stan Lee') ON CONFLICT DO NOTHING;
+INSERT INTO author (author_name) VALUES ('Jack Kirby') ON CONFLICT DO NOTHING;
+INSERT INTO author (author_name) VALUES ('Chris Claremont') ON CONFLICT DO NOTHING;
+INSERT INTO author (author_name) VALUES ('Stephen King') ON CONFLICT DO NOTHING;
 
 
 --Genres table contents

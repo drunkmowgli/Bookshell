@@ -1,8 +1,8 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.repository.impl;
 
-import org.asm.labs.dao.AuthorDao;
-import org.asm.labs.dao.BookDao;
-import org.asm.labs.dao.GenreDao;
+import org.asm.labs.repository.AuthorRepositoryJpa;
+import org.asm.labs.repository.BookDao;
+import org.asm.labs.repository.GenreDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.junit.jupiter.api.DisplayName;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BookDaoImplTest {
 
     @Autowired
-    AuthorDao authorDao;
+    AuthorRepositoryJpa authorRepositoryJpa;
 
     @Autowired
     GenreDao genreDao;
@@ -41,7 +41,7 @@ class BookDaoImplTest {
     @DisplayName("Add new book to testDB")
     @Test
     void should6BooksWhenAdded() {
-        List<Author> authors = Collections.singletonList(authorDao.getById(1));
+        List<Author> authors = Collections.singletonList(authorRepositoryJpa.findById(1));
         Book book = new Book("Test book from BookDao", authors, genreDao.getById(1));
         System.out.println(authors.toString());
         bookDao.add(book);

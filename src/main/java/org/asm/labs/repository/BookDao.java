@@ -1,4 +1,4 @@
-package org.asm.labs.dao;
+package org.asm.labs.repository;
 
 import org.asm.labs.entity.Book;
 

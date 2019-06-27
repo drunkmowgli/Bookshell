@@ -1,6 +1,6 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.repository.impl;
 
-import org.asm.labs.dao.GenreDao;
+import org.asm.labs.repository.GenreDao;
 import org.asm.labs.entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-import static org.asm.labs.dao.impl.SqlQueryTemplates.*;
+import static org.asm.labs.repository.impl.SqlQueryTemplates.*;
 
 @Repository
 public class GenreDaoImpl implements GenreDao {

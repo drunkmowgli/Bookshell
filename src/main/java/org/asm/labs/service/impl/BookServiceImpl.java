@@ -1,6 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.dao.BookDao;
+import org.asm.labs.repository.BookDao;
 import org.asm.labs.entity.Author;
 import org.asm.labs.entity.Book;
 import org.asm.labs.entity.Genre;

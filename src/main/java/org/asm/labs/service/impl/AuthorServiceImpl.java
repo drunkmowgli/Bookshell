@@ -1,6 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.dao.AuthorDao;
+import org.asm.labs.repository.AuthorRepositoryJpa;
 import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorAlreadyExistException;
 import org.asm.labs.service.AuthorDoesntExistException;
@@ -15,19 +15,18 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorDao authorDao;
+    private final AuthorRepositoryJpa authorRepositoryJpa;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao) {
-        this.authorDao = authorDao;
+    public AuthorServiceImpl(AuthorRepositoryJpa authorRepositoryJpa) {
+        this.authorRepositoryJpa = authorRepositoryJpa;
     }
 
     @Override
-    public void add(String authorName) throws AuthorAlreadyExistException {
+    public void add(Author author) throws AuthorAlreadyExistException {
 
         try {
-            Author author = new Author(authorName);
-            authorDao.add(author);
+            authorRepositoryJpa.save(author);
         } catch (DuplicateKeyException e) {
             throw new AuthorAlreadyExistException();
         }
@@ -35,13 +34,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<Author> getAll() {
-        return authorDao.getAll();
+        return authorRepositoryJpa.findAll();
     }
 
     @Override
     public Author getById(int authorId) throws AuthorDoesntExistException {
         try {
-            return authorDao.getById(authorId);
+            return authorRepositoryJpa.findById(authorId);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();
         }
@@ -51,15 +50,15 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void remove(int authorId) throws AuthorDoesntExistException {
         try {
-            Author author = authorDao.getById(authorId);
-            authorDao.remove(author);
+            Author author = authorRepositoryJpa.findById(authorId);
+            authorRepositoryJpa.remove(author);
         } catch (EmptyResultDataAccessException e) {
             throw new AuthorDoesntExistException();
         }
     }
 
-    @Override
-    public int count() {
-        return authorDao.count();
-    }
+//    @Override
+//    public int count() {
+//        return authorRepositoryJpa.count();
+//    }
 }

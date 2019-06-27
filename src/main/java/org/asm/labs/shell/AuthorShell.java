@@ -1,6 +1,7 @@
 package org.asm.labs.shell;
 
 
+import org.asm.labs.entity.Author;
 import org.asm.labs.service.AuthorAlreadyExistException;
 import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;
@@ -20,10 +21,10 @@ public class AuthorShell {
         this.authorService = authorService;
     }
 
-    @ShellMethod("add author")
+    @ShellMethod("save author")
     public void add_author(@ShellOption String authorName) {
         try {
-            authorService.add(authorName);
+            authorService.add(new Author(authorName));
         } catch (AuthorAlreadyExistException e) {
             System.out.println(e.getMessage());
         }
@@ -53,8 +54,8 @@ public class AuthorShell {
 
     }
 
-    @ShellMethod("count")
-    public void count_authors() {
-        System.out.println(authorService.count());
-    }
+//    @ShellMethod("count")
+//    public void count_authors() {
+//        System.out.println(authorService.count());
+//    }
 }

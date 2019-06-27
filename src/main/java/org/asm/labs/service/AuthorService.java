@@ -11,7 +11,7 @@ public interface AuthorService {
      *
      * @param authorName - Author's name
      */
-    void add(String authorName) throws AuthorAlreadyExistException;
+    void add(Author author) throws AuthorAlreadyExistException;
 
     /**
      * Get all Authors from DB.
@@ -36,10 +36,10 @@ public interface AuthorService {
      */
     void remove(int authorId) throws AuthorDoesntExistException;
 
-    /**
-     * Count number of Authors in DB.
-     *
-     * @return number of Authors
-     */
-    int count();
+//    /**
+//     * Count number of Authors in DB.
+//     *
+//     * @return number of Authors
+//     */
+//    int count();
 }

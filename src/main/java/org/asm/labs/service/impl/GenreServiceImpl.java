@@ -1,6 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.dao.GenreDao;
+import org.asm.labs.repository.GenreDao;
 import org.asm.labs.entity.Genre;
 import org.asm.labs.service.GenreDoesntExistException;
 import org.asm.labs.service.GenreService;

@@ -1,13 +1,22 @@
 package org.asm.labs.entity;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "author")
 public class Author {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private final String name;
+    @Column(name = "author_name")
+    private String name;
+
+    public Author() {}
 
     public Author(String authorName) {
-        this.id = -1;
         this.name = authorName;
     }
 

@@ -1,6 +1,6 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.repository.impl;
 
-import org.asm.labs.dao.GenreDao;
+import org.asm.labs.repository.GenreDao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

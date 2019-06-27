@@ -1,4 +1,4 @@
-package org.asm.labs.dao.impl;
+package org.asm.labs.repository.impl;
 
 class SqlQueryTemplates {
 
