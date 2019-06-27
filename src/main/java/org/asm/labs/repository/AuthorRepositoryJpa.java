@@ -1,9 +1,11 @@
 package org.asm.labs.repository;
 
 import org.asm.labs.entity.Author;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface AuthorRepositoryJpa {
 
     /**
@@ -36,11 +38,11 @@ public interface AuthorRepositoryJpa {
      */
     void remove(Author author);
 
-//    /**
-//     * Count number of Authors.
-//     *
-//     * @return number of Authors
-//     */
-//    int count();
+    /**
+     * Count number of Authors.
+     *
+     * @return number of Authors
+     */
+    long count();
 
 }

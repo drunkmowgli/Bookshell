@@ -1,7 +1,7 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.repository.AuthorRepositoryJpa;
 import org.asm.labs.entity.Author;
+import org.asm.labs.repository.AuthorRepositoryJpa;
 import org.asm.labs.service.AuthorAlreadyExistException;
 import org.asm.labs.service.AuthorDoesntExistException;
 import org.asm.labs.service.AuthorService;

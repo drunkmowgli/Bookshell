@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataAccessException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -36,19 +36,24 @@ class AuthorRepositoryJpaImplTest {
     @DisplayName("Должен корректно сохранять всю информацию об авторе")
     @Test
     void shouldSaveAuthorInfo() {
-        Author author = new Author("Author DAO #Test");
-        authorRepositoryJpa.save(author);
-        assertThat(author.getId()).isGreaterThan(0);
-        Author actualAuthor = em.find(Author.class, author.getId());
+        Author AuthorTest = new Author("Author Test");
+        authorRepositoryJpa.save(AuthorTest);
+        assertThat(AuthorTest.getId()).isGreaterThan(0);
+        Author actualAuthor = em.find(Author.class, AuthorTest.getId());
         assertThat(actualAuthor).isNotNull().matches(s -> !s.getName().equals(""));
     }
-
-//    @DisplayName("Add new author to testDB for throwing Exception check")
-//    @Test
-//    void shouldThrowDataAccessExceptionIfAuthorExist() {
-//        assertThrows(DataAccessException.class,
-//                () -> authorRepositoryJpa.save(new Author("Stan Lee")));
-//    }
+    
+    @DisplayName("Должен обновить информацию об Авторе")
+    @Test
+    void shouldUpdateAuthorInfo() {
+        Author updatedAuthor = new Author(1,"Update Author");
+        authorRepositoryJpa.save(updatedAuthor);
+        assertThat(updatedAuthor.getId()).isGreaterThan(0);
+        Author actualAuthor = em.find(Author.class, updatedAuthor.getId());
+        assertThat(actualAuthor).isNotNull()
+                                .matches(s -> !s.getName().equals(""))
+                                .matches(s -> s.getName().equals("Update Author"));
+    }
 
     @DisplayName("Должен загружать список всех авторов с полной информацией о них")
     @Test
@@ -65,25 +70,26 @@ class AuthorRepositoryJpaImplTest {
         assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }
 
-//    @DisplayName("Get nonexistent author by id from testDB")
-//    @Test
-//    void shouldThrowDataAccessExceptionWhenAuthorNotExist() {
-//        assertThrows(DataAccessException.class,
-//                () -> authorRepositoryJpa.findById(4));
-//    }
-
-    @DisplayName("Remove author from testDB")
+    @DisplayName("Должен выбрасывать исключение NoResultException, если автора не существует")
+    @Test
+    void shouldThrowNoResultExceptionWhenAuthorNotExist() {
+        assertThrows(NoResultException.class,
+                () -> authorRepositoryJpa.findById(4));
+    }
+    
+    @DisplayName("Должен удалять автора")
     @Test
     void shouldRemoveAuthor() {
-        Author author = authorRepositoryJpa.findById(1);
-        authorRepositoryJpa.remove(author);
-        assertEquals(2, authorRepositoryJpa.findAll().size());
+        Author deletedAuthor = authorRepositoryJpa.findById(1);
+        authorRepositoryJpa.remove(deletedAuthor);
+        Author expectedAuthor = em.find(Author.class, deletedAuthor.getId());
+        assertThat(expectedAuthor).isNull();
     }
-//
-//    @DisplayName("Count authors in testDB")
-//    @Test
-//    void count() {
-//        assertEquals(3, authorRepositoryJpa.count());
-//    }
+
+    @DisplayName("Должен вернуть количество авторов")
+    @Test
+    void count() {
+        assertEquals(3, authorRepositoryJpa.count());
+    }
 
 }

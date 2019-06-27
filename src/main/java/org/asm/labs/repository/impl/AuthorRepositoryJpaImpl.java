@@ -5,8 +5,8 @@ import org.asm.labs.repository.AuthorRepositoryJpa;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
@@ -21,7 +21,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
     @Override
     @Transactional
-    public void save(@NotNull Author author) throws DataAccessException {
+    public void save(@NotNull Author author) {
         if (author.getId() <= 0) {
             em.persist(author);
         } else {
@@ -36,7 +36,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    public Author findById(int id) throws DataAccessException {
+    public Author findById(int id) throws NoResultException {
         TypedQuery<Author> query = em.createQuery("SELECT a FROM Author a WHERE a.id = :id", Author.class);
         query.setParameter("id", id);
         return query.getSingleResult();
@@ -56,12 +56,9 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
         em.remove(author);
     }
 
-//    @Override
-//    public int count() {
-//        return jdbc.queryForObject(
-//                COUNT_AUTHORS,
-//                new HashMap<>(),
-//                Integer.class
-//        );
-//    }
+    @Override
+    public long count() {
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(a) FROM Author a", Long.class);
+        return query.getSingleResult();
+    }
 }
