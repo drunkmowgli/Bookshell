@@ -1,23 +1,23 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.service.GenreDoesntExistException;
+import org.asm.labs.repository.impl.GenreRepositoryJpaImpl;
+import org.asm.labs.service.GenreNotExistException;
 import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Genre Service test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringBootTest(properties = "spring.profiles.active=test")
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DataJpaTest(properties = "spring.profiles.active=test")
+@Import({GenreServiceImpl.class, GenreRepositoryJpaImpl.class})
+@Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreServiceImplTest {
 
@@ -25,26 +25,26 @@ class GenreServiceImplTest {
     GenreService genreService;
 
 
-    @DisplayName("Get all genres from testDB")
+    @DisplayName("Должен загружать список всех жанров с полной информацией о них")
     @Test
-    void shouldReturnAllGenres() {
-        assertFalse(genreService.getAll().isEmpty());
+    void shouldReturnCorrectGenresListWithAllInfo() {
+        assertFalse(genreService.findAll().isEmpty());
     }
 
-    @DisplayName("Get genre by id from testDB")
+    @DisplayName("Должен загружать информацию о нужном жанре")
     @Test
-    void shouldReturnGenre() throws GenreDoesntExistException {
-        assertEquals(1, genreService.getById(1).getId());
+    void shouldFindExpectedGenreById() throws GenreNotExistException {
+        assertEquals(1, genreService.findById(1).getId());
     }
 
-    @DisplayName("Get genre by id from testDB")
+    @DisplayName("Должен выбрасывать исключение NoResultException, если жанра не существует")
     @Test
-    void shouldThrowGenreDoesntExistExceptionWhenGenreNotExist() {
-        assertThrows(GenreDoesntExistException.class,
-                () -> genreService.getById(10));
+    void shouldThrowNoResultExceptionWhenGenreNotExist() {
+        assertThrows(GenreNotExistException.class,
+                () -> genreService.findById(10));
     }
 
-    @DisplayName("Count genres in testDB")
+    @DisplayName("Должен вернуть количество жанров")
     @Test
     void count() {
         assertEquals(2, genreService.count());

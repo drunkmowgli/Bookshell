@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-@DisplayName("Genre DAO/Repository test")
+@DisplayName("Genre Repository test")
 @DataJpaTest(properties = "spring.profiles.active=test")
 @Import({GenreRepositoryJpaImpl.class})
 @Transactional
@@ -31,14 +31,14 @@ class GenreRepositoryJpaImplTest {
 
     @Autowired
     private TestEntityManager em;
-    
+
     @DisplayName("Должен загружать список всех жанров с полной информацией о них")
     @Test
     void shouldReturnCorrectGenresListWithAllInfo() {
         List<Genre> genres = genreRepositoryJpa.findAll();
         assertThat(genres).isNotNull().hasSize(2).allMatch(g -> !g.getGenreName().equals(""));
     }
-    
+
     @DisplayName("Должен загружать информацию о нужном жанре")
     @Test
     void shouldFindExpectedGenreById() {
@@ -46,14 +46,14 @@ class GenreRepositoryJpaImplTest {
         Genre expectedGenre = em.find(Genre.class, 1);
         assertThat(actualGenre).isEqualToComparingFieldByField(expectedGenre);
     }
-    
+
     @DisplayName("Должен выбрасывать исключение NoResultException, если жанра не существует")
     @Test
     void shouldThrowNoResultExceptionWhenGenreNotExist() {
         assertThrows(NoResultException.class,
                 () -> genreRepositoryJpa.findById(10));
     }
-    
+
     @DisplayName("Должен вернуть количество жанров")
     @Test
     void count() {

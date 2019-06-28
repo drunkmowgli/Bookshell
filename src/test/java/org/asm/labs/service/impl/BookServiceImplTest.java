@@ -1,22 +1,26 @@
 package org.asm.labs.service.impl;
 
+import org.asm.labs.repository.impl.AuthorRepositoryJpaImpl;
+import org.asm.labs.repository.impl.BookRepositoryJpaImpl;
+import org.asm.labs.repository.impl.GenreRepositoryJpaImpl;
 import org.asm.labs.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Book Service test")
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@SpringBootTest(properties = "spring.profiles.active=test")
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@DataJpaTest(properties = "spring.profiles.active=test")
+@Import({BookServiceImpl.class, BookRepositoryJpaImpl.class,
+        AuthorServiceImpl.class, AuthorRepositoryJpaImpl.class,
+        GenreServiceImpl.class, GenreRepositoryJpaImpl.class})
+@Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookServiceImplTest {
 
@@ -30,76 +34,71 @@ class BookServiceImplTest {
     GenreService genreService;
 
 
-    @DisplayName("Add book")
+    @DisplayName("Должен корректно сохранять всю информацию о книге")
     @Test
-    void shouldAddBook() throws GenreDoesntExistException, AuthorDoesntExistException, BookAlreadyExistException {
+    void shouldSaveBookInfo() throws GenreNotExistException, AuthorNotExistException {
         String bookTitle = "Test title from BookService";
         String authorsIds = "1,2";
         int genreId = 1;
-        bookService.add(bookTitle, authorsIds, genreId);
-        assertEquals(6, bookService.getAll().size());
+        bookService.save(bookTitle, authorsIds, genreId);
+        assertEquals(6, bookService.findAll().size());
     }
 
-    @DisplayName("Add book GenreDoesntExistException")
+    @DisplayName("Должен выбросить исключение на добавление книги, если жанра не существует")
     @Test
     void shouldThrowGenreDoesntExistExceptionWhenGenreDoesntExist() {
         String bookTitle = "Test title from BookService";
         String authorsIds = "1,2";
         int genreId = 10;
-        assertThrows(GenreDoesntExistException.class,
-                () -> bookService.add(bookTitle, authorsIds, genreId));
+        assertThrows(GenreNotExistException.class,
+                () -> bookService.save(bookTitle, authorsIds, genreId));
     }
 
-    @DisplayName("Add book AuthorDoesntExist")
+    @DisplayName("Должен выбросить исключение на добавление книги, автора не существует")
     @Test
     void shouldThrowAuthorDoesntExistExceptionWhenAuthorsDoesntExist() {
         String bookTitle = "Test title from BookService";
         String authorsIds = "10,2";
         int genreId = 1;
-        assertThrows(AuthorDoesntExistException.class,
-                () -> bookService.add(bookTitle, authorsIds, genreId));
+        assertThrows(AuthorNotExistException.class,
+                () -> bookService.save(bookTitle, authorsIds, genreId));
     }
 
-    @DisplayName("Add book AuthorDoesntExist")
+    @DisplayName("Должен загружать список всех ниг с полной информацией о них")
     @Test
-    void shouldThrowBookAlreadyExistExceptionWhenBookAlreadyExist() {
-        String bookTitle = "Hulk #2";
-        String authorsIds = "1,2";
-        int genreId = 1;
-        assertThrows(BookAlreadyExistException.class,
-                () -> bookService.add(bookTitle, authorsIds, genreId));
+    void shouldReturnCorrectBooksListWithAllInfo() {
+        assertFalse(bookService.findAll().isEmpty());
     }
 
-
-    @DisplayName("Get all books")
+    @DisplayName("Должен загружать информацию о нужной книги")
     @Test
-    void shouldReturnAllBooks() {
-        assertFalse(bookService.getAll().isEmpty());
+    void shouldFindExpectedBookById() throws BookNotExistException {
+        assertEquals(2, bookService.findById(2).getId());
+        assertEquals("Dark Horse Comics #1", bookService.findById(2).getTitle());
     }
 
-    @DisplayName("Get book by id")
+    @DisplayName("Должен выбрасывать исключение NoResultException, если книги не существует")
     @Test
-    void shouldReturnBook() throws BookDoesntExistException {
-        assertEquals(2, bookService.getById(2).getId());
-        assertEquals("Dark Horse Comics #1", bookService.getById(2).getTitle());
+    void shouldThrowNoResultExceptionWhenBookNotExist() {
+        assertThrows(BookNotExistException.class,
+                () -> bookService.findById(10));
     }
 
-    @DisplayName("Get book by id BookDoesntExist")
+    @DisplayName("Должен удалить книгу")
     @Test
-    void shouldThrowBookDoesntExistExceptionWhenBookNotExist() {
-        assertThrows(BookDoesntExistException.class,
-                () -> bookService.getById(10));
-    }
-
-
-    @DisplayName("Remove book from TestDB")
-    @Test
-    void shouldRemoveBook() throws BookDoesntExistException {
+    void shouldRemoveBook() throws BookNotExistException {
         bookService.remove(1);
-        assertEquals(4, bookService.getAll().size());
+        assertEquals(4, bookService.findAll().size());
     }
 
-    @DisplayName("Count books in TestDB")
+    @DisplayName("Должен выбросить исключение на удалении книги, если такой книги не существует")
+    @Test
+    void shouldThrowBookDoesntExistExceptionOnDelete() {
+        assertThrows(BookNotExistException.class,
+                () -> bookService.remove(10));
+    }
+
+    @DisplayName("Должен вернуть количество всех книг")
     @Test
     void count() {
         assertEquals(5, bookService.count());

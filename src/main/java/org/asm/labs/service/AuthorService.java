@@ -9,16 +9,16 @@ public interface AuthorService {
     /**
      * Add Author to DB.
      *
-     * @param authorName - Author's name
+     * @param author - Author's name
      */
-    void add(Author author) throws AuthorAlreadyExistException;
+    void save(Author author);
 
     /**
      * Get all Authors from DB.
      *
      * @return List of Authors
      */
-    List<Author> getAll();
+    List<Author> findAll();
 
     /**
      * Get Author from DB by id.
@@ -27,19 +27,19 @@ public interface AuthorService {
      *
      * @return Author
      */
-    Author getById(int authorId) throws AuthorDoesntExistException;
+    Author findById(int authorId) throws AuthorNotExistException;
 
     /**
      * Remove Author from DB.
      *
      * @param authorId - Author's id
      */
-    void remove(int authorId) throws AuthorDoesntExistException;
+    void remove(int authorId) throws AuthorNotExistException;
 
-//    /**
-//     * Count number of Authors in DB.
-//     *
-//     * @return number of Authors
-//     */
-//    int count();
+    /**
+     * Count number of Authors in DB.
+     *
+     * @return number of Authors
+     */
+    long count();
 }

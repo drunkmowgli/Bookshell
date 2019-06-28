@@ -2,14 +2,13 @@ package org.asm.labs.repository.impl;
 
 import org.asm.labs.entity.Author;
 import org.asm.labs.repository.AuthorRepositoryJpa;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -44,16 +43,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
 
     @Override
     @Transactional
-    public void remove(@NotNull Author author) throws DataAccessException {
-//        jdbc.update(
-//                DELETE_AUTHOR_FROM_REFERENCE,
-//                Collections.singletonMap("author_id", author.getId())
-//        );
-//
-//        jdbc.update(
-//                DELETE_AUTHOR_BY_ID,
-//                Collections.singletonMap("author_id", author.getId())
-//        );
+    public void remove(@NotNull Author author) {
         em.remove(author);
     }
 

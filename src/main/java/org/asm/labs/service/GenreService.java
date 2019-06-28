@@ -11,7 +11,7 @@ public interface GenreService {
      *
      * @return List of Genres
      */
-    List<Genre> getAll();
+    List<Genre> findAll();
 
     /**
      * Get Genre from DB by id.
@@ -20,12 +20,12 @@ public interface GenreService {
      *
      * @return Genre
      */
-    Genre getById(int id) throws GenreDoesntExistException;
+    Genre findById(int id) throws GenreNotExistException;
 
     /**
      * Count number of Genres.
      *
      * @return number of Genres
      */
-    int count();
+    long count();
 }

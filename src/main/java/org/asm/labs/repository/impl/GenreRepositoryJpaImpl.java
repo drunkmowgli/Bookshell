@@ -21,7 +21,7 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
     public GenreRepositoryJpaImpl(EntityManager em) {
         this.em = em;
     }
-    
+
 
     @Override
     public List<Genre> findAll() {

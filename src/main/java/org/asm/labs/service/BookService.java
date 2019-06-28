@@ -13,14 +13,14 @@ public interface BookService {
      * @param authorsNames - List of Authors
      * @param genreId      - Genre's id
      */
-    void add(String title, String authorsNames, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException, GenreDoesntExistException;
+    void save(String title, String authorsNames, int genreId) throws AuthorNotExistException, GenreNotExistException;
 
     /**
      * Get all Books from DB.
      *
      * @return List of Books
      */
-    List<Book> getAll();
+    List<Book> findAll();
 
     /**
      * Get Book by Id
@@ -29,19 +29,19 @@ public interface BookService {
      *
      * @return Book
      */
-    Book getById(int id) throws BookDoesntExistException;
+    Book findById(int id) throws BookNotExistException;
 
     /**
      * Remove Book from DB.
      *
      * @param id - Book's id
      */
-    void remove(int id) throws BookDoesntExistException;
+    void remove(int id) throws BookNotExistException;
 
     /**
      * Count number of Books in DB.
      *
      * @return number of Books
      */
-    int count();
+    long count();
 }

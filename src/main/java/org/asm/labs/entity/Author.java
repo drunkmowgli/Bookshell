@@ -1,8 +1,11 @@
 package org.asm.labs.entity;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "author")
@@ -15,8 +18,9 @@ public class Author {
     @Column(name = "author_name")
     private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "authors")
-    private List<Book> books;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Book> books;
 
     public Author() {}
 
@@ -45,11 +49,4 @@ public class Author {
                 '}';
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-    
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 }
