@@ -1,16 +1,30 @@
 package org.asm.labs.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "book")
 public class Book {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private final String title;
+    @Column(name = "title")
+    private String title;
 
-    private final List<Author> authors;
+    @OneToOne
+    private Genre genre;
 
-    private final Genre genre;
+    @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private List<Author> authors;
+
+    public Book() {}
 
     public Book(int id, String title, List<Author> authors, Genre genre) {
         this.id = id;

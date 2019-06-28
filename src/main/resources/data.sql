@@ -1,52 +1,52 @@
 --Authors table contents
-INSERT INTO author (author_name) VALUES ('Stan Lee') ON CONFLICT DO NOTHING;
-INSERT INTO author (author_name) VALUES ('Jack Kirby') ON CONFLICT DO NOTHING;
-INSERT INTO author (author_name) VALUES ('Chris Claremont') ON CONFLICT DO NOTHING;
-INSERT INTO author (author_name) VALUES ('Stephen King') ON CONFLICT DO NOTHING;
+INSERT INTO author (author_name) VALUES ('Stan Lee');
+INSERT INTO author (author_name) VALUES ('Jack Kirby');
+INSERT INTO author (author_name) VALUES ('Chris Claremont');
+INSERT INTO author (author_name) VALUES ('Stephen King');
 
 
 --Genres table contents
-insert into genres (genre) values ('Comics');
-insert into genres (genre) values ('Action and Adventure');
-insert into genres (genre) values ('Anthology');
-insert into genres (genre) values ('Classic');
-insert into genres (genre) values ('Comic and Graphic Novel');
-insert into genres (genre) values ('Crime and Detective');
-insert into genres (genre) values ('Drama');
-insert into genres (genre) values ('Fable');
-insert into genres (genre) values ('Fairy Tale');
-insert into genres (genre) values ('Fan-Fiction');
-insert into genres (genre) values ('Fantasy');
-insert into genres (genre) values ('Historical Fiction');
-insert into genres (genre) values ('Horror');
-insert into genres (genre) values ('Humor');
-insert into genres (genre) values ('Legend');
-insert into genres (genre) values ('Magical Realism');
-insert into genres (genre) values ('Mystery');
-insert into genres (genre) values ('Mythology');
-insert into genres (genre) values ('Realistic Fiction');
-insert into genres (genre) values ('Romance');
-insert into genres (genre) values ('Satire');
-insert into genres (genre) values ('Science Fiction (Sci-Fi)');
-insert into genres (genre) values ('Short Story');
-insert into genres (genre) values ('Suspense/Thriller');
-insert into genres (genre) values ('[Under Nonfiction Category]');
-insert into genres (genre) values ('Biography/Autobiography');
-insert into genres (genre) values ('Essay');
-insert into genres (genre) values ('Memoir');
-insert into genres (genre) values ('Narrative Nonfiction');
-insert into genres (genre) values ('Periodicals');
-insert into genres (genre) values ('Reference Books');
-insert into genres (genre) values ('Self-help Book');
-insert into genres (genre) values ('Speech');
-insert into genres (genre) values ('Textbook');
-insert into genres (genre) values ('Poetry (Can be both Fiction or Nonfiction)');
+insert into genre (genre_name) values ('Comics');
+insert into genre (genre_name) values ('Action and Adventure');
+insert into genre (genre_name) values ('Anthology');
+insert into genre (genre_name) values ('Classic');
+insert into genre (genre_name) values ('Comic and Graphic Novel');
+insert into genre (genre_name) values ('Crime and Detective');
+insert into genre (genre_name) values ('Drama');
+insert into genre (genre_name) values ('Fable');
+insert into genre (genre_name) values ('Fairy Tale');
+insert into genre (genre_name) values ('Fan-Fiction');
+insert into genre (genre_name) values ('Fantasy');
+insert into genre (genre_name) values ('Historical Fiction');
+insert into genre (genre_name) values ('Horror');
+insert into genre (genre_name) values ('Humor');
+insert into genre (genre_name) values ('Legend');
+insert into genre (genre_name) values ('Magical Realism');
+insert into genre (genre_name) values ('Mystery');
+insert into genre (genre_name) values ('Mythology');
+insert into genre (genre_name) values ('Realistic Fiction');
+insert into genre (genre_name) values ('Romance');
+insert into genre (genre_name) values ('Satire');
+insert into genre (genre_name) values ('Science Fiction (Sci-Fi)');
+insert into genre (genre_name) values ('Short Story');
+insert into genre (genre_name) values ('Suspense/Thriller');
+insert into genre (genre_name) values ('[Under Nonfiction Category]');
+insert into genre (genre_name) values ('Biography/Autobiography');
+insert into genre (genre_name) values ('Essay');
+insert into genre (genre_name) values ('Memoir');
+insert into genre (genre_name) values ('Narrative Nonfiction');
+insert into genre (genre_name) values ('Periodicals');
+insert into genre (genre_name) values ('Reference Books');
+insert into genre (genre_name) values ('Self-help Book');
+insert into genre (genre_name) values ('Speech');
+insert into genre (genre_name) values ('Textbook');
+insert into genre (genre_name) values ('Poetry (Can be both Fiction or Nonfiction)');
 
 --Books table contents
-insert into BOOKS (title, genre_id) values ('Captain America Comics (1941) #3', 1);
-insert into BOOKS (title, genre_id) values ('Adventure Comics (Sandman) #72', 1);
-insert into books (title, genre_id) values ('Dark Horse Comics #1', 1);
-insert into books (title, genre_id) values ('The Shining', 13);
+insert into BOOK (title, genre_id) values ('Captain America Comics (1941) #3', 1);
+insert into BOOK (title, genre_id) values ('Adventure Comics (Sandman) #72', 1);
+insert into book (title, genre_id) values ('Dark Horse Comics #1', 1);
+insert into book (title, genre_id) values ('The Shining', 13);
 
 --Reference table contents
 insert into reference (book_id, author_id) values (1, 1);

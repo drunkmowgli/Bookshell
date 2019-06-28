@@ -2,6 +2,7 @@ package org.asm.labs.entity;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "author")
@@ -13,6 +14,9 @@ public class Author {
 
     @Column(name = "author_name")
     private String name;
+//
+//    @ManyToMany
+//    private List<Book> books;
 
     public Author() {}
 
@@ -40,4 +44,8 @@ public class Author {
                 ", name='" + name + '\'' +
                 '}';
     }
+
+//    public List<Book> getBooks() {
+//        return books;
+//    }
 }
