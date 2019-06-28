@@ -8,6 +8,7 @@ spring:
       console:
         enabled: true
     data: data-test.sql
+    initialization-mode: always
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: false

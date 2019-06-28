@@ -38,7 +38,7 @@ class AuthorServiceImplTest {
 //    @Test
 //    void shouldThrowAuthorAlreadyExistException() {
 //        assertThrows(AuthorAlreadyExistException.class,
-//                () -> authorService.add("Stan Lee"));
+//                () -> authorService.save("Stan Lee"));
 //    }
 
     @DisplayName("Get all authors")

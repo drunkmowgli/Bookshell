@@ -43,6 +43,7 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
+    @Transactional
     public void remove(@NotNull Author author) throws DataAccessException {
 //        jdbc.update(
 //                DELETE_AUTHOR_FROM_REFERENCE,

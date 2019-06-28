@@ -49,8 +49,8 @@ insert into book (title, genre_id) values ('Dark Horse Comics #1', 1);
 insert into book (title, genre_id) values ('The Shining', 13);
 
 --Reference table contents
-insert into reference (book_id, author_id) values (1, 1);
-insert into reference (book_id, author_id) values (2, 2);
-insert into reference (book_id, author_id) values (3, 3);
-insert into reference (book_id, author_id) values (3, 1);
-insert into reference (book_id, author_id) values (4, 4);
+insert into BOOK_AUTHORS (book_id, author_id) values (1, 1);
+insert into BOOK_AUTHORS (book_id, author_id) values (2, 2);
+insert into BOOK_AUTHORS (book_id, author_id) values (3, 3);
+insert into BOOK_AUTHORS (book_id, author_id) values (3, 1);
+insert into BOOK_AUTHORS (book_id, author_id) values (4, 4);

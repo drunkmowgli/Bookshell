@@ -14,9 +14,9 @@ public class Author {
 
     @Column(name = "author_name")
     private String name;
-//
-//    @ManyToMany
-//    private List<Book> books;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "authors")
+    private List<Book> books;
 
     public Author() {}
 
@@ -45,7 +45,11 @@ public class Author {
                 '}';
     }
 
-//    public List<Book> getBooks() {
-//        return books;
-//    }
+    public List<Book> getBooks() {
+        return books;
+    }
+    
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }

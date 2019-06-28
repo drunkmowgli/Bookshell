@@ -31,18 +31,18 @@
 //
 //
 //    @Override
-//    public void add(String title, String authorsIds, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException, GenreDoesntExistException {
+//    public void save(String title, String authorsIds, int genreId) throws BookAlreadyExistException, AuthorDoesntExistException, GenreDoesntExistException {
 //        String[] authorsStringIds = authorsIds.split(",");
 //        List<Author> authors = new ArrayList<>();
 //        for (String authorId :
 //                authorsStringIds) {
 //            Author author = authorService.getById(Integer.parseInt(authorId));
-//            authors.add(author);
+//            authors.save(author);
 //        }
 //        Genre genre = genreService.getById(genreId);
 //        Book book = new Book(title, authors, genre);
 //        try {
-//            bookRepositoryJpa.add(book);
+//            bookRepositoryJpa.save(book);
 //        } catch (DuplicateKeyException e) {
 //            throw new BookAlreadyExistException();
 //        }
