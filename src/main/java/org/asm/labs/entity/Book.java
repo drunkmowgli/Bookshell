@@ -1,6 +1,10 @@
 package org.asm.labs.entity;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,6 +29,10 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Comment> comments;
 
     public Book() {
     }
@@ -59,8 +67,9 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", authors=" + authors +
                 ", genre=" + genre +
+                ", authors=" + authors +
+                ", comments=" + comments +
                 '}';
     }
 }

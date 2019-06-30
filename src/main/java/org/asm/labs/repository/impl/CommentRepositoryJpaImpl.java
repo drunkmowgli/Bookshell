@@ -1,7 +1,7 @@
 package org.asm.labs.repository.impl;
 
-import org.asm.labs.entity.Book;
-import org.asm.labs.repository.BookRepositoryJpa;
+import org.asm.labs.entity.Comment;
+import org.asm.labs.repository.CommentRepositoryJpa;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +13,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Repository
-public class BookRepositoryJpaImpl implements BookRepositoryJpa {
-
+public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
     @PersistenceContext
     private EntityManager em;
@@ -22,37 +21,35 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
     @Override
     @Transactional
-    public void save(@NotNull Book book) {
-        if (book.getId() <= 0) {
-            em.persist(book);
+    public void save(@NotNull Comment comment) {
+        if (comment.getId() <= 0) {
+            em.persist(comment);
         } else {
-            System.out.println(book);
-            em.merge(book);
+            em.merge(comment);
         }
     }
 
     @Override
-    public List<Book> findAll() {
-        TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b", Book.class);
+    public List<Comment> findAll() {
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c", Comment.class);
         return query.getResultList();
     }
 
     @Override
-    public Book findById(int id) throws NoResultException {
-        TypedQuery<Book> query = em.createQuery("SELECT b FROM Book b WHERE b.id = :id", Book.class);
+    public Comment findById(int id) throws NoResultException {
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c WHERE id = :id", Comment.class);
         query.setParameter("id", id);
         return query.getSingleResult();
     }
 
     @Override
-    @Transactional
-    public void remove(@NotNull Book book) {
-        em.remove(book);
+    public void remove(@NotNull Comment comment) {
+        em.remove(comment);
     }
 
     @Override
     public long count() {
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(b) FROM Book b", Long.class);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM Comment c", Long.class);
         return query.getSingleResult();
     }
 }

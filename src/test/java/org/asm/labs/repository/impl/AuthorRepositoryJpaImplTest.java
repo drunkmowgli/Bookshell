@@ -40,7 +40,7 @@ class AuthorRepositoryJpaImplTest {
         authorRepositoryJpa.save(actualAuthor);
         assertThat(actualAuthor.getId()).isGreaterThan(0);
         Author expectedAuthor = em.find(Author.class, actualAuthor.getId());
-        assertThat(expectedAuthor).isNotNull().matches(s -> !s.getName().equals(""));
+        assertThat(expectedAuthor).isNotNull().matches(author -> !author.getName().equals(""));
     }
 
     @DisplayName("Должен обновить информацию об Авторе")
@@ -51,15 +51,15 @@ class AuthorRepositoryJpaImplTest {
         assertThat(updatedAuthor.getId()).isGreaterThan(0);
         Author actualAuthor = em.find(Author.class, updatedAuthor.getId());
         assertThat(actualAuthor).isNotNull()
-                .matches(s -> !s.getName().equals(""))
-                .matches(s -> s.getName().equals("Update Author"));
+                .matches(author -> !author.getName().equals(""))
+                .matches(author -> author.getName().equals("Update Author"));
     }
 
     @DisplayName("Должен загружать список всех авторов с полной информацией о них")
     @Test
     void shouldReturnCorrectAuthorsListWithAllInfo() {
         List<Author> authors = authorRepositoryJpa.findAll();
-        assertThat(authors).isNotNull().hasSize(3).allMatch(s -> !s.getName().equals(""));
+        assertThat(authors).isNotNull().hasSize(3).allMatch(author -> !author.getName().equals(""));
     }
 
     @DisplayName("Должен загружать информацию о нужном авторе")

@@ -2,7 +2,6 @@ package org.asm.labs.repository.impl;
 
 import org.asm.labs.entity.Genre;
 import org.asm.labs.repository.GenreRepositoryJpa;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -16,12 +15,6 @@ public class GenreRepositoryJpaImpl implements GenreRepositoryJpa {
 
     @PersistenceContext
     private EntityManager em;
-
-    @Autowired
-    public GenreRepositoryJpaImpl(EntityManager em) {
-        this.em = em;
-    }
-
 
     @Override
     public List<Genre> findAll() {

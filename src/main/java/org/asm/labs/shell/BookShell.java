@@ -1,9 +1,6 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.service.AuthorNotExistException;
-import org.asm.labs.service.BookNotExistException;
-import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreNotExistException;
+import org.asm.labs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;

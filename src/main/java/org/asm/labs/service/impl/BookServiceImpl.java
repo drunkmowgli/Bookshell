@@ -25,8 +25,11 @@ public class BookServiceImpl implements BookService {
 
     private final GenreService genreService;
 
+
     @Autowired
-    public BookServiceImpl(BookRepositoryJpa bookRepositoryJpa, AuthorService authorService, GenreService genreService) {
+    public BookServiceImpl(BookRepositoryJpa bookRepositoryJpa,
+                           AuthorService authorService,
+                           GenreService genreService) {
         this.bookRepositoryJpa = bookRepositoryJpa;
         this.authorService = authorService;
         this.genreService = genreService;
@@ -34,7 +37,8 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public void save(String title, String authorsIds, int genreId) throws AuthorNotExistException, GenreNotExistException {
+    public void save(String title, String authorsIds, int genreId) throws AuthorNotExistException,
+            GenreNotExistException {
         String[] authorsStringIds = authorsIds.split(",");
         Set<Author> authors = new HashSet<>();
         for (String authorId :

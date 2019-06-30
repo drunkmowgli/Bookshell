@@ -60,9 +60,9 @@ class AuthorServiceImplTest {
         assertEquals(2, authorService.findAll().size());
     }
 
-    @DisplayName("Remove author from TestDB")
+    @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
     @Test
-    void shouldThrowNoResultExceptionWhenAuthorNotExistOnRemove() {
+    void shouldThrowCommentNotExistExceptionWhenAuthorNotExistOnRemove() {
         assertThrows(AuthorNotExistException.class,
                 () -> {authorService.remove(10);});
     }
