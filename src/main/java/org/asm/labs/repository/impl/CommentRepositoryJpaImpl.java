@@ -3,7 +3,6 @@ package org.asm.labs.repository.impl;
 import org.asm.labs.entity.Comment;
 import org.asm.labs.repository.CommentRepositoryJpa;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -20,7 +19,6 @@ public class CommentRepositoryJpaImpl implements CommentRepositoryJpa {
 
 
     @Override
-    @Transactional
     public void save(@NotNull Comment comment) {
         if (comment.getId() <= 0) {
             em.persist(comment);

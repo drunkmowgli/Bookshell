@@ -3,7 +3,6 @@ package org.asm.labs.repository.impl;
 import org.asm.labs.entity.Author;
 import org.asm.labs.repository.AuthorRepositoryJpa;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -19,7 +18,6 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     private EntityManager em;
 
     @Override
-    @Transactional
     public void save(@NotNull Author author) {
         if (author.getId() <= 0) {
             em.persist(author);
@@ -42,7 +40,6 @@ public class AuthorRepositoryJpaImpl implements AuthorRepositoryJpa {
     }
 
     @Override
-    @Transactional
     public void remove(@NotNull Author author) {
         em.remove(author);
     }

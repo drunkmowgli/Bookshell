@@ -3,7 +3,6 @@ package org.asm.labs.repository.impl;
 import org.asm.labs.entity.Book;
 import org.asm.labs.repository.BookRepositoryJpa;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,7 +20,6 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
 
 
     @Override
-    @Transactional
     public void save(@NotNull Book book) {
         if (book.getId() <= 0) {
             em.persist(book);
@@ -45,7 +43,6 @@ public class BookRepositoryJpaImpl implements BookRepositoryJpa {
     }
 
     @Override
-    @Transactional
     public void remove(@NotNull Book book) {
         em.remove(book);
     }
