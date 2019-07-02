@@ -1,24 +1,24 @@
-package org.asm.labs.dao;
+package org.asm.labs.repository;
 
 import org.asm.labs.entity.Author;
 
 import java.util.List;
 
-public interface AuthorDao {
+public interface AuthorRepositoryJpa {
 
     /**
      * Insert Author to DB.
      *
      * @param author - Author
      */
-    void add(Author author);
+    void save(Author author);
 
     /**
      * Get all Authors from DB.
      *
      * @return List of Authors
      */
-    List<Author> getAll();
+    List<Author> findAll();
 
     /**
      * Get Author from DB by id.
@@ -27,7 +27,7 @@ public interface AuthorDao {
      *
      * @return Author
      */
-    Author getById(int id);
+    Author findById(int id);
 
     /**
      * Remove Author from DB.
@@ -41,6 +41,6 @@ public interface AuthorDao {
      *
      * @return number of Authors
      */
-    int count();
+    long count();
 
 }

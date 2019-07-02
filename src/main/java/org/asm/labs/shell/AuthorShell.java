@@ -1,8 +1,8 @@
 package org.asm.labs.shell;
 
 
-import org.asm.labs.service.AuthorAlreadyExistException;
-import org.asm.labs.service.AuthorDoesntExistException;
+import org.asm.labs.entity.Author;
+import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -20,25 +20,21 @@ public class AuthorShell {
         this.authorService = authorService;
     }
 
-    @ShellMethod("add author")
+    @ShellMethod("save author")
     public void add_author(@ShellOption String authorName) {
-        try {
-            authorService.add(authorName);
-        } catch (AuthorAlreadyExistException e) {
-            System.out.println(e.getMessage());
-        }
+        authorService.save(new Author(authorName));
     }
 
     @ShellMethod("get all")
     public void get_all_authors() {
-        authorService.getAll().forEach(System.out::println);
+        authorService.findAll().forEach(System.out::println);
     }
 
     @ShellMethod("get by id")
     public void get_author(@ShellOption int id) {
         try {
-            System.out.println(authorService.getById(id));
-        } catch (AuthorDoesntExistException e) {
+            System.out.println(authorService.findById(id));
+        } catch (AuthorNotExistException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -47,7 +43,7 @@ public class AuthorShell {
     public void remove_author(@ShellOption int authorId) {
         try {
             authorService.remove(authorId);
-        } catch (AuthorDoesntExistException e) {
+        } catch (AuthorNotExistException e) {
             System.out.println(e.getMessage());
         }
 

@@ -42,6 +42,10 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.4.1</version>
@@ -51,6 +55,12 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1206-jdbc42</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.199</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -100,7 +110,8 @@
                     <dateFormatTimeZone>${user.timezone}</dateFormatTimeZone>
                     <verbose>false</verbose>
                     <generateGitPropertiesFile>true</generateGitPropertiesFile>
-                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
+                    </generateGitPropertiesFilename>
                     <format>properties</format>
                     <skipPoms>true</skipPoms>
                     <injectAllReactorProjects>false</injectAllReactorProjects>

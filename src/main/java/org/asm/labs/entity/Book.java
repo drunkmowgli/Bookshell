@@ -1,26 +1,50 @@
 package org.asm.labs.entity;
 
-import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "book")
 public class Book {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private final String title;
+    @Column(name = "title")
+    private String title;
 
-    private final List<Author> authors;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
-    private final Genre genre;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors;
 
-    public Book(int id, String title, List<Author> authors, Genre genre) {
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Comment> comments;
+
+    public Book() {
+    }
+
+    public Book(int id, String title, Set<Author> authors, Genre genre) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.genre = genre;
     }
 
-    public Book(String title, List<Author> authors, Genre genre) {
-        this.id = -1;
+    public Book(String title, Set<Author> authors, Genre genre) {
         this.title = title;
         this.authors = authors;
         this.genre = genre;
@@ -34,10 +58,6 @@ public class Book {
         return title;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
-    }
-
     public Genre getGenre() {
         return genre;
     }
@@ -47,8 +67,9 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", authors=" + authors +
                 ", genre=" + genre +
+                ", authors=" + authors +
+                ", comments=" + comments +
                 '}';
     }
 }

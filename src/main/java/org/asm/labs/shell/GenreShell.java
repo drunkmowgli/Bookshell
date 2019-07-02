@@ -1,6 +1,6 @@
 package org.asm.labs.shell;
 
-import org.asm.labs.service.GenreDoesntExistException;
+import org.asm.labs.service.GenreNotExistException;
 import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
@@ -17,14 +17,14 @@ public class GenreShell {
 
     @ShellMethod("get all genres")
     public void get_all_genres() {
-        genreService.getAll().forEach(System.out::println);
+        genreService.findAll().forEach(System.out::println);
     }
 
     @ShellMethod("get genre by genre's id")
     public void get_genre(@ShellOption int id) {
         try {
-            System.out.println(genreService.getById(id));
-        } catch (GenreDoesntExistException e) {
+            System.out.println(genreService.findById(id));
+        } catch (GenreNotExistException e) {
             System.out.println(e.getMessage());
         }
     }

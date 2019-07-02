@@ -5,3 +5,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/bookshell
     username: prod_user
     password: prod_password
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: false
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true

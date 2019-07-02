@@ -1,10 +1,20 @@
 package org.asm.labs.entity;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "genre")
 public class Genre {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private final String genreName;
+    @Column(name = "genre_name")
+    private String genreName;
+
+    public Genre() {}
 
     public Genre(int id, String genreName) {
         this.id = id;

@@ -17,13 +17,13 @@ public class BookShell {
         this.bookService = bookService;
     }
 
-    @ShellMethod("add book")
+    @ShellMethod("save book")
     public void add_book(@ShellOption String title,
                          @ShellOption String authorsNames,
                          @ShellOption int genreId) {
         try {
-            bookService.add(title, authorsNames, genreId);
-        } catch (BookAlreadyExistException | AuthorDoesntExistException | GenreDoesntExistException e) {
+            bookService.save(title, authorsNames, genreId);
+        } catch (AuthorNotExistException | GenreNotExistException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -31,22 +31,22 @@ public class BookShell {
     @ShellMethod("get by id")
     public void get_book(@ShellOption int id) {
         try {
-            System.out.println(bookService.getById(id));
-        } catch (BookDoesntExistException e) {
+            System.out.println(bookService.findById(id));
+        } catch (BookNotExistException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @ShellMethod("get all")
     public void get_all_books() {
-        bookService.getAll().forEach(System.out::println);
+        bookService.findAll().forEach(System.out::println);
     }
 
     @ShellMethod("remove book")
     public void remove_book(@ShellOption int id) {
         try {
             bookService.remove(id);
-        } catch (BookDoesntExistException e) {
+        } catch (BookNotExistException e) {
             System.out.println(e.getMessage());
         }
 

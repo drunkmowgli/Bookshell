@@ -1,13 +1,30 @@
 package org.asm.labs.entity;
 
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import java.util.Set;
+
+@Entity
+@Table(name = "author")
 public class Author {
 
-    private final int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private final String name;
+    @Column(name = "author_name")
+    private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Set<Book> books;
+
+    public Author() {}
 
     public Author(String authorName) {
-        this.id = -1;
         this.name = authorName;
     }
 
@@ -31,4 +48,5 @@ public class Author {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }

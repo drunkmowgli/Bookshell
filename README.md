@@ -12,11 +12,21 @@
 
 Покрыть тестами, насколько это возможно.
 
-#### For develop:
+# OTUS Homework 6
+
+Переписать приложение для хранения книг на ORM
+Использовать JPA, Hibernate только в качестве JPA-провайдера.
+
+Добавить комментарии к книгам, и высокоуровневые сервисы, оставляющие комментарии к книгам.
+
+Покрыть DAO тестами используя H2 базу данных и соответствующий H2 Hibernate-диалект
+
+#### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 
 #### For production:
 `docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres`
 
 ## Done:
-    Implemented basic functionality
+    1. Implemented basic functionality
+    2. Implemented JDBC to JPA with Comments

@@ -1,17 +1,17 @@
-package org.asm.labs.dao;
+package org.asm.labs.repository;
 
 import org.asm.labs.entity.Genre;
 
 import java.util.List;
 
-public interface GenreDao {
+public interface GenreRepositoryJpa {
 
     /**
      * Get all genres from DB.
      *
      * @return List of Genres
      */
-    List<Genre> getAll();
+    List<Genre> findAll();
 
     /**
      * Get Genre from DB by id.
@@ -20,13 +20,13 @@ public interface GenreDao {
      *
      * @return Genre
      */
-    Genre getById(int id);
+    Genre findById(int id);
 
     /**
      * Count number of Genres.
      *
      * @return number of Genres
      */
-    int count();
+    long count();
 
 }
