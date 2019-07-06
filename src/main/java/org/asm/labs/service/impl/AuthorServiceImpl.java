@@ -1,59 +1,62 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Author;
-import org.asm.labs.repository.AuthorRepositoryJpa;
+import org.asm.labs.model.Author;
+import org.asm.labs.repository.AuthorRepository;
 import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
-@Transactional
+@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorRepositoryJpa authorRepositoryJpa;
+    private final AuthorRepository authorRepository;
 
     @Autowired
-    public AuthorServiceImpl(AuthorRepositoryJpa authorRepositoryJpa) {
-        this.authorRepositoryJpa = authorRepositoryJpa;
+    public AuthorServiceImpl(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void save(Author author) {
-        authorRepositoryJpa.save(author);
+        authorRepository.save(author);
     }
 
     @Override
     public List<Author> findAll() {
-        return authorRepositoryJpa.findAll();
+        return authorRepository.findAll();
     }
 
     @Override
-    public Author findById(int authorId) throws AuthorNotExistException {
+    public Author findById(long authorId) throws AuthorNotExistException {
         try {
-            return authorRepositoryJpa.findById(authorId);
-        } catch (NoResultException e) {
+            return authorRepository.findById(authorId).orElseThrow();
+        } catch (NoSuchElementException e) {
             throw new AuthorNotExistException();
         }
 
     }
 
     @Override
-    public void remove(int authorId) throws AuthorNotExistException {
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+    public void delete(long authorId) throws AuthorNotExistException {
         try {
-            Author author = authorRepositoryJpa.findById(authorId);
-            authorRepositoryJpa.remove(author);
-        } catch (NoResultException e) {
+            Author author = authorRepository.findById(authorId).orElseThrow();
+            authorRepository.delete(author);
+        } catch (NoSuchElementException e) {
             throw new AuthorNotExistException();
         }
     }
 
     @Override
     public long count() {
-        return authorRepositoryJpa.count();
+        return authorRepository.count();
     }
 }

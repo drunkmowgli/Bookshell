@@ -1,6 +1,5 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.repository.impl.GenreRepositoryJpaImpl;
 import org.asm.labs.service.GenreNotExistException;
 import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
@@ -11,12 +10,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Genre Service test")
 @DataJpaTest(properties = "spring.profiles.active=test")
-@Import({GenreServiceImpl.class, GenreRepositoryJpaImpl.class})
+@Import({GenreServiceImpl.class})
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreServiceImplTest {
@@ -47,6 +47,6 @@ class GenreServiceImplTest {
     @DisplayName("Должен вернуть количество жанров")
     @Test
     void count() {
-        assertEquals(2, genreService.count());
+        assertThat(genreService.count()).isNotNull();
     }
 }

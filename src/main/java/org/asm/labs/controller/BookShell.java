@@ -1,6 +1,9 @@
-package org.asm.labs.shell;
+package org.asm.labs.controller;
 
-import org.asm.labs.service.*;
+import org.asm.labs.service.AuthorNotExistException;
+import org.asm.labs.service.BookNotExistException;
+import org.asm.labs.service.BookService;
+import org.asm.labs.service.GenreNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -20,7 +23,7 @@ public class BookShell {
     @ShellMethod("save book")
     public void add_book(@ShellOption String title,
                          @ShellOption String authorsNames,
-                         @ShellOption int genreId) {
+                         @ShellOption long genreId) {
         try {
             bookService.save(title, authorsNames, genreId);
         } catch (AuthorNotExistException | GenreNotExistException e) {
@@ -29,7 +32,7 @@ public class BookShell {
     }
 
     @ShellMethod("get by id")
-    public void get_book(@ShellOption int id) {
+    public void get_book(@ShellOption long id) {
         try {
             System.out.println(bookService.findById(id));
         } catch (BookNotExistException e) {
@@ -42,8 +45,8 @@ public class BookShell {
         bookService.findAll().forEach(System.out::println);
     }
 
-    @ShellMethod("remove book")
-    public void remove_book(@ShellOption int id) {
+    @ShellMethod("delete book")
+    public void remove_book(@ShellOption long id) {
         try {
             bookService.remove(id);
         } catch (BookNotExistException e) {

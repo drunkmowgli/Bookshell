@@ -1,6 +1,6 @@
 package org.asm.labs.service;
 
-import org.asm.labs.entity.Book;
+import org.asm.labs.model.Book;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface BookService {
      * @param authorsNames - List of Authors
      * @param genreId      - Genre's id
      */
-    void save(String title, String authorsNames, int genreId) throws AuthorNotExistException, GenreNotExistException;
+    void save(String title, String authorsNames, long genreId) throws AuthorNotExistException, GenreNotExistException;
 
     /**
      * Get all Books from DB.
@@ -29,14 +29,14 @@ public interface BookService {
      *
      * @return Book
      */
-    Book findById(int id) throws BookNotExistException;
+    Book findById(long id) throws BookNotExistException;
 
     /**
      * Remove Book from DB.
      *
      * @param id - Book's id
      */
-    void remove(int id) throws BookNotExistException;
+    void remove(long id) throws BookNotExistException;
 
     /**
      * Count number of Books in DB.

@@ -1,8 +1,5 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.repository.impl.AuthorRepositoryJpaImpl;
-import org.asm.labs.repository.impl.BookRepositoryJpaImpl;
-import org.asm.labs.repository.impl.GenreRepositoryJpaImpl;
 import org.asm.labs.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,14 +9,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Book Service test")
 @DataJpaTest(properties = "spring.profiles.active=test")
-@Import({BookServiceImpl.class, BookRepositoryJpaImpl.class,
-        AuthorServiceImpl.class, AuthorRepositoryJpaImpl.class,
-        GenreServiceImpl.class, GenreRepositoryJpaImpl.class})
+@Import({BookServiceImpl.class,
+        AuthorServiceImpl.class,
+        GenreServiceImpl.class})
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class BookServiceImplTest {
@@ -40,8 +38,10 @@ class BookServiceImplTest {
         String bookTitle = "Test title from BookService";
         String authorsIds = "1,2";
         int genreId = 1;
+        long beforeInsert = bookService.findAll().size();
         bookService.save(bookTitle, authorsIds, genreId);
-        assertEquals(6, bookService.findAll().size());
+        long afterInsert = bookService.findAll().size();
+        assertThat(afterInsert).isGreaterThan(beforeInsert);
     }
 
     @DisplayName("Должен выбросить исключение на добавление книги, если жанра не существует")
@@ -87,8 +87,10 @@ class BookServiceImplTest {
     @DisplayName("Должен удалить книгу")
     @Test
     void shouldRemoveBook() throws BookNotExistException {
+        long beforeDelete = bookService.findAll().size();
         bookService.remove(1);
-        assertEquals(4, bookService.findAll().size());
+        long afterDelete = bookService.findAll().size();
+        assertThat(afterDelete).isLessThan(beforeDelete);
     }
 
     @DisplayName("Должен выбросить исключение на удалении книги, если такой книги не существует")
@@ -101,7 +103,7 @@ class BookServiceImplTest {
     @DisplayName("Должен вернуть количество всех книг")
     @Test
     void count() {
-        assertEquals(5, bookService.count());
+        assertThat(bookService.count()).isNotNull();
     }
 
 

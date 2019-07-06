@@ -1,6 +1,6 @@
 package org.asm.labs.service;
 
-import org.asm.labs.entity.Comment;
+import org.asm.labs.model.Comment;
 
 import java.util.List;
 
@@ -26,14 +26,14 @@ public interface CommentService {
      *
      * @return Author
      */
-    Comment findById(int commentId) throws CommentNotExistException;
+    Comment findById(long commentId) throws CommentNotExistException;
 
     /**
      * Remove Comment from DB.
      *
      * @param commentId - Comment's ID
      */
-    void remove(int commentId) throws CommentNotExistException;
+    void remove(long commentId) throws CommentNotExistException;
 
     /**
      * Count number of Comments in DB.

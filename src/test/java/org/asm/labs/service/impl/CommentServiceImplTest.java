@@ -1,7 +1,6 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Comment;
-import org.asm.labs.repository.impl.CommentRepositoryJpaImpl;
+import org.asm.labs.model.Comment;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
@@ -12,12 +11,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Comment Service test")
 @DataJpaTest(properties = "spring.profiles.active=test")
-@Import({CommentServiceImpl.class, CommentRepositoryJpaImpl.class})
+@Import({CommentServiceImpl.class})
 @Transactional
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CommentServiceImplTest {
@@ -29,8 +29,10 @@ class CommentServiceImplTest {
     @DisplayName("Должен корректно сохранять информацию о комментарии")
     @Test
     void shouldSaveCommentInfo() {
+        long beforeInsert = commentService.findAll().size();
         commentService.save(new Comment("Comment Service #Test"));
-        assertEquals(6, commentService.findAll().size());
+        long afterInsert = commentService.findAll().size();
+        assertThat(beforeInsert).isLessThan(afterInsert);
     }
 
     @DisplayName("Должен вернуть информацию о всех комментариях")
@@ -56,20 +58,22 @@ class CommentServiceImplTest {
     @DisplayName("Должен удалять комментарий")
     @Test
     void shouldRemoveComment() throws CommentNotExistException {
+        long beforeDelete = commentService.findAll().size();
         commentService.remove(1);
-        assertEquals(4, commentService.findAll().size());
+        long afterDelete = commentService.findAll().size();
+        assertThat(afterDelete).isLessThan(beforeDelete);
     }
 
     @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
     @Test
     void shouldThrowCommentNotExistExceptionWhenCommentNotExistOnRemove() {
         assertThrows(CommentNotExistException.class,
-                () -> {commentService.remove(10);});
+                () -> commentService.remove(10));
     }
 
     @DisplayName("Должен вернуть количество комментариев")
     @Test
     void count() {
-        assertEquals(5, commentService.count());
+        assertThat(commentService.count()).isNotNull();
     }
 }

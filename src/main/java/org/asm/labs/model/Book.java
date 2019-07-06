@@ -1,4 +1,4 @@
-package org.asm.labs.entity;
+package org.asm.labs.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,7 +13,7 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "title")
     private String title;
@@ -37,7 +37,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(int id, String title, Set<Author> authors, Genre genre) {
+    public Book(long id, String title, Set<Author> authors, Genre genre) {
         this.id = id;
         this.title = title;
         this.authors = authors;
@@ -50,7 +50,7 @@ public class Book {
         this.genre = genre;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

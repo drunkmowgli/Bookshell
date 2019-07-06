@@ -1,4 +1,4 @@
-package org.asm.labs.entity;
+package org.asm.labs.model;
 
 
 import org.hibernate.annotations.OnDelete;
@@ -13,12 +13,17 @@ public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @Column(name = "author_name")
+    @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Book> books;
 
@@ -28,12 +33,12 @@ public class Author {
         this.name = authorName;
     }
 
-    public Author(int id, String authorName) {
+    public Author(long id, String authorName) {
         this.id = id;
         this.name = authorName;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -48,5 +53,4 @@ public class Author {
                 ", name='" + name + '\'' +
                 '}';
     }
-
 }

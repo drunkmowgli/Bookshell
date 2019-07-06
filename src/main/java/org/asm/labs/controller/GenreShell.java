@@ -1,4 +1,4 @@
-package org.asm.labs.shell;
+package org.asm.labs.controller;
 
 import org.asm.labs.service.GenreNotExistException;
 import org.asm.labs.service.GenreService;
@@ -21,7 +21,7 @@ public class GenreShell {
     }
 
     @ShellMethod("get genre by genre's id")
-    public void get_genre(@ShellOption int id) {
+    public void get_genre(@ShellOption long id) {
         try {
             System.out.println(genreService.findById(id));
         } catch (GenreNotExistException e) {

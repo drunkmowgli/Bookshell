@@ -1,8 +1,8 @@
 --Authors table contents
-INSERT INTO author (author_name) VALUES ('Stan Lee');
-INSERT INTO author (author_name) VALUES ('Jack Kirby');
-INSERT INTO author (author_name) VALUES ('Chris Claremont');
-INSERT INTO author (author_name) VALUES ('Stephen King');
+INSERT INTO author (name) VALUES ('Stan Lee');
+INSERT INTO author (name) VALUES ('Jack Kirby');
+INSERT INTO author (name) VALUES ('Chris Claremont');
+INSERT INTO author (name) VALUES ('Stephen King');
 
 
 --Genres table contents

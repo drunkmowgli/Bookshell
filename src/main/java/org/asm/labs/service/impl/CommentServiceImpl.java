@@ -1,58 +1,61 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.entity.Comment;
-import org.asm.labs.repository.CommentRepositoryJpa;
+import org.asm.labs.model.Comment;
+import org.asm.labs.repository.CommentRepository;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
-@Transactional
+@Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepositoryJpa commentRepositoryJpa;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepositoryJpa commentRepositoryJpa) {
-        this.commentRepositoryJpa = commentRepositoryJpa;
+    public CommentServiceImpl(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void save(Comment comment) {
-        this.commentRepositoryJpa.save(comment);
+        this.commentRepository.save(comment);
     }
 
     @Override
     public List<Comment> findAll() {
-        return commentRepositoryJpa.findAll();
+        return commentRepository.findAll();
     }
 
     @Override
-    public Comment findById(int commentId) throws CommentNotExistException {
+    public Comment findById(long commentId) throws CommentNotExistException {
         try {
-            return commentRepositoryJpa.findById(commentId);
-        } catch (NoResultException e) {
+            return commentRepository.findById(commentId).orElseThrow();
+        } catch (NoSuchElementException e) {
             throw new CommentNotExistException();
         }
     }
 
     @Override
-    public void remove(int commentId) throws CommentNotExistException {
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+    public void remove(long commentId) throws CommentNotExistException {
         try {
-            Comment comment = commentRepositoryJpa.findById(commentId);
-            commentRepositoryJpa.remove(comment);
-        } catch (NoResultException e) {
+            Comment comment = commentRepository.findById(commentId).orElseThrow();
+            commentRepository.delete(comment);
+        } catch (NoSuchElementException e) {
             throw new CommentNotExistException();
         }
     }
 
     @Override
     public long count() {
-        return commentRepositoryJpa.count();
+        return commentRepository.count();
     }
 }
