@@ -47,9 +47,9 @@ class AuthorServiceImplTest {
         assertEquals("Stan Lee", authorService.findById(1).getName());
     }
 
-    @DisplayName("Должен выбрасывать исключение NoResultException, если автора не существует")
+    @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
     @Test
-    void shouldThrowNoResultExceptionWhenAuthorNotExist() {
+    void shouldThrowAuthorNotExistExceptionWhenAuthorNotExist() {
         assertThrows(AuthorNotExistException.class,
                 () -> authorService.findById(10L));
     }
@@ -65,7 +65,7 @@ class AuthorServiceImplTest {
 
     @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
     @Test
-    void shouldThrowCommentNotExistExceptionWhenAuthorNotExistOnRemove() {
+    void shouldThrowAuthorNotExistExceptionWhenAuthorNotExistOnRemove() {
         assertThrows(AuthorNotExistException.class,
                 () -> authorService.delete(10L));
     }

@@ -37,9 +37,9 @@ class GenreServiceImplTest {
         assertEquals(1, genreService.findById(1).getId());
     }
 
-    @DisplayName("Должен выбрасывать исключение NoResultException, если жанра не существует")
+    @DisplayName("Должен выбрасывать исключение GenreNotExistException, если жанра не существует")
     @Test
-    void shouldThrowNoResultExceptionWhenGenreNotExist() {
+    void shouldThrowGenreNotExistExceptionWhenGenreNotExist() {
         assertThrows(GenreNotExistException.class,
                 () -> genreService.findById(10));
     }

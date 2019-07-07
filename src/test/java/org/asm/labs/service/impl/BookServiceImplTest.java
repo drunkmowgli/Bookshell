@@ -77,9 +77,9 @@ class BookServiceImplTest {
         assertEquals("Dark Horse Comics #1", bookService.findById(2).getTitle());
     }
 
-    @DisplayName("Должен выбрасывать исключение NoResultException, если книги не существует")
+    @DisplayName("Должен выбрасывать исключение BookNotExistException, если книги не существует")
     @Test
-    void shouldThrowNoResultExceptionWhenBookNotExist() {
+    void shouldThrowBookNotExistExceptionWhenBookNotExist() {
         assertThrows(BookNotExistException.class,
                 () -> bookService.findById(10));
     }

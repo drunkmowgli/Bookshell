@@ -48,9 +48,9 @@ class CommentServiceImplTest {
         assertEquals("Excellent book", commentService.findById(1).getCommentDescription());
     }
 
-    @DisplayName("Должен выбрасывать исключение NoResultException, если комментария не существует")
+    @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
     @Test
-    void shouldThrowNoResultExceptionWhenCommentNotExist() {
+    void shouldThrowCommentNotExistExceptionWhenCommentNotExist() {
         assertThrows(CommentNotExistException.class,
                 () -> commentService.findById(10));
     }
