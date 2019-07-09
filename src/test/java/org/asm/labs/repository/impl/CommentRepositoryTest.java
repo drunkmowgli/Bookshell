@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DisplayName("Comment Repository test")
 @DataJpaTest(properties = "spring.profiles.active=test")
@@ -28,7 +28,7 @@ class CommentRepositoryTest {
     @DisplayName("Должен вернуть все комментарии")
     @Test
     void shouldReturnCorrectCommentsListWithAllInfo() {
-        assertEquals(5, commentRepository.findAll().size());
+        assertFalse(commentRepository.findAll().isEmpty());
     }
 
     @DisplayName("Должен корректно сохранять всю информацию о комментарии")

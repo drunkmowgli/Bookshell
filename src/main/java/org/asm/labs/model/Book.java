@@ -9,6 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "book")
+@NamedEntityGraph(name = "bookGraph", includeAllAttributes = true)
 public class Book {
 
     @Id
@@ -22,7 +23,7 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "book_authors",
             joinColumns = @JoinColumn(name = "book_id"),
@@ -30,7 +31,7 @@ public class Book {
     )
     private Set<Author> authors;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Comment> comments;
 
@@ -60,6 +61,14 @@ public class Book {
 
     public Genre getGenre() {
         return genre;
+    }
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     @Override

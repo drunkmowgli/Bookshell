@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 @DisplayName("Book Repository test")
@@ -69,7 +69,7 @@ class BookRepositoryJpaImplTest {
     @DisplayName("Должен вернуть все книги")
     @Test
     void shouldReturnAllBooks() {
-        assertEquals(5, bookRepository.findAll().size());
+        assertFalse(bookRepository.findAll().isEmpty());
     }
 
     @DisplayName("Должен вернуть конкретную книгу")
