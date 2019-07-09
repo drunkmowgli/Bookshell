@@ -12,21 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class BookServiceImpl implements BookService {
-
-
+    
+    
     private final BookRepository bookRepository;
-
+    
     private final AuthorService authorService;
-
+    
     private final GenreService genreService;
-
-
+    
+    
     @Autowired
     public BookServiceImpl(BookRepository bookRepository,
                            AuthorService authorService,
@@ -35,16 +34,16 @@ public class BookServiceImpl implements BookService {
         this.authorService = authorService;
         this.genreService = genreService;
     }
-
-
+    
+    
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void save(String title, String authorsIds, long genreId) throws AuthorNotExistException,
-            GenreNotExistException {
+        GenreNotExistException {
         String[] authorsStringIds = authorsIds.split(",");
         Set<Author> authors = new HashSet<>();
         for (String authorId :
-                authorsStringIds) {
+            authorsStringIds) {
             Author author = authorService.findById(Integer.parseInt(authorId));
             authors.add(author);
         }
@@ -52,33 +51,24 @@ public class BookServiceImpl implements BookService {
         Book book = new Book(title, authors, genre);
         bookRepository.save(book);
     }
-
+    
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
-
+    
     @Override
     public Book findById(long id) throws BookNotExistException {
-        try {
-            return bookRepository.findById(id).orElseThrow();
-        } catch (NoSuchElementException e) {
-            throw new BookNotExistException();
-        }
+        return bookRepository.findById(id).orElseThrow(BookNotExistException::new);
     }
-
+    
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void remove(long bookId) throws BookNotExistException {
-        try {
-            Book book = bookRepository.findById(bookId).orElseThrow();
-            bookRepository.delete(book);
-        } catch (NoSuchElementException e) {
-            throw new BookNotExistException();
-        }
-
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
+        bookRepository.delete(book);
     }
-
+    
     @Override
     public long count() {
         return bookRepository.count();
