@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
+@NamedEntityGraph(name = "commentGraph")
 public class Comment {
 
     @Id
@@ -13,7 +14,7 @@ public class Comment {
     @Column(name = "comment_description")
     private String commentDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
 

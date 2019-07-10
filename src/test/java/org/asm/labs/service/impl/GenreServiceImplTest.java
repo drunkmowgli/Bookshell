@@ -7,43 +7,39 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("Genre Service test")
-@DataJpaTest(properties = "spring.profiles.active=test")
+@DataJpaTest
 @Import({GenreServiceImpl.class})
-@Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreServiceImplTest {
-
+    
     @Autowired
     GenreService genreService;
-
-
+    
+    
     @DisplayName("Должен загружать список всех жанров с полной информацией о них")
     @Test
     void shouldReturnCorrectGenresListWithAllInfo() {
         assertFalse(genreService.findAll().isEmpty());
     }
-
+    
     @DisplayName("Должен загружать информацию о нужном жанре")
     @Test
     void shouldFindExpectedGenreById() throws GenreNotExistException {
         assertEquals(1, genreService.findById(1).getId());
     }
-
+    
     @DisplayName("Должен выбрасывать исключение GenreNotExistException, если жанра не существует")
     @Test
     void shouldThrowGenreNotExistExceptionWhenGenreNotExist() {
         assertThrows(GenreNotExistException.class,
-                () -> genreService.findById(10));
+            () -> genreService.findById(10));
     }
-
+    
     @DisplayName("Должен вернуть количество жанров")
     @Test
     void count() {
