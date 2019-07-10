@@ -31,9 +31,9 @@ public class Book {
     )
     private Set<Author> authors;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<Comment> comments;
 
     public Book() {
     }
@@ -67,9 +67,9 @@ public class Book {
         return authors;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
 
     @Override
     public String toString() {
@@ -78,7 +78,7 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", genre=" + genre +
                 ", authors=" + authors +
-                ", comments=" + comments +
+//                ", comments=" + comments +
                 '}';
     }
 }

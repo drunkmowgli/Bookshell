@@ -47,12 +47,13 @@ public class Comment {
     public String getCommentDescription() {
         return commentDescription;
     }
-
+    
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
-                ", commentDescription='" + commentDescription + '\'' +
-                '}';
+            "id=" + id +
+            ", commentDescription='" + commentDescription + '\'' +
+            ", book=" + book.getId() +
+            '}';
     }
 }
