@@ -6,7 +6,7 @@ spring:
     username: prod_user
     password: prod_password
   jpa:
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: create
     generate-ddl: false
     show-sql: false
     properties:
