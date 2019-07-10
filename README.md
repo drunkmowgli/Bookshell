@@ -21,6 +21,11 @@
 
 Покрыть DAO тестами используя H2 базу данных и соответствующий H2 Hibernate-диалект
 
+# OTUS Homework 7
+
+Билиотеку на Spring Data JPA
+Реализовать весь функционал работы с БД в приложении книг с использованием spring-data-jpa репозиториев.
+
 #### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 

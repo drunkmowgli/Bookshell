@@ -1,6 +1,6 @@
 package org.asm.labs.service;
 
-import org.asm.labs.entity.Author;
+import org.asm.labs.model.Author;
 
 import java.util.List;
 
@@ -27,14 +27,14 @@ public interface AuthorService {
      *
      * @return Author
      */
-    Author findById(int authorId) throws AuthorNotExistException;
+    Author findById(long authorId) throws AuthorNotExistException;
 
     /**
      * Remove Author from DB.
      *
      * @param authorId - Author's id
      */
-    void remove(int authorId) throws AuthorNotExistException;
+    void delete(long authorId) throws AuthorNotExistException;
 
     /**
      * Count number of Authors in DB.

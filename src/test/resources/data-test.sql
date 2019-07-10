@@ -1,6 +1,6 @@
-INSERT INTO author (author_name) VALUES ('Stan Lee');
-INSERT INTO author (author_name) VALUES ('Jack Kirby');
-INSERT INTO author (author_name) VALUES ('Chris Claremont');
+INSERT INTO author (name) VALUES ('Stan Lee');
+INSERT INTO author (name) VALUES ('Jack Kirby');
+INSERT INTO author (name) VALUES ('Chris Claremont');
 
 INSERT INTO genre (genre_name) VALUES ('Comics');
 INSERT INTO genre (genre_name) VALUES ('Horror');

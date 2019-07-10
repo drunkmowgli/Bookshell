@@ -1,6 +1,6 @@
 package org.asm.labs.service;
 
-import org.asm.labs.entity.Genre;
+import org.asm.labs.model.Genre;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface GenreService {
      *
      * @return Genre
      */
-    Genre findById(int id) throws GenreNotExistException;
+    Genre findById(long id) throws GenreNotExistException;
 
     /**
      * Count number of Genres.

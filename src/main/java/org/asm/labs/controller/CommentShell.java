@@ -1,7 +1,7 @@
-package org.asm.labs.shell;
+package org.asm.labs.controller;
 
-import org.asm.labs.entity.Book;
-import org.asm.labs.entity.Comment;
+import org.asm.labs.model.Book;
+import org.asm.labs.model.Comment;
 import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.BookService;
 import org.asm.labs.service.CommentNotExistException;
@@ -26,7 +26,7 @@ public class CommentShell {
 
     @ShellMethod("save comment")
     public void add_comment(@ShellOption String commentDescription,
-                            @ShellOption int bookId) {
+                            @ShellOption long bookId) {
         try {
             Book book = bookService.findById(bookId);
             commentService.save(new Comment(commentDescription, book));
@@ -42,7 +42,7 @@ public class CommentShell {
     }
 
     @ShellMethod("get by id")
-    public void get_comment(@ShellOption int id) {
+    public void get_comment(@ShellOption long id) {
         try {
             System.out.println(commentService.findById(id));
         } catch (CommentNotExistException e) {
@@ -50,8 +50,8 @@ public class CommentShell {
         }
     }
 
-    @ShellMethod("remove comment")
-    public void remove_comment(@ShellOption int commentId) {
+    @ShellMethod("delete comment")
+    public void remove_comment(@ShellOption long commentId) {
         try {
             commentService.remove(commentId);
         } catch (CommentNotExistException e) {

@@ -1,75 +1,71 @@
-package org.asm.labs.entity;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+package org.asm.labs.model;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "book")
+@NamedEntityGraph(name = "bookGraph", includeAllAttributes = true)
 public class Book {
-
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private long id;
+    
     @Column(name = "title")
     private String title;
-
+    
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id")
     private Genre genre;
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "book_authors",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id")
+        name = "book_authors",
+        joinColumns = @JoinColumn(name = "book_id"),
+        inverseJoinColumns = @JoinColumn(name = "author_id")
     )
     private Set<Author> authors;
-
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Comment> comments;
-
+    
     public Book() {
     }
-
-    public Book(int id, String title, Set<Author> authors, Genre genre) {
+    
+    public Book(long id, String title, Set<Author> authors, Genre genre) {
         this.id = id;
         this.title = title;
         this.authors = authors;
         this.genre = genre;
     }
-
+    
     public Book(String title, Set<Author> authors, Genre genre) {
         this.title = title;
         this.authors = authors;
         this.genre = genre;
     }
-
-    public int getId() {
+    
+    public long getId() {
         return id;
     }
-
+    
     public String getTitle() {
         return title;
     }
-
+    
     public Genre getGenre() {
         return genre;
     }
-
+    
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+    
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", genre=" + genre +
-                ", authors=" + authors +
-                ", comments=" + comments +
-                '}';
+            "id=" + id +
+            ", title='" + title + '\'' +
+            ", genre=" + genre +
+            ", authors=" + authors +
+            '}';
     }
 }

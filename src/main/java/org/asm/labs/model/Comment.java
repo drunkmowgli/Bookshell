@@ -1,19 +1,26 @@
-package org.asm.labs.entity;
+package org.asm.labs.model;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
+@NamedEntityGraph(name = "commentGraph",
+    attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "book")},
+    subgraphs = {@NamedSubgraph(name = "book", attributeNodes = {@NamedAttributeNode(value = "genre")})})
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "comment_description")
     private String commentDescription;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "book_id")
     private Book book;
 
@@ -23,7 +30,7 @@ public class Comment {
         this.commentDescription = commentDescription;
     }
 
-    public Comment(int id, String commentDescription) {
+    public Comment(long id, String commentDescription) {
         this.id = id;
         this.commentDescription = commentDescription;
     }
@@ -33,29 +40,24 @@ public class Comment {
         this.book = book;
     }
 
-    public Comment(int id, String commentDescription, Book book) {
-        this.id = id;
-        this.commentDescription = commentDescription;
-        this.book = book;
-    }
-
     public Book getBook() {
         return book;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
     public String getCommentDescription() {
         return commentDescription;
     }
-
+    
     @Override
     public String toString() {
         return "Comment{" +
-                "id=" + id +
-                ", commentDescription='" + commentDescription + '\'' +
-                '}';
+            "id=" + id +
+            ", commentDescription='" + commentDescription + '\'' +
+            ", book=" + book.getId() +
+            '}';
     }
 }
