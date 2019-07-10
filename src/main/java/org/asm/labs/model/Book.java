@@ -31,7 +31,7 @@ public class Book {
     )
     private Set<Author> authors;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Comment> comments;
 

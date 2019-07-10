@@ -4,7 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
-@NamedEntityGraph(name = "commentGraph")
+@NamedEntityGraph(name = "commentGraph",
+    attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "book")},
+    subgraphs = {@NamedSubgraph(name = "book", attributeNodes = {@NamedAttributeNode(value = "genre")})})
 public class Comment {
 
     @Id

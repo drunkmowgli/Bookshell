@@ -13,4 +13,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Override
     @EntityGraph("commentGraph")
     List<Comment> findAll();
+
 }
