@@ -8,9 +8,9 @@ public interface GenreService {
     
     /**
      * Save Genre in DB.
-     * @param genre - genre
+     * @param genreName - genre
      */
-    void save(Genre genre);
+    void save(String genreName);
 
     /**
      * Get all genres from DB.

@@ -1,7 +1,10 @@
 package org.asm.labs.service.impl;
 
+import org.asm.labs.model.Book;
 import org.asm.labs.model.Comment;
+import org.asm.labs.repository.BookRepository;
 import org.asm.labs.repository.CommentRepository;
+import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +20,20 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final BookRepository bookRepository;
+
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, BookRepository bookRepository) {
         this.commentRepository = commentRepository;
+        this.bookRepository = bookRepository;
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(Comment comment) {
-        this.commentRepository.save(comment);
+    public void save(String commentDescription, String bookId) throws BookNotExistException {
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
+        Comment comment = new Comment(commentDescription, book);
+        commentRepository.save(comment);
     }
 
     @Override

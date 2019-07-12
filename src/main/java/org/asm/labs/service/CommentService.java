@@ -8,9 +8,10 @@ public interface CommentService {
     /**
      * Add Comment to DB.
      *
-     * @param comment - Comment's name
+     * @param commentDescription - Comment's name
+     * @param bookId             - Book's id
      */
-    void save(Comment comment);
+    void save(String commentDescription, String bookId) throws BookNotExistException;
 
     /**
      * Get all Comment from DB.

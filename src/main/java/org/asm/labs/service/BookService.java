@@ -5,12 +5,14 @@ import org.asm.labs.model.Book;
 import java.util.List;
 
 public interface BookService {
-    
+
     /**
-     * Save book to DB/
-     * @param book - book
+     * Save book to DB.
+     * @param title - Book's title
+     * @param authorsNames - names of authors
+     * @param genreName - genre's name
      */
-    void save(Book book);
+    void save(String title, String authorsNames, String genreName);
 
     /**
      * Get all Books from DB.

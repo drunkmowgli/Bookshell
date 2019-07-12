@@ -1,7 +1,8 @@
-package org.asm.labs.repository;
+package org.asm.labs.repository.impl;
 
 import org.asm.labs.model.Author;
 import org.asm.labs.model.Genre;
+import org.asm.labs.repository.BookRepositoryCustom;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

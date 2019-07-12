@@ -29,7 +29,7 @@ class CommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;
-    
+
     @Autowired
     private BookRepository bookRepository;
 
@@ -37,9 +37,9 @@ class CommentRepositoryTest {
     @Test
     void shouldSaveCommentInfo() {
         Book book = new Book(
-            "Book Test",
-            Collections.singleton(new Author("Author Test")),
-            new Genre("Genre Test")
+                "Book Test",
+                Collections.singleton(new Author("Author Test")),
+                new Genre("Genre Test")
         );
         bookRepository.save(book);
         Book repoBook = bookRepository.findAll().get(0);
@@ -82,6 +82,32 @@ class CommentRepositoryTest {
         commentRepository.save(comment);
         commentRepository.delete(comment);
         assertThat(commentRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @DisplayName("При удалении книги, должен удалять комментарий")
+    @Test
+    void shouldRemoveBookFromCommentWhenRemovingBook() {
+        Book bookOne = new Book(
+                "Book Test 1",
+                Collections.singleton(new Author("Author Test 1")),
+                new Genre("Genre Test 1")
+        );
+        Book bookTwo = new Book(
+                "Book Test 2",
+                Collections.singleton(new Author("Author Test 2")),
+                new Genre("Genre Test 2")
+        );
+        bookRepository.save(bookOne);
+        bookRepository.save(bookTwo);
+        Comment commentOne = new Comment("Comment Test One", bookRepository.findAll().get(0));
+        Comment commentTwo = new Comment("Comment Test Two", bookRepository.findAll().get(1));
+        commentRepository.save(commentOne);
+        commentRepository.save(commentTwo);
+        Book deletingBook = bookRepository.findAll().get(0);
+        long bookRepoSizeBeforeDelete = bookRepository.findAll().size();
+        bookRepository.delete(deletingBook);
+        long bookRepoSizeAfterDelete = bookRepository.findAll().size();
+        assertThat(bookRepoSizeAfterDelete).isLessThan(bookRepoSizeBeforeDelete);
     }
 
     @DisplayName("Должен вернуть количество комментариев")

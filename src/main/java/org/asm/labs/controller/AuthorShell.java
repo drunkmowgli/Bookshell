@@ -1,7 +1,6 @@
 package org.asm.labs.controller;
 
 
-import org.asm.labs.model.Author;
 import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class AuthorShell {
 
     @ShellMethod("save author")
     public void add_author(@ShellOption String authorName) {
-        authorService.save(new Author(authorName));
+        authorService.save(authorName);
     }
 
     @ShellMethod("get all")
@@ -31,16 +30,16 @@ public class AuthorShell {
     }
 
     @ShellMethod("get by id")
-    public void get_author(@ShellOption long id) {
+    public void get_author(@ShellOption String authorId) {
         try {
-            System.out.println(authorService.findById(id));
+            System.out.println(authorService.findById(authorId));
         } catch (AuthorNotExistException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @ShellMethod("delete author")
-    public void remove_author(@ShellOption long authorId) {
+    public void remove_author(@ShellOption String authorId) {
         try {
             authorService.delete(authorId);
         } catch (AuthorNotExistException e) {

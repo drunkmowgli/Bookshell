@@ -1,6 +1,8 @@
 package org.asm.labs.service.impl;
 
+import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
+import org.asm.labs.model.Genre;
 import org.asm.labs.repository.BookRepository;
 import org.asm.labs.service.AuthorService;
 import org.asm.labs.service.BookNotExistException;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
@@ -33,13 +37,26 @@ public class BookServiceImpl implements BookService {
         this.authorService = authorService;
         this.genreService = genreService;
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(Book book) {
+    public void save(String title, String authorsNames, String genreName) {
+        String[] eachAuthorsName = authorsNames.split(",");
+        Set<Author> authors = new HashSet<>();
+        for (String authorName :
+                eachAuthorsName) {
+            Author author = new Author(authorName);
+            authors.add(author);
+        }
+        Genre genre = new Genre(genreName);
+        Book book = new Book(
+                title,
+                authors,
+                genre
+        );
         bookRepository.save(book);
     }
-    
+
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();

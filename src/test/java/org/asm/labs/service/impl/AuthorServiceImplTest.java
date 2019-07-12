@@ -1,6 +1,5 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.model.Author;
 import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.AuthorService;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,7 @@ class AuthorServiceImplTest {
     @Test
     void shouldSaveAuthorInfo() {
         long beforeInsert = authorService.findAll().size();
-        authorService.save(new Author("Author Service #Test"));
+        authorService.save("Author Service #Test");
         long afterInsert = authorService.findAll().size();
         System.out.println(authorService.findAll());
         assertThat(afterInsert).isGreaterThan(beforeInsert);
@@ -42,8 +41,7 @@ class AuthorServiceImplTest {
     @DisplayName("Должен загружать информацию о нужном авторе")
     @Test
     void shouldFindExpectedAuthorById() throws AuthorNotExistException {
-        Author author = new Author("Author Service #Test");
-        authorService.save(author);
+        authorService.save("Author Service #Test");
         String authorId = authorService.findAll().get(0).getId();
         assertThat(authorId).isNotNull();
         assertEquals("Author Service #Test", authorService.findById(authorId).getName());
@@ -59,20 +57,12 @@ class AuthorServiceImplTest {
     @DisplayName("Должен удалять автора")
     @Test
     void shouldRemoveAuthor() throws AuthorNotExistException {
-        Author author = new Author("Author Service #Test");
-        authorService.save(author);
+        authorService.save("Author Service #Test");
         long beforeDelete = authorService.findAll().size();
         String authorId = authorService.findAll().get(0).getId();
         authorService.delete(authorId);
         long afterDelete = authorService.findAll().size();
         assertThat(afterDelete).isLessThan(beforeDelete);
-    }
-
-    @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
-    @Test
-    void shouldThrowAuthorNotExistExceptionWhenAuthorNotExistOnRemove() {
-        assertThrows(AuthorNotExistException.class,
-                () -> authorService.delete("123"));
     }
 
     @DisplayName("Должен вернуть количество авторов")

@@ -21,13 +21,14 @@ public class GenreServiceImpl implements GenreService {
     public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
-    
+
     @Override
-    public void save(Genre genre) {
+    public void save(String genreName) {
+        Genre genre = new Genre(genreName);
         genreRepository.save(genre);
-        
+
     }
-    
+
     @Override
     public List<Genre> findAll() {
         return genreRepository.findAll();
@@ -37,13 +38,13 @@ public class GenreServiceImpl implements GenreService {
     public Genre findById(String genreId) throws GenreNotExistException {
         return genreRepository.findById(genreId).orElseThrow(GenreNotExistException::new);
     }
-    
+
     @Override
     public void remove(String genreId) throws GenreNotExistException {
-        Genre genre = genreRepository.findById(genreId).orElseThrow();
+        Genre genre = genreRepository.findById(genreId).orElseThrow(GenreNotExistException::new);
         genreRepository.delete(genre);
     }
-    
+
     @Override
     public long count() {
         return genreRepository.count();

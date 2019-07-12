@@ -9,9 +9,9 @@ public interface AuthorService {
     /**
      * Add Author to DB.
      *
-     * @param author - Author's name
+     * @param authorName - Author's name
      */
-    void save(Author author);
+    void save(String authorName);
 
     /**
      * Get all Authors from DB.

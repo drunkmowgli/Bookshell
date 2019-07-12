@@ -14,37 +14,38 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class AuthorServiceImpl implements AuthorService {
-    
+
     private final AuthorRepository authorRepository;
-    
+
     @Autowired
     public AuthorServiceImpl(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(Author author) {
+    public void save(String authorName) {
+        Author author = new Author(authorName);
         authorRepository.save(author);
     }
-    
+
     @Override
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
-    
+
     @Override
     public Author findById(String authorId) throws AuthorNotExistException {
         return authorRepository.findById(authorId).orElseThrow(AuthorNotExistException::new);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void delete(String authorId) throws AuthorNotExistException {
         Author author = authorRepository.findById(authorId).orElseThrow(AuthorNotExistException::new);
         authorRepository.delete(author);
     }
-    
+
     @Override
     public long count() {
         return authorRepository.count();

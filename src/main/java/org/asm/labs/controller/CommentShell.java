@@ -1,9 +1,6 @@
 package org.asm.labs.controller;
 
-import org.asm.labs.model.Book;
-import org.asm.labs.model.Comment;
 import org.asm.labs.service.BookNotExistException;
-import org.asm.labs.service.BookService;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +13,17 @@ public class CommentShell {
 
     private final CommentService commentService;
 
-    private final BookService bookService;
 
     @Autowired
-    public CommentShell(CommentService commentService, BookService bookService) {
+    public CommentShell(CommentService commentService) {
         this.commentService = commentService;
-        this.bookService = bookService;
     }
 
     @ShellMethod("save comment")
     public void add_comment(@ShellOption String commentDescription,
-                            @ShellOption long bookId) {
+                            @ShellOption String bookId) {
         try {
-            Book book = bookService.findById(bookId);
-            commentService.save(new Comment(commentDescription, book));
+            commentService.save(commentDescription, bookId);
         } catch (BookNotExistException e) {
             System.out.println(e.getMessage());
         }
@@ -42,16 +36,16 @@ public class CommentShell {
     }
 
     @ShellMethod("get by id")
-    public void get_comment(@ShellOption long id) {
+    public void get_comment(@ShellOption String commentId) {
         try {
-            System.out.println(commentService.findById(id));
+            System.out.println(commentService.findById(commentId));
         } catch (CommentNotExistException e) {
             System.out.println(e.getMessage());
         }
     }
 
     @ShellMethod("delete comment")
-    public void remove_comment(@ShellOption long commentId) {
+    public void remove_comment(@ShellOption String commentId) {
         try {
             commentService.remove(commentId);
         } catch (CommentNotExistException e) {

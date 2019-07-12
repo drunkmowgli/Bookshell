@@ -1,12 +1,14 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.model.Comment;
+import org.asm.labs.service.BookNotExistException;
+import org.asm.labs.service.BookService;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 
@@ -16,19 +18,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Comment Service test")
 @DataMongoTest
-@Import({CommentServiceImpl.class})
+@Import({CommentServiceImpl.class,
+        BookServiceImpl.class,
+        AuthorServiceImpl.class,
+        GenreServiceImpl.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ComponentScan("org.asm.labs.events")
 class CommentServiceImplTest {
 
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private BookService bookService;
+
 
     @DisplayName("Должен корректно сохранять информацию о комментарии")
     @Test
-    void shouldSaveCommentInfo() {
+    void shouldSaveCommentInfo() throws BookNotExistException {
+        bookService.save("Book Test", "Author Test", "Genre  Test");
         long beforeInsert = commentService.findAll().size();
-        commentService.save(new Comment("Comment Service #Test"));
+        commentService.save("Comment Service #Test", bookService.findAll().get(0).getId());
         long afterInsert = commentService.findAll().size();
         assertThat(beforeInsert).isLessThan(afterInsert);
     }
@@ -41,8 +51,9 @@ class CommentServiceImplTest {
 
     @DisplayName("Должен загружать информацию о нужном комментарии")
     @Test
-    void shouldFindExpectedCommentById() throws CommentNotExistException {
-        commentService.save(new Comment("Comment Service #Test"));
+    void shouldFindExpectedCommentById() throws CommentNotExistException, BookNotExistException {
+        bookService.save("Book Test", "Author Test", "Genre  Test");
+        commentService.save("Comment Service #Test", bookService.findAll().get(0).getId());
         String commentId = commentService.findAll().get(0).getId();
         assertThat(commentService.findById(commentId)).isNotNull();
         assertEquals("Comment Service #Test", commentService.findById(commentId).getDescription());
@@ -57,20 +68,14 @@ class CommentServiceImplTest {
 
     @DisplayName("Должен удалять комментарий")
     @Test
-    void shouldRemoveComment() throws CommentNotExistException {
-        commentService.save(new Comment("Comment Service #Test"));
+    void shouldRemoveComment() throws CommentNotExistException, BookNotExistException {
+        bookService.save("Book Test", "Author Test", "Genre  Test");
+        commentService.save("Comment Service #Test", bookService.findAll().get(0).getId());
         String commentId = commentService.findAll().get(0).getId();
         long beforeDelete = commentService.findAll().size();
         commentService.remove(commentId);
         long afterDelete = commentService.findAll().size();
         assertThat(afterDelete).isLessThan(beforeDelete);
-    }
-
-    @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
-    @Test
-    void shouldThrowCommentNotExistExceptionWhenCommentNotExistOnRemove() {
-        assertThrows(CommentNotExistException.class,
-                () -> commentService.remove("123"));
     }
 
     @DisplayName("Должен вернуть количество комментариев")
