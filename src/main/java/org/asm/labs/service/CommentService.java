@@ -26,14 +26,14 @@ public interface CommentService {
      *
      * @return Author
      */
-    Comment findById(long commentId) throws CommentNotExistException;
+    Comment findById(String commentId) throws CommentNotExistException;
 
     /**
      * Remove Comment from DB.
      *
      * @param commentId - Comment's ID
      */
-    void remove(long commentId) throws CommentNotExistException;
+    void remove(String commentId) throws CommentNotExistException;
 
     /**
      * Count number of Comments in DB.

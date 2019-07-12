@@ -6,15 +6,17 @@ import org.asm.labs.service.AuthorService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Author Service test")
-@DataJpaTest
+@DataMongoTest
 @Import({AuthorServiceImpl.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AuthorServiceImplTest {
 
     @Autowired
@@ -27,34 +29,41 @@ class AuthorServiceImplTest {
         long beforeInsert = authorService.findAll().size();
         authorService.save(new Author("Author Service #Test"));
         long afterInsert = authorService.findAll().size();
+        System.out.println(authorService.findAll());
         assertThat(afterInsert).isGreaterThan(beforeInsert);
     }
 
     @DisplayName("Должен вернуть информацию о всех авторах")
     @Test
     void shouldReturnCorrectAuthorsListWithAllInfo() {
-        assertFalse(authorService.findAll().isEmpty());
+        assertTrue(authorService.findAll().isEmpty());
     }
 
     @DisplayName("Должен загружать информацию о нужном авторе")
     @Test
     void shouldFindExpectedAuthorById() throws AuthorNotExistException {
-        assertEquals(1, authorService.findById(1).getId());
-        assertEquals("Stan Lee", authorService.findById(1).getName());
+        Author author = new Author("Author Service #Test");
+        authorService.save(author);
+        String authorId = authorService.findAll().get(0).getId();
+        assertThat(authorId).isNotNull();
+        assertEquals("Author Service #Test", authorService.findById(authorId).getName());
     }
 
     @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
     @Test
     void shouldThrowAuthorNotExistExceptionWhenAuthorNotExist() {
         assertThrows(AuthorNotExistException.class,
-                () -> authorService.findById(10L));
+                () -> authorService.findById("123"));
     }
 
     @DisplayName("Должен удалять автора")
     @Test
     void shouldRemoveAuthor() throws AuthorNotExistException {
+        Author author = new Author("Author Service #Test");
+        authorService.save(author);
         long beforeDelete = authorService.findAll().size();
-        authorService.delete(1);
+        String authorId = authorService.findAll().get(0).getId();
+        authorService.delete(authorId);
         long afterDelete = authorService.findAll().size();
         assertThat(afterDelete).isLessThan(beforeDelete);
     }
@@ -63,7 +72,7 @@ class AuthorServiceImplTest {
     @Test
     void shouldThrowAuthorNotExistExceptionWhenAuthorNotExistOnRemove() {
         assertThrows(AuthorNotExistException.class,
-                () -> authorService.delete(10L));
+                () -> authorService.delete("123"));
     }
 
     @DisplayName("Должен вернуть количество авторов")

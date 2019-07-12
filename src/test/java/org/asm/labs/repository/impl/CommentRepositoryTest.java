@@ -1,13 +1,19 @@
 package org.asm.labs.repository.impl;
 
+import org.asm.labs.model.Author;
+import org.asm.labs.model.Book;
 import org.asm.labs.model.Comment;
+import org.asm.labs.model.Genre;
+import org.asm.labs.repository.BookRepository;
 import org.asm.labs.repository.CommentRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -18,18 +24,30 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("Comment Repository test")
 @DataMongoTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ComponentScan("org.asm.labs.events")
 class CommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;
+    
+    @Autowired
+    private BookRepository bookRepository;
 
     @DisplayName("Должен корректно сохранять всю информацию о комментарии")
     @Test
     void shouldSaveCommentInfo() {
-        Comment comment = new Comment("Comment Test");
+        Book book = new Book(
+            "Book Test",
+            Collections.singleton(new Author("Author Test")),
+            new Genre("Genre Test")
+        );
+        bookRepository.save(book);
+        Book repoBook = bookRepository.findAll().get(0);
+        Comment comment = new Comment("Comment Test", repoBook);
         Comment actualComment = commentRepository.save(comment);
         assertThat(actualComment.getId()).isNotNull();
         assertThat(actualComment.getDescription()).isEqualTo(comment.getDescription());
+        System.out.println(commentRepository.findAll());
     }
 
 

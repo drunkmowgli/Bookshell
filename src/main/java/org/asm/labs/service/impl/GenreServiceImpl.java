@@ -14,27 +14,39 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class GenreServiceImpl implements GenreService {
-    
+
     private final GenreRepository genreRepository;
-    
+
     @Autowired
     public GenreServiceImpl(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
     
     @Override
-    public List<Genre> findAll() {
-        return genreRepository.findAll();
+    public void save(Genre genre) {
+        genreRepository.save(genre);
+        
     }
     
     @Override
-    public Genre findById(long id) throws GenreNotExistException {
-        return genreRepository.findById(id).orElseThrow(GenreNotExistException::new);
+    public List<Genre> findAll() {
+        return genreRepository.findAll();
+    }
+
+    @Override
+    public Genre findById(String genreId) throws GenreNotExistException {
+        return genreRepository.findById(genreId).orElseThrow(GenreNotExistException::new);
+    }
+    
+    @Override
+    public void remove(String genreId) throws GenreNotExistException {
+        Genre genre = genreRepository.findById(genreId).orElseThrow();
+        genreRepository.delete(genre);
     }
     
     @Override
     public long count() {
         return genreRepository.count();
     }
-    
+
 }

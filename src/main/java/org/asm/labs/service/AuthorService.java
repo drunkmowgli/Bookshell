@@ -27,14 +27,14 @@ public interface AuthorService {
      *
      * @return Author
      */
-    Author findById(long authorId) throws AuthorNotExistException;
+    Author findById(String authorId) throws AuthorNotExistException;
 
     /**
      * Remove Author from DB.
      *
      * @param authorId - Author's id
      */
-    void delete(long authorId) throws AuthorNotExistException;
+    void delete(String authorId) throws AuthorNotExistException;
 
     /**
      * Count number of Authors in DB.
