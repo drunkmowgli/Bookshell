@@ -1,74 +1,79 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.service.AuthorService;
+import lombok.SneakyThrows;
+import org.asm.labs.model.Author;
+import org.asm.labs.model.Book;
+import org.asm.labs.model.Genre;
+import org.asm.labs.repository.BookRepository;
 import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.shell.jline.InteractiveShellApplicationRunner;
+import org.springframework.shell.jline.ScriptShellApplicationRunner;
+
+import java.util.Collections;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @DisplayName("Book Service test")
-@DataMongoTest
-@Import({BookServiceImpl.class,
-        AuthorServiceImpl.class,
-        GenreServiceImpl.class})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@ComponentScan("org.asm.labs.events")
+@SpringBootTest(properties = {
+    InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
+    ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
+})
 class BookServiceImplTest {
 
     @Autowired
     BookService bookService;
 
-    @Autowired
-    AuthorService authorService;
-
-    @Autowired
-    GenreService genreService;
+    @MockBean
+    BookRepository bookRepository;
+    
+    @Captor
+    ArgumentCaptor<Book> captor;
 
 
     @DisplayName("Должен корректно сохранять всю информацию о книге")
     @Test
     void shouldSaveBookInfo() {
-        long beforeInsert = bookService.findAll().size();
-        bookService.save(
-                "Book Service #Test",
-                "Author #Test One,Author #Test Two",
-                "Genre #Test");
-        System.out.println(bookService.findAll());
-        long afterInsert = bookService.findAll().size();
-        assertThat(afterInsert).isGreaterThan(beforeInsert);
+        bookService.save("Book Service #Test",
+            "Author Service #Test",
+            "Genre Service #Test"
+            );
+        verify(bookRepository).save(captor.capture());
+        assertEquals("Book Service #Test", captor.getValue().getTitle());
     }
 
 
     @DisplayName("Должен загружать список всех книг с полной информацией о них")
     @Test
     void shouldReturnCorrectBooksListWithAllInfo() {
-        bookService.save(
-                "Book Service #Test",
-                "Author #Test One,Author #Test Two",
-                "Genre #Test");
-        assertFalse(bookService.findAll().isEmpty());
+        assertTrue(bookService.findAll().isEmpty());
     }
 
     @DisplayName("Должен загружать информацию о нужной книги")
     @Test
-    void shouldFindExpectedBookById() throws BookNotExistException {
-        bookService.save(
+    @SneakyThrows
+    void shouldFindExpectedBookById() {
+        when(bookRepository.findById("1234567890")).thenReturn(Optional.of(
+            new Book(
                 "Book Service #Test",
-                "Author #Test One,Author #Test Two",
-                "Genre #Test");
-        String bookId = bookService.findAll().get(0).getId();
-        assertThat(bookId).isNotNull();
-        assertEquals("Book Service #Test", bookService.findById(bookId).getTitle());
+                Collections.singleton(new Author("Author Service #Test")),
+                new Genre("Genre Service #Test")
+            )
+        ));
+        String actualBookTitle = bookRepository.findById("1234567890").orElseThrow().getTitle();
+        assertEquals("Book Service #Test", actualBookTitle);
     }
 
     @DisplayName("Должен выбрасывать исключение BookNotExistException, если книги не существует")
@@ -81,15 +86,16 @@ class BookServiceImplTest {
     @DisplayName("Должен удалить книгу")
     @Test
     void shouldRemoveBook() throws BookNotExistException {
-        bookService.save(
+        when(bookRepository.findById("1234567890")).thenReturn(Optional.of(
+            new Book(
                 "Book Service #Test",
-                "Author #Test One,Author #Test Two",
-                "Genre #Test");
-        long beforeDelete = bookService.findAll().size();
-        String bookId = bookService.findAll().get(0).getId();
-        bookService.remove(bookId);
-        long afterDelete = bookService.findAll().size();
-        assertThat(afterDelete).isLessThan(beforeDelete);
+                Collections.singleton(new Author("Author Service #Test")),
+                new Genre("Genre Service #Test")
+            )
+        ));
+        bookService.remove("1234567890");
+        verify(bookRepository).delete(captor.capture());
+        assertEquals("Book Service #Test", captor.getValue().getTitle());
     }
 
     @DisplayName("Должен выбросить исключение на удалении книги, если такой книги не существует")
