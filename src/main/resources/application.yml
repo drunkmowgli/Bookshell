@@ -1,16 +1,5 @@
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    initialization-mode: always
-    url: jdbc:postgresql://localhost:5432/bookshell
-    username: prod_user
-    password: prod_password
-  jpa:
-    hibernate.ddl-auto: create
-    generate-ddl: false
-    show-sql: false
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
+  data:
+    mongodb:
+      host: localhost
+      port: 27017

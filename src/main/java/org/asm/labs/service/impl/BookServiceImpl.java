@@ -4,7 +4,10 @@ import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
 import org.asm.labs.model.Genre;
 import org.asm.labs.repository.BookRepository;
-import org.asm.labs.service.*;
+import org.asm.labs.service.AuthorService;
+import org.asm.labs.service.BookNotExistException;
+import org.asm.labs.service.BookService;
+import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -17,15 +20,15 @@ import java.util.Set;
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class BookServiceImpl implements BookService {
-    
-    
+
+
     private final BookRepository bookRepository;
-    
+
     private final AuthorService authorService;
-    
+
     private final GenreService genreService;
-    
-    
+
+
     @Autowired
     public BookServiceImpl(BookRepository bookRepository,
                            AuthorService authorService,
@@ -34,41 +37,43 @@ public class BookServiceImpl implements BookService {
         this.authorService = authorService;
         this.genreService = genreService;
     }
-    
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(String title, String authorsIds, long genreId) throws AuthorNotExistException,
-        GenreNotExistException {
-        String[] authorsStringIds = authorsIds.split(",");
+    public void save(String title, String authorsNames, String genreName) {
+        String[] eachAuthorsName = authorsNames.split(",");
         Set<Author> authors = new HashSet<>();
-        for (String authorId :
-            authorsStringIds) {
-            Author author = authorService.findById(Integer.parseInt(authorId));
+        for (String authorName :
+                eachAuthorsName) {
+            Author author = new Author(authorName);
             authors.add(author);
         }
-        Genre genre = genreService.findById(genreId);
-        Book book = new Book(title, authors, genre);
+        Genre genre = new Genre(genreName);
+        Book book = new Book(
+                title,
+                authors,
+                genre
+        );
         bookRepository.save(book);
     }
-    
+
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
-    
+
     @Override
-    public Book findById(long id) throws BookNotExistException {
-        return bookRepository.findById(id).orElseThrow(BookNotExistException::new);
+    public Book findById(String bookId) throws BookNotExistException {
+        return bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
     }
-    
+
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void remove(long bookId) throws BookNotExistException {
+    public void remove(String bookId) throws BookNotExistException {
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
         bookRepository.delete(book);
     }
-    
+
     @Override
     public long count() {
         return bookRepository.count();

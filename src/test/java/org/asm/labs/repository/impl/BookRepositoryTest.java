@@ -7,81 +7,81 @@ import org.asm.labs.repository.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @DisplayName("Book Repository test")
-@DataJpaTest
+@DataMongoTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ComponentScan("org.asm.labs.events")
 class BookRepositoryTest {
-    
+
     @Autowired
-    BookRepository bookRepository;
-    
-    @Autowired
-    TestEntityManager em;
-    
-    
+    private BookRepository bookRepository;
+
+
     @DisplayName("Должен корректно сохранять всю информацию о книге")
     @Test
     void shouldSaveBookInfo() {
-        Set<Author> authors = Collections.singleton((em.find(Author.class, 1L)));
-        Genre genre = em.find(Genre.class, 1L);
-        Book actualAuthor = new Book("Test book", authors, genre);
-        bookRepository.save(actualAuthor);
-        assertThat(actualAuthor.getId()).isGreaterThan(0);
-        Book expectedAuthor = em.find(Book.class, actualAuthor.getId());
-        assertThat(expectedAuthor).isNotNull().matches(s -> !s.getTitle().equals(""));
+        Book book = new Book("Book Test", Collections.singleton(new Author("Author Test")),
+                new Genre("Genre Test"));
+        Book actualBook = bookRepository.save(book);
+        assertThat(actualBook.getId()).isNotNull();
+        assertThat(actualBook.getTitle()).isEqualTo(book.getTitle());
     }
-    
-    @DisplayName("Должен обновить информацию об книге")
+
+
+    @DisplayName("Должен загружать список всех книг с полной информацией о них")
     @Test
-    void shouldUpdateAuthorInfo() {
-        Set<Author> authors = Collections.singleton((em.find(Author.class, 1L)));
-        Genre genre = em.find(Genre.class, 1L);
-        Book updatedBook = new Book(1, "Updated Book", authors, genre);
-        bookRepository.save(updatedBook);
-        assertThat(updatedBook.getId()).isGreaterThan(0);
-        Book actualBook = em.find(Book.class, updatedBook.getId());
-        assertThat(actualBook).isNotNull()
-                              .matches(s -> !s.getTitle().equals(""))
-                              .matches(s -> s.getTitle().equals("Updated Book"));
+    void shouldReturnCorrectBookListWithAllInfo() {
+        List<Book> books = bookRepository.findAll();
+        assertThat(books.size()).isEqualTo(0);
     }
-    
-    @DisplayName("Должен вернуть все книги")
-    @Test
-    void shouldReturnAllBooks() {
-        assertFalse(bookRepository.findAll().isEmpty());
-    }
-    
-    @DisplayName("Должен вернуть конкретную книгу")
+
+
+    @DisplayName("Должен загружать информацию о нужной книге")
     @Test
     void shouldFindExpectedBookById() {
-        Book actualBook = bookRepository.findById(1L).orElseThrow();
-        Book expectedBook = em.find(Book.class, 1L);
-        assertThat(actualBook).isEqualToComparingFieldByField(expectedBook);
-        System.out.println(actualBook);
+        Book book = new Book("Book Test", Collections.singleton(new Author("Author Test")),
+                new Genre("Genre Test"));
+        bookRepository.save(book);
+        Book actualBook = bookRepository.findById(book.getId()).orElseThrow();
+        assertThat(actualBook.getId()).isEqualTo(book.getId());
+        assertThat(actualBook.getTitle()).isEqualTo(book.getTitle());
     }
-    
-    @DisplayName("Должен удалить книгу по id")
+
+    @DisplayName("Должен выбросить исключение NoSuchElementException если книги не существует")
+    @Test
+    void shouldThrowNoSuchElementExceptionIfBookNotExist() {
+        assertThrows(NoSuchElementException.class, () -> bookRepository.findById("123").orElseThrow());
+    }
+
+    @DisplayName("Должен удалять книгу")
     @Test
     void shouldRemoveBook() {
-        Book deletedBook = bookRepository.findById(1L).orElseThrow();
-        bookRepository.delete(deletedBook);
-        Book expectedBook = em.find(Book.class, deletedBook.getId());
-        assertThat(expectedBook).isNull();
+        Book book = new Book("Book Test", Collections.singleton(new Author("Author Test")),
+                new Genre("Genre Test"));
+        bookRepository.save(book);
+        bookRepository.delete(book);
+        assertThat(bookRepository.findAll().size()).isEqualTo(0);
     }
-    
+
     @DisplayName("Должен вернуть количество книг")
     @Test
     void count() {
+        Book book = new Book("Book Test", Collections.singleton(new Author("Author Test")),
+                new Genre("Genre Test"));
+        bookRepository.save(book);
         assertThat(bookRepository.count()).isNotNull();
     }
-    
+
 }

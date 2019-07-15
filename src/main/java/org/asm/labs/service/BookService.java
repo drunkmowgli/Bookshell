@@ -7,13 +7,12 @@ import java.util.List;
 public interface BookService {
 
     /**
-     * Add book to DB.
-     *
-     * @param title        - Book's title
-     * @param authorsNames - List of Authors
-     * @param genreId      - Genre's id
+     * Save book to DB.
+     * @param title - Book's title
+     * @param authorsNames - names of authors
+     * @param genreName - genre's name
      */
-    void save(String title, String authorsNames, long genreId) throws AuthorNotExistException, GenreNotExistException;
+    void save(String title, String authorsNames, String genreName);
 
     /**
      * Get all Books from DB.
@@ -25,18 +24,18 @@ public interface BookService {
     /**
      * Get Book by Id
      *
-     * @param id - Book's id
+     * @param bookId - Book's id
      *
      * @return Book
      */
-    Book findById(long id) throws BookNotExistException;
+    Book findById(String bookId) throws BookNotExistException;
 
     /**
      * Remove Book from DB.
      *
-     * @param id - Book's id
+     * @param bookId - Book's id
      */
-    void remove(long id) throws BookNotExistException;
+    void remove(String bookId) throws BookNotExistException;
 
     /**
      * Count number of Books in DB.

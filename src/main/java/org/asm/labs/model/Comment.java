@@ -1,63 +1,47 @@
 package org.asm.labs.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "comment")
-@NamedEntityGraph(name = "commentGraph",
-    attributeNodes = {@NamedAttributeNode(value = "book", subgraph = "book")},
-    subgraphs = {@NamedSubgraph(name = "book", attributeNodes = {@NamedAttributeNode(value = "genre")})})
+@Document(collection = "comments")
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(name = "comment_description")
-    private String commentDescription;
+    private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "book_id")
+    @DBRef
     private Book book;
 
-    public Comment() {}
-
-    public Comment(String commentDescription) {
-        this.commentDescription = commentDescription;
+    public Comment() {
     }
 
-    public Comment(long id, String commentDescription) {
-        this.id = id;
-        this.commentDescription = commentDescription;
+    public Comment(String description) {
+        this.description = description;
     }
 
-    public Comment(String commentDescription, Book book) {
-        this.commentDescription = commentDescription;
+    public Comment(String description, Book book) {
+        this.description = description;
         this.book = book;
     }
 
-    public Book getBook() {
-        return book;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public String getCommentDescription() {
-        return commentDescription;
+    public String getDescription() {
+        return description;
     }
-    
+
     @Override
     public String toString() {
         return "Comment{" +
-            "id=" + id +
-            ", commentDescription='" + commentDescription + '\'' +
-            ", book=" + book.getId() +
-            '}';
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", book=" + book +
+                '}';
     }
 }

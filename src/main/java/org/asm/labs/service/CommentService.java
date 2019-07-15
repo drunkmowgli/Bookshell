@@ -8,9 +8,10 @@ public interface CommentService {
     /**
      * Add Comment to DB.
      *
-     * @param comment - Comment's name
+     * @param commentDescription - Comment's name
+     * @param bookId             - Book's id
      */
-    void save(Comment comment);
+    void save(String commentDescription, String bookId) throws BookNotExistException;
 
     /**
      * Get all Comment from DB.
@@ -26,14 +27,14 @@ public interface CommentService {
      *
      * @return Author
      */
-    Comment findById(long commentId) throws CommentNotExistException;
+    Comment findById(String commentId) throws CommentNotExistException;
 
     /**
      * Remove Comment from DB.
      *
      * @param commentId - Comment's ID
      */
-    void remove(long commentId) throws CommentNotExistException;
+    void remove(String commentId) throws CommentNotExistException;
 
     /**
      * Count number of Comments in DB.

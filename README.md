@@ -26,6 +26,11 @@
 Билиотеку на Spring Data JPA
 Реализовать весь функционал работы с БД в приложении книг с использованием spring-data-jpa репозиториев.
 
+# OTUS Homework 8
+
+Использовать MongoDB и spring-data для хранения информации о книгах
+Тесты можно реализовать с помощью spring-boot-starter-embedded-mongodb
+
 #### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 

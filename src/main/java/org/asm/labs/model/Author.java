@@ -1,56 +1,38 @@
 package org.asm.labs.model;
 
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.util.Set;
 
-@Entity
-@Table(name = "author")
+@Document(collection = "authors")
 public class Author {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "name")
+    private String id;
+    
     private String name;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "book_authors",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Book> books;
-
-    public Author() {}
-
-    public Author(String authorName) {
-        this.name = authorName;
+    
+    public Author() {
     }
-
-    public Author(long id, String authorName) {
-        this.id = id;
-        this.name = authorName;
+    
+    public Author(String name) {
+        this.name = name;
     }
-
-    public long getId() {
+    
+    public String getId() {
         return id;
     }
-
+    
     public String getName() {
         return name;
     }
-
+    
     @Override
     public String toString() {
         return "Author{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+            "id=" + id +
+            ", name='" + name + '\'' +
+            '}';
     }
 }
