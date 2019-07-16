@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
@@ -43,6 +44,7 @@ class AuthorServiceImplTest {
     void shouldSaveAuthorInfo() {
         authorService.save("Author Service #Test");
         verify(authorRepository).save(captor.capture());
+        assertThat(captor.getAllValues()).isNotNull();
         assertEquals("Author Service #Test", captor.getValue().getName());
         
     }
@@ -50,7 +52,8 @@ class AuthorServiceImplTest {
     @DisplayName("Должен вернуть информацию о всех авторах")
     @Test
     void shouldReturnCorrectAuthorsListWithAllInfo() {
-        assertTrue(authorService.findAll().isEmpty());
+        List<Author> authors = authorService.findAll();
+        assertTrue(authors.isEmpty());
     }
     
     @DisplayName("Должен загружать информацию о нужном авторе")
@@ -58,8 +61,8 @@ class AuthorServiceImplTest {
     @SneakyThrows
     void shouldFindExpectedAuthorById() {
         when(authorRepository.findById("1234567890")).thenReturn(Optional.of(new Author("Author Service #Test")));
-        String actualGenreName = authorService.findById("1234567890").getName();
-        assertEquals("Author Service #Test", actualGenreName);
+        String actualAuthorName = authorService.findById("1234567890").getName();
+        assertEquals("Author Service #Test", actualAuthorName);
     }
     
     @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
