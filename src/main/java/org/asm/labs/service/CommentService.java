@@ -28,6 +28,8 @@ public interface CommentService {
      * @return Author
      */
     Comment findById(String commentId) throws CommentNotExistException;
+    
+    List<Comment> findByBookId(String id);
 
     /**
      * Remove Comment from DB.

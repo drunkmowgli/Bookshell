@@ -22,6 +22,7 @@
 
 <table class="books">
     <thead>
+    <p th:text="${id}">id book</p>
     <tr>
         <th>ID</th>
         <th>Description</th>
@@ -38,5 +39,21 @@
     </tr>
     </tbody>
 </table>
+
+<!-- Comment form add -->
+<form id="add-new-comment-form" action="comments.html" th:action="@{'/books/'+ ${id} + '/comments'}" method="post">
+    <h1>Type Your Comment:</h1>
+
+    <div class="row">
+        <span>
+            <input type="text" name="description" placeholder="Comment description" size="140"/>
+        </span>
+    </div>
+
+    <div class="row">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+
 </body>
 </html>

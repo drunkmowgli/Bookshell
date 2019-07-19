@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
     <title>List of all persons</title>
@@ -36,14 +36,12 @@
             1
         </td>
         <td th:text="${book.title}">Hulk #1</td>
-        <td th:each="author : ${book.authors}">
-            <p th:text="${author.name}">
-                Stan Lee
-            </p>
+        <td>
+            <span th:each="author : ${book.authors}" th:utext="${author.name} + ' ' + '&lt;br /&gt;'">Stan Lee</span>
         </td>
         <td th:text="${book.genre}">Comics</td>
         <td>
-            <a href="add_comment_form.html" th:href="@{'/commentAddForm/' + ${book.id}}">Add comment</a>
+            <a href="comments.html" th:href="@{'/books/' + ${book.id} + '/comments'}">Comments</a>
         </td>
     </tr>
     </tbody>

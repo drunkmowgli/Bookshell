@@ -46,6 +46,11 @@ public class CommentServiceImpl implements CommentService {
     public Comment findById(String commentId) throws CommentNotExistException {
         return commentRepository.findById(commentId).orElseThrow(CommentNotExistException::new);
     }
+    
+    @Override
+    public List<Comment> findByBookId(String bookId) {
+        return commentRepository.findByBookId(bookId);
+    }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
