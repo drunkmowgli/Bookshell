@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(String title, String authorsNames, String genreName) {
+    public Book save(String title, String authorsNames, String genreName) {
         String[] eachAuthorsName = authorsNames.split(",");
         Set<Author> authors = new HashSet<>();
         for (String authorName :
@@ -55,6 +55,7 @@ public class BookServiceImpl implements BookService {
                 genre
         );
         bookRepository.save(book);
+        return book;
     }
 
     @Override

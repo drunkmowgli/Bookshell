@@ -11,8 +11,9 @@ public interface BookService {
      * @param title - Book's title
      * @param authorsNames - names of authors
      * @param genreName - genre's name
+     * @return
      */
-    void save(String title, String authorsNames, String genreName);
+    Book save(String title, String authorsNames, String genreName);
 
     /**
      * Get all Books from DB.

@@ -19,7 +19,7 @@ public class Book {
     
     @DBRef
     private Set<Author> authors;
-    
+
     public Book() {
     }
     

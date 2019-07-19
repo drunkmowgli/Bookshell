@@ -30,10 +30,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(String commentDescription, String bookId) throws BookNotExistException {
+    public Comment save(String commentDescription, String bookId) throws BookNotExistException {
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
         Comment comment = new Comment(commentDescription, book);
         commentRepository.save(comment);
+        return comment;
     }
 
     @Override
