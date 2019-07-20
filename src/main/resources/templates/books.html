@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8"/>
-    <title>List of all persons</title>
+    <title>List of all books</title>
     <style type="text/css">
         body {
             padding: 50px;
@@ -39,9 +39,12 @@
         <td>
             <span th:each="author : ${book.authors}" th:utext="${author.name} + ' ' + '&lt;br /&gt;'">Stan Lee</span>
         </td>
-        <td th:text="${book.genre}">Comics</td>
+        <td th:text="${book.genre.name}">Comics</td>
         <td>
             <a href="comments.html" th:href="@{'/books/' + ${book.id} + '/comments'}">Comments</a>
+            <form th:action="@{'/books/' + ${book.id} + '/delete'}" th:method="delete">
+                <button type="submit" th:action="@{'/books/' + ${book.id} + '/delete'}">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>

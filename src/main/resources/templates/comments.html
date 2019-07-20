@@ -8,7 +8,7 @@
             padding: 50px;
         }
 
-        .books, .books td {
+        .comments, .comments td {
             border: 1px solid lightgray;
             padding: 5px;
         }
@@ -16,13 +16,13 @@
 </head>
 <body>
 
-<!--<a href="add_book_form.html" th:href="@{/bookAddForm}">Add New Book</a>-->
+<div th:insert="add_comment_form :: comment-form"></div>
 
-<h1>Comments:</h1>
+<h1>Comments for book:</h1>
 
-<table class="books">
+
+<table class="comments">
     <thead>
-    <p th:text="${id}">id book</p>
     <tr>
         <th>ID</th>
         <th>Description</th>
@@ -40,20 +40,6 @@
     </tbody>
 </table>
 
-<!-- Comment form add -->
-<form id="add-new-comment-form" action="comments.html" th:action="@{'/books/'+ ${id} + '/comments'}" method="post">
-    <h1>Type Your Comment:</h1>
-
-    <div class="row">
-        <span>
-            <input type="text" name="description" placeholder="Comment description" size="140"/>
-        </span>
-    </div>
-
-    <div class="row">
-        <button type="submit">Submit</button>
-    </div>
-</form>
 
 </body>
 </html>

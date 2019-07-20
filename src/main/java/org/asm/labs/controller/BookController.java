@@ -8,10 +8,7 @@ import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,11 +16,12 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
-    
+
     private final CommentService commentService;
 
     @Autowired
-    public BookController(BookService bookService, CommentService commentService) {this.bookService = bookService;
+    public BookController(BookService bookService, CommentService commentService) {
+        this.bookService = bookService;
         this.commentService = commentService;
     }
 
@@ -49,7 +47,7 @@ public class BookController {
         model.addAttribute("book", book);
         return "redirect:/";
     }
-    
+
     @GetMapping("/books/{id}/comments")
     public String getComments(@PathVariable String id,
                               Model model) {
@@ -58,13 +56,20 @@ public class BookController {
         model.addAttribute("comments", comments);
         return "comments";
     }
-    
+
     @PostMapping("/books/{id}/comments")
     public String addComment(@PathVariable String id,
-                               @RequestParam String description,
-                               Model model) throws BookNotExistException {
+                             @RequestParam String description,
+                             Model model) throws BookNotExistException {
         model.addAttribute("id", id);
         commentService.save(description, id);
         return "redirect:/books/{id}/comments";
     }
+
+    @DeleteMapping("books/{id}/delete")
+    public String deleteBook(@PathVariable String id) throws BookNotExistException {
+        bookService.remove(id);
+        return "redirect:/books/";
+    }
+
 }

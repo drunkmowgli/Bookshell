@@ -45,7 +45,3 @@ View на Thymeleaf, classic Controllers.
 
 #### For production:
 `docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres`
-
-## Done:
-    1. Implemented basic functionality
-    2. Implemented JDBC to JPA with Comments

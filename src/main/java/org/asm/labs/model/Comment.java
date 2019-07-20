@@ -32,6 +32,10 @@ public class Comment {
         return id;
     }
 
+    public Book getBook() {
+        return book;
+    }
+
     public String getDescription() {
         return description;
     }

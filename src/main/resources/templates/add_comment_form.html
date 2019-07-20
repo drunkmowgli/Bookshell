@@ -24,20 +24,22 @@
 </head>
 <body>
 
-<!-- Comment form add -->
-<form id="add-new-comment-form" action="add_comment_form.html" th:action="@{/comments}" method="post">
-    <h1>Type Your Comment:</h1>
+<!-- Add comment form -->
+<div th:fragment="comment-form">
+    <form id="add-new-comment-form" action="comments.html" th:action="@{'/books/'+ ${id} + '/comments'}" method="post">
+        <h1>Type Your Comment:</h1>
 
-    <div class="row">
+        <div class="row">
         <span>
             <input type="text" name="description" placeholder="Comment description" size="140"/>
         </span>
-    </div>
+        </div>
 
-    <div class="row">
-        <button type="submit">Submit</button>
-    </div>
-</form>
+        <div class="row">
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
