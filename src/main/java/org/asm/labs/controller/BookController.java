@@ -1,10 +1,8 @@
 package org.asm.labs.controller;
 
 import org.asm.labs.model.Book;
-import org.asm.labs.model.Comment;
 import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.BookService;
-import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +15,9 @@ public class BookController {
 
     private final BookService bookService;
 
-    private final CommentService commentService;
-
     @Autowired
-    public BookController(BookService bookService, CommentService commentService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.commentService = commentService;
     }
 
 
@@ -46,24 +41,6 @@ public class BookController {
         Book book = bookService.save(title, authors, genre);
         model.addAttribute("book", book);
         return "redirect:/";
-    }
-
-    @GetMapping("/books/{id}/comments")
-    public String getComments(@PathVariable String id,
-                              Model model) {
-        model.addAttribute("id", id);
-        List<Comment> comments = commentService.findByBookId(id);
-        model.addAttribute("comments", comments);
-        return "comments";
-    }
-
-    @PostMapping("/books/{id}/comments")
-    public String addComment(@PathVariable String id,
-                             @RequestParam String description,
-                             Model model) throws BookNotExistException {
-        model.addAttribute("id", id);
-        commentService.save(description, id);
-        return "redirect:/books/{id}/comments";
     }
 
     @DeleteMapping("books/{id}/delete")
