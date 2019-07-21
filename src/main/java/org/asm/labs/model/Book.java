@@ -67,10 +67,6 @@ public class Book {
         return authors;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -78,7 +74,6 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", genre=" + genre +
                 ", authors=" + authors +
-                ", comments=" + comments +
                 '}';
     }
 }

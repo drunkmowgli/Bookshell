@@ -1,9 +1,13 @@
 package org.asm.labs.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "comment")
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class Comment {
 
     @Id
