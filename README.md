@@ -31,12 +31,17 @@
 Использовать MongoDB и spring-data для хранения информации о книгах
 Тесты можно реализовать с помощью spring-boot-starter-embedded-mongodb
 
+# OTUS Homework 9
+
+CRUD приложение с Web UI и хранением данных в БД
+Создайте приложение с хранением сущностей в БД (можно взять DAOs из прошлых занятий)
+
+Использовать классический View, предусмотреть страницу отображения всех сущностей и создания/редактирования.
+
+View на Thymeleaf, classic Controllers.
+
 #### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 
 #### For production:
 `docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres`
-
-## Done:
-    1. Implemented basic functionality
-    2. Implemented JDBC to JPA with Comments

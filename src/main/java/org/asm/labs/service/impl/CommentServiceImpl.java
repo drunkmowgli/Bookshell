@@ -30,10 +30,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(String commentDescription, String bookId) throws BookNotExistException {
+    public Comment save(String commentDescription, String bookId) throws BookNotExistException {
         Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
         Comment comment = new Comment(commentDescription, book);
         commentRepository.save(comment);
+        return comment;
     }
 
     @Override
@@ -44,6 +45,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Comment findById(String commentId) throws CommentNotExistException {
         return commentRepository.findById(commentId).orElseThrow(CommentNotExistException::new);
+    }
+    
+    @Override
+    public List<Comment> findByBookId(String bookId) {
+        return commentRepository.findByBookId(bookId);
     }
 
     @Override

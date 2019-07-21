@@ -14,8 +14,6 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -27,10 +25,7 @@ import static org.mockito.Mockito.when;
 
 
 @DisplayName("Book Service test")
-@SpringBootTest(properties = {
-    InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-    ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@SpringBootTest
 class BookServiceImplTest {
 
     @Autowired
@@ -38,7 +33,7 @@ class BookServiceImplTest {
 
     @MockBean
     BookRepository bookRepository;
-    
+
     @Captor
     ArgumentCaptor<Book> captor;
 
@@ -47,9 +42,9 @@ class BookServiceImplTest {
     @Test
     void shouldSaveBookInfo() {
         bookService.save("Book Service #Test",
-            "Author Service #Test",
-            "Genre Service #Test"
-            );
+                "Author Service #Test",
+                "Genre Service #Test"
+        );
         verify(bookRepository).save(captor.capture());
         assertEquals("Book Service #Test", captor.getValue().getTitle());
     }
@@ -66,11 +61,11 @@ class BookServiceImplTest {
     @SneakyThrows
     void shouldFindExpectedBookById() {
         when(bookRepository.findById("1234567890")).thenReturn(Optional.of(
-            new Book(
-                "Book Service #Test",
-                Collections.singleton(new Author("Author Service #Test")),
-                new Genre("Genre Service #Test")
-            )
+                new Book(
+                        "Book Service #Test",
+                        Collections.singleton(new Author("Author Service #Test")),
+                        new Genre("Genre Service #Test")
+                )
         ));
         String actualBookTitle = bookRepository.findById("1234567890").orElseThrow().getTitle();
         assertEquals("Book Service #Test", actualBookTitle);
@@ -87,11 +82,11 @@ class BookServiceImplTest {
     @Test
     void shouldRemoveBook() throws BookNotExistException {
         when(bookRepository.findById("1234567890")).thenReturn(Optional.of(
-            new Book(
-                "Book Service #Test",
-                Collections.singleton(new Author("Author Service #Test")),
-                new Genre("Genre Service #Test")
-            )
+                new Book(
+                        "Book Service #Test",
+                        Collections.singleton(new Author("Author Service #Test")),
+                        new Genre("Genre Service #Test")
+                )
         ));
         bookService.remove("1234567890");
         verify(bookRepository).delete(captor.capture());

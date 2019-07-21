@@ -4,10 +4,8 @@ import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
 import org.asm.labs.model.Genre;
 import org.asm.labs.repository.BookRepository;
-import org.asm.labs.service.AuthorService;
 import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -24,23 +22,15 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
-
-    private final GenreService genreService;
-
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository,
-                           AuthorService authorService,
-                           GenreService genreService) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
-        this.authorService = authorService;
-        this.genreService = genreService;
     }
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(String title, String authorsNames, String genreName) {
+    public Book save(String title, String authorsNames, String genreName) {
         String[] eachAuthorsName = authorsNames.split(",");
         Set<Author> authors = new HashSet<>();
         for (String authorName :
@@ -55,6 +45,7 @@ public class BookServiceImpl implements BookService {
                 genre
         );
         bookRepository.save(book);
+        return book;
     }
 
     @Override

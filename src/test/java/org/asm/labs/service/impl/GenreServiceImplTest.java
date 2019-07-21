@@ -12,8 +12,6 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
 
 import java.util.Optional;
 
@@ -24,18 +22,15 @@ import static org.mockito.Mockito.when;
 
 
 @DisplayName("Genre Service test")
-@SpringBootTest(properties = {
-    InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-    ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-})
+@SpringBootTest
 class GenreServiceImplTest {
 
     @Autowired
     GenreService genreService;
-    
+
     @MockBean
     GenreRepository genreRepository;
-    
+
     @Captor
     ArgumentCaptor<Genre> captor;
 

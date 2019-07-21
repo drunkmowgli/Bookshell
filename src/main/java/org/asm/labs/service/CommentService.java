@@ -7,11 +7,11 @@ import java.util.List;
 public interface CommentService {
     /**
      * Add Comment to DB.
-     *
-     * @param commentDescription - Comment's name
+     *  @param commentDescription - Comment's name
      * @param bookId             - Book's id
+     * @return
      */
-    void save(String commentDescription, String bookId) throws BookNotExistException;
+    Comment save(String commentDescription, String bookId) throws BookNotExistException;
 
     /**
      * Get all Comment from DB.
@@ -28,6 +28,8 @@ public interface CommentService {
      * @return Author
      */
     Comment findById(String commentId) throws CommentNotExistException;
+    
+    List<Comment> findByBookId(String id);
 
     /**
      * Remove Comment from DB.
