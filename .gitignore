@@ -3,6 +3,9 @@ build/
 code/
 lib/
 target/
+frontend/node/
+frontend/node_modules/
+frontend/dist/
 
 *.sw?
 .#*
