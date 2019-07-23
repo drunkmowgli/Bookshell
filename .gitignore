@@ -12,6 +12,7 @@ frontend/dist/
 *#
 *~
 *.iml
+*.log
 .*.md.html
 .classpath
 .idea
@@ -19,6 +20,8 @@ frontend/dist/
 .project
 .settings
 .springBeans
+frontend/.browserslistrc
+frontend/.eslintrc.js
 build.log
 spring-shell.log
 MANIFEST.MF
