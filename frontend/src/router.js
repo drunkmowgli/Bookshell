@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import BookList from '@/components/BookList'
+import Book from '@/components/Book'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -16,6 +17,12 @@ export default new Router({
       path: '/books',
       name: 'BookList',
       component: BookList
+    },
+    {
+      path: '/books/:id',
+      name: 'Book',
+      component: Book,
+      props: true
     }
   ]
 })

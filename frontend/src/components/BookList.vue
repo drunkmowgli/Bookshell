@@ -5,7 +5,9 @@
         <ul>
             <li v-for="book in books"
                 :key="book.id">
-                <a href="#" @click="showBookDetails(book.id)">{{ book.title }}</a>
+                <router-link :to="{ name: 'Book', params: {id: book.id} }">
+                    <a href="#">{{ book.title }}</a>
+                </router-link>
             </li>
         </ul>
     </div>
@@ -18,7 +20,6 @@
     name: 'BookList',
     data () {
         return {
-            book: '',
             books: [],
             errors: ''
         }
@@ -28,15 +29,6 @@
             api.getBooks()
                 .then(response => {
                     this.books = response.data
-                })
-                .catch(e => {
-                    this.errors = e
-                })
-        },
-        showBookDetails (bookId) {
-            api.getBook(bookId)
-                .then(response => {
-                    this.book = response.data
                 })
                 .catch(e => {
                     this.errors = e
