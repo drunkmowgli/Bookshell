@@ -1,6 +1,5 @@
 <template>
     <div id="books">
-        <button @click="showBooks()">Get Books</button>
         <h1 v-if="books"></h1>
         <ul>
             <li v-for="book in books"
@@ -17,25 +16,25 @@
     import api from './backend-api';
 
     export default {
-    name: 'BookList',
-    data () {
-        return {
-            books: [],
-            errors: ''
-        }
-    },
-    methods: {
-        showBooks () {
-            api.getBooks()
-                .then(response => {
-                    this.books = response.data
-                })
-                .catch(e => {
-                    this.errors = e
-                })
+        name: 'BookList',
+        data() {
+            return {
+                books: this.showBooks(),
+                errors: ''
+            }
+        },
+        methods: {
+            showBooks() {
+                return api.getBooks()
+                    .then(response => {
+                        this.books = response.data
+                    })
+                    .catch(e => {
+                        this.errors = e
+                    })
+            }
         }
     }
-}
 </script>
 
 <style scoped>

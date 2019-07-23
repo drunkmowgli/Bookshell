@@ -1,10 +1,23 @@
 <template>
     <div id="book">
         <h1>Book Page</h1>
-        {{ book.id }}
-        {{ book.title }}
-        {{ book.authors }}
-        {{ book.genre }}
+        <!--        {{ book.id }}-->
+        <!--        {{ book.title }}-->
+        <!--        {{ book.authors }}-->
+        <!--        {{ book.genre }}-->
+        <table>
+            <tr>
+                <th>{{ book.id }}</th>
+                <th> {{ book.title }}</th>
+                <th v-for="author in book.authors"
+                    :key="author.id">
+                    {{ author.name }}
+                </th>
+                <th>
+                    {{ book.genre }}
+                </th>
+            </tr>
+        </table>
     </div>
 </template>
 
