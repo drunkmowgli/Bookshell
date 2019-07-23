@@ -1,0 +1,40 @@
+sudo: required
+
+language: java
+jdk: openjdk11
+
+services: docker
+
+before_script:
+  - docker run --name postgres -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -e POSTGRES_DB=testdb -d postgres
+
+cache:
+  directories:
+    - $HOME/.m2
+
+before_deploy:
+  - git config --local user.name "drunkmowgli"
+  - git config --local user.email "drunkmowgli@gmail.com"
+  - export NAME="$(basename target/Bookshell-*.jar .jar)"
+  - git tag $NAME
+
+jobs:
+  include:
+    - stage: test
+      script: mvn test -B
+    - stage: package
+      script: mvn package -Dmaven.test.skip=true -B
+    - stage: GitHub Release
+      script: echo "Deploying to GitHub releases ..."
+      deploy:
+        - provider: releases
+          overwrite: true
+          api_key: $GITHUB_DEPLOY_KEY
+          file_glob: true
+          file: "target/Bookshell-*.jar"
+          skip_cleanup: true
+          name: $NAME
+          on:
+            repo: drunkmowgli/Bookshell
+            branch: master
+            tags: false
