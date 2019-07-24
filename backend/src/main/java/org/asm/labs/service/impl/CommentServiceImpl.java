@@ -34,6 +34,11 @@ public class CommentServiceImpl implements CommentService {
     }
     
     @Override
+    public List<Comment> findByBookId(long id) {
+        return commentRepository.findByBookId(id);
+    }
+    
+    @Override
     public Comment findById(long commentId) throws CommentNotExistException {
         return commentRepository.findById(commentId).orElseThrow(CommentNotExistException::new);
     }

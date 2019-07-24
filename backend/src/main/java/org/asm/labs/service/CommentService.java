@@ -18,6 +18,15 @@ public interface CommentService {
      * @return List of Comments
      */
     List<Comment> findAll();
+    
+    /**
+     * Get all Comment for Book from DB.
+     *
+     * @param id - book's id
+     *
+     * @return List of books's comments
+     */
+    List<Comment> findByBookId(long id);
 
     /**
      * Get Author from DB by id.

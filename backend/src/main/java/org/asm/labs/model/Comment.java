@@ -17,8 +17,9 @@ public class Comment {
     @Column(name = "comment_description")
     private String commentDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
 
     public Comment() {}

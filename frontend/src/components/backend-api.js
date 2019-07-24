@@ -12,5 +12,11 @@ export default {
     },
     getBook(bookId) {
         return HTTP.get('/books/' + bookId)
+    },
+    deleteBook(bookId) {
+        return HTTP.delete('/books/' + bookId + '/delete')
+    },
+    getComments(bookId) {
+        return HTTP.get('/books/' + bookId +'/comments')
     }
 }
