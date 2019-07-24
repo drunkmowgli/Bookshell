@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import BookList from '@/components/BookList'
-import Book from '@/components/Book'
+import BookItem from '@/components/BookItem'
 
 Vue.use(Router);
 
@@ -20,8 +20,8 @@ export default new Router({
     },
     {
       path: '/books/:id',
-      name: 'Book',
-      component: Book,
+        name: 'BookItem',
+        component: BookItem,
       props: true
     }
   ]

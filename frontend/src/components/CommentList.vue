@@ -1,20 +1,25 @@
 <template>
-    <div class="Comments">
-        <h1>Comments</h1>
-        <ul>
-            <li v-for="comment in comments"
-                :key="comment.id">
-                {{ comment.commentDescription }}
-            </li>
-        </ul>
+    <div>
+        <div class="comments">
+            <h1>Comments</h1>
+            <ul>
+                <li v-for="comment in comments"
+                    :key="comment.id">
+                    {{ comment.commentDescription }}
+                </li>
+            </ul>
+        </div>
+        <CommentAddForm :book-id="bookId"></CommentAddForm>
     </div>
 </template>
 
 <script>
     import api from './backend-api'
+    import CommentAddForm from "./CommentAddForm";
 
     export default {
-        name: "Comments",
+        name: "CommentList",
+        components: {CommentAddForm},
         props: {
             bookId: Number
         },

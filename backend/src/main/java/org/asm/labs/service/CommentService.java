@@ -7,10 +7,11 @@ import java.util.List;
 public interface CommentService {
     /**
      * Add Comment to DB.
-     *
-     * @param comment - Comment's name
+     *  @param commentDescription - Comment's name
+     * @param id - book's id
+     * @return Comment
      */
-    void save(Comment comment);
+    Comment save(String commentDescription, long id);
 
     /**
      * Get all Comment from DB.

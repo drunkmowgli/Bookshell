@@ -3,9 +3,7 @@ package org.asm.labs.controller;
 import org.asm.labs.model.Comment;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +20,11 @@ public class CommentApiController {
     @GetMapping("/api/v1/books/{id}/comments")
     public List<Comment> getAllCommentToBook(@PathVariable long id) {
         return commentService.findByBookId(id);
+    }
+
+    @PostMapping("/api/v1/books/{id}/comments")
+    public Comment addComment(@RequestParam String commentDescription,
+                              @PathVariable long id) {
+        return commentService.save(commentDescription, id);
     }
 }

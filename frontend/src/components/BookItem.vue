@@ -21,21 +21,21 @@
                 </tr>
             </table>
         </div>
-        <Comments :bookId="book.id"></Comments>
+        <CommentList :book-id="book.id"></CommentList>
     </div>
 
 </template>
 
 <script>
     import api from './backend-api'
-    import Comments from '@/components/Comments'
+    import CommentList from '@/components/CommentList'
 
 
     export default {
-        name: 'Book',
+        name: 'BookItem',
         props: ['id'],
         components: {
-            Comments
+            CommentList
         },
         data() {
             return {

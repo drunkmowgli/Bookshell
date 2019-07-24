@@ -1,6 +1,8 @@
 package org.asm.labs.service.impl;
 
+import org.asm.labs.model.Book;
 import org.asm.labs.model.Comment;
+import org.asm.labs.repository.BookRepository;
 import org.asm.labs.repository.CommentRepository;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
@@ -16,16 +18,21 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     
     private final CommentRepository commentRepository;
+
+    private final BookRepository bookRepository;
     
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, BookRepository bookRepository) {
         this.commentRepository = commentRepository;
+        this.bookRepository = bookRepository;
     }
     
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(Comment comment) {
-        this.commentRepository.save(comment);
+    public Comment save(String commentDescription, long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow();
+        Comment comment = new Comment(commentDescription, book);
+        return commentRepository.save(comment);
     }
     
     @Override
