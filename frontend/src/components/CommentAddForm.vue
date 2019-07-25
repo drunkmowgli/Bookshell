@@ -27,9 +27,12 @@
             submitComment() {
                 let comment = this.comment;
                 let bookId = this.bookId;
-                console.log(comment);
-                console.log(bookId);
                 return api.addComment(comment, bookId)
+                    .then( response => {
+                        console.log(response);
+                        this.$emit('commentSubmitted');
+                    })
+
             }
         }
     }

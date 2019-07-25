@@ -23,8 +23,10 @@ public class CommentApiController {
     }
 
     @PostMapping("/api/v1/books/{id}/comments")
-    public Comment addComment(@RequestParam String commentDescription,
+    @ResponseBody
+    public Comment addComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
                               @PathVariable long id) {
+        String commentDescription = commentPostRequestBody.getCommentDescription();
         return commentService.save(commentDescription, id);
     }
 }

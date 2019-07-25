@@ -1,6 +1,5 @@
 package org.asm.labs.service.impl;
 
-import org.asm.labs.model.Comment;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +29,7 @@ class CommentServiceImplTest {
     @Test
     void shouldSaveCommentInfo() {
         long beforeInsert = commentService.findAll().size();
-        commentService.save(new Comment("Comment Service #Test"));
+        commentService.save("Comment Service #Test", 1L);
         long afterInsert = commentService.findAll().size();
         assertThat(beforeInsert).isLessThan(afterInsert);
     }

@@ -9,7 +9,7 @@
                 </li>
             </ul>
         </div>
-        <CommentAddForm :book-id="bookId"></CommentAddForm>
+        <CommentAddForm :book-id="bookId" @commentSubmitted="commentSubmittedResponse"></CommentAddForm>
     </div>
 </template>
 
@@ -38,6 +38,9 @@
                     .catch(e => {
                         this.errors = e
                     })
+            },
+            commentSubmittedResponse() {
+                this.showComments();
             }
         },
         watch: {

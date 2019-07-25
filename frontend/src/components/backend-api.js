@@ -21,7 +21,7 @@ export default {
     },
     addComment(comment, bookId) {
         return HTTP.post('/books/' + bookId + '/comments', {
-            commentDescription: comment, id: bookId
+            commentDescription: comment
         })
     }
 }
