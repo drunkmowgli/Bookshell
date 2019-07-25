@@ -1,15 +1,17 @@
 <template>
-    <div id="books">
-        <h1 v-if="books"></h1>
-        <ul>
-            <li v-for="book in books"
-                :key="book.id">
-                <router-link :to="{ name: 'BookItem', params: {id: book.id} }">
-                    <a href="#">{{ book.title }}</a>
-                </router-link>
-            </li>
-        </ul>
-    </div>
+    <v-app class="grey lighten-5">
+        <v-content class="caption grey--text">
+            <v-list class="caption lighten-5 grey">
+                <v-list-item v-for="book in books"
+                             :key="book.id" class="item">
+                    <v-btn router :to="{ name: 'BookItem', params: { id: book.id }}" class="mr-2">
+                        {{ book.title }}
+                    </v-btn>
+                </v-list-item>
+            </v-list>
+            <router-view></router-view>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -38,7 +40,16 @@
 </script>
 
 <style scoped>
-    .error {
-        color: red;
+    .item {
+        margin: 5px;
+        border-radius: 4px;
+    }
+
+    .item:hover {
+        background: dodgerblue;
+    }
+
+    .book-item-list {
+        background: grey;
     }
 </style>

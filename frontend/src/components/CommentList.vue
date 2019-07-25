@@ -1,16 +1,17 @@
 <template>
-    <div>
-        <div class="comments">
-            <h1>Comments</h1>
-            <ul>
-                <li v-for="comment in comments"
-                    :key="comment.id">
-                    {{ comment.commentDescription }}
-                </li>
-            </ul>
-        </div>
-        <CommentAddForm :book-id="bookId" @commentSubmitted="commentSubmittedResponse"></CommentAddForm>
-    </div>
+    <v-app class="comment-list">
+        <v-content class="caption grey--text">
+            <v-list class="caption lighten-5 grey">
+                <v-list-item v-for="comment in comments"
+                             :key="comment.id" class="item">
+                    <div>
+                        {{ comment.commentDescription }}
+                    </div>
+                </v-list-item>
+            </v-list>
+            <CommentAddForm :book-id="bookId" @commentSubmitted="commentSubmittedResponse"></CommentAddForm>
+        </v-content>
+    </v-app>
 </template>
 
 <script>

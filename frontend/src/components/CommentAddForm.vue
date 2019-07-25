@@ -1,13 +1,17 @@
 <template>
-    <div>
-        <div class="form-group">
-            <!--            <label for="commentDescription">CommentDescription</label>-->
-            <input type="text" name="CommentDescription" id="Comment" v-model="comment" class="form-control">
-        </div>
-        <div class="form-group">
-            <input type="submit" @click="submitComment()" name="submit" value="Submit" class="btn btn-default"/>
-        </div>
-    </div>
+    <v-card>
+        <v-card-title>
+            <h2>Add New Comment</h2>
+        </v-card-title>
+        <v-card-text>
+            <v-form class="px-3">
+                <v-textarea v-model="comment" label="Enter your comment" maxlength="140">
+                </v-textarea>
+                <v-spacer></v-spacer>
+                <v-btn @click="submitComment()" class="success mx0 mt-3">Submit comment</v-btn>
+            </v-form>
+        </v-card-text>
+    </v-card>
 </template>
 
 <script>
@@ -28,16 +32,11 @@
                 let comment = this.comment;
                 let bookId = this.bookId;
                 return api.addComment(comment, bookId)
-                    .then( response => {
-                        console.log(response);
-                        this.$emit('commentSubmitted');
-                    })
-
+                    .then(this.$emit('commentSubmitted'))
             }
         }
     }
 </script>
 
 <style scoped>
-
 </style>
