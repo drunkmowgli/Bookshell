@@ -1,18 +1,21 @@
 <template>
     <v-app>
-        <v-app-bar app>
-            <v-toolbar-title class="headline text-uppercase">
-                <span>Library</span>
-            </v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn router :to="{ name: 'BookList' }" class="mr-2">List Book</v-btn>
-        </v-app-bar>
-        <router-view></router-view>
+        <NavigationBar></NavigationBar>
+
+        <v-content>
+            <router-view></router-view>
+        </v-content>
     </v-app>
 </template>
 
 <script>
+
+    import NavigationBar from "./components/NavigationBar";
+
     export default {
+        components: {
+            NavigationBar
+        },
         name: 'App'
     }
 </script>

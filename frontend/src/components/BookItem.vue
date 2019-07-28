@@ -1,39 +1,48 @@
 <template>
-    <div class="BookItem">
+    <v-container grid-list-md>
         <h1 class="subheading grey--text">Book Card</h1>
-        <v-container class="my-5">
-            <v-layout row wrap :class="`pa-3 book ${book.title}`">
-                <v-flex xs12 md6>
-                    <div class="caption grey--text">Title</div>
-                    <div>{{ book.title }}</div>
-                </v-flex>
-                <v-flex xs6 sm4 md2>
-                    <div class="caption grey--text">Author(s)</div>
-                    <v-list class="caption lighten-5 grey">
-                        <v-list-item v-for="author in book.authors"
-                                     :key="author.id">
+        <v-layout row wrap>
+            <v-flex
+                    xs12
+                    md6
 
-                            <div>{{ author.name }}</div>
+                    offset-sm-1
+                    offset-md-2
+            >
+                <div class="caption grey--text">Title</div>
+                <div>{{ book.title }}</div>
+            </v-flex>
+            <v-flex xs12
+                    md6
+                    offset-sm-1
+                    offset-md-2
+            >
+                <div class="caption grey--text">Author(s)</div>
+                <v-list class="caption lighten-5 grey">
+                    <v-list-item v-for="author in book.authors"
+                                 :key="author.id">
 
-                        </v-list-item>
-                    </v-list>
-                </v-flex>
-                <v-flex xs6 sm4 md2>
-                    <div class="caption grey--text">Genre</div>
-                    <div>{{ book.genre }}</div>
-                </v-flex>
-            </v-layout>
-            <v-divider></v-divider>
-            <div class="delete-book">
-                <v-btn @click="deleteCurrentBook()" class="red mx0 mt-3">Delete
-                </v-btn>
-            </div>
-        </v-container>
+                        <div class="headline">{{ author.name }}</div>
 
-        <router-view></router-view>
-
+                    </v-list-item>
+                </v-list>
+            </v-flex>
+            <v-flex
+                    xs12
+                    md6
+                    offset-sm-1
+                    offset-md-2
+            >
+                <div class="caption grey--text">Genre</div>
+                <div>{{ book.genre }}</div>
+            </v-flex>
+            <v-flex>
+                <v-btn @click="deleteCurrentBook()" class="red mx0 mt-3">Delete</v-btn>
+            </v-flex>
+        </v-layout>
+        <v-spacer></v-spacer>
         <CommentList :book-id="book.id"></CommentList>
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -71,12 +80,6 @@
     }
 </script>
 
-<style>
-    .BookItem {
-        margin: 100px;
-    }
+<style scoped>
 
-    .delete-book {
-        float: right;
-    }
 </style>

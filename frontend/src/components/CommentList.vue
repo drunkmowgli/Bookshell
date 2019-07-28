@@ -1,17 +1,24 @@
 <template>
-    <v-app class="comment-list">
-        <v-content class="caption grey--text">
+    <v-container>
+        <v-layout>
             <v-list class="caption lighten-5 grey">
                 <v-list-item v-for="comment in comments"
-                             :key="comment.id" class="item">
-                    <div>
-                        {{ comment.commentDescription }}
-                    </div>
+                             :key="comment.id"
+                             class="item"
+                >
+                    <v-flex xs12
+                            md6
+                            offset-sm-1
+                            offset-md-2
+                    >
+                        <div class="headline">{{ comment.commentDescription }}</div>
+                    </v-flex>
                 </v-list-item>
             </v-list>
-            <CommentAddForm :book-id="bookId" @commentSubmitted="commentSubmittedResponse"></CommentAddForm>
-        </v-content>
-    </v-app>
+            <v-spacer></v-spacer>
+        </v-layout>
+        <CommentAddForm :book-id="bookId" v-on:commentSubmitted="commentSubmittedResponse()"></CommentAddForm>
+    </v-container>
 </template>
 
 <script>
