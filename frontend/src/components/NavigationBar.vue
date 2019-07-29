@@ -31,13 +31,16 @@
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title class="headline">Library</v-toolbar-title>
+          <PopupAddBookItem></PopupAddBookItem>
         </v-app-bar>
     </div>
 </template>
 
 <script>
+    import PopupAddBookItem from "./PopupAddBookItem";
     export default {
         name: "AppHeader",
+        components: {PopupAddBookItem},
         data() {
             return {
                 drawer: true
