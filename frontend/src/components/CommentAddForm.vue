@@ -36,7 +36,9 @@
                 let comment = this.comment;
                 let bookId = this.bookId;
                 return api.addComment(comment, bookId)
-                    .then(this.$emit('commentSubmitted'))
+                    .then( () => {
+                        this.$emit('commentSubmitted');
+                    })
             }
         }
     }

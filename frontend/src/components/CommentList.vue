@@ -17,7 +17,7 @@
             </v-list>
             <v-spacer></v-spacer>
         </v-layout>
-        <CommentAddForm :book-id="bookId" v-on:commentSubmitted="commentSubmittedResponse()"></CommentAddForm>
+        <CommentAddForm :book-id="bookId" v-on:commentSubmitted="commentSubmittedResponse"></CommentAddForm>
     </v-container>
 </template>
 
