@@ -30,6 +30,17 @@ public interface AuthorService {
     Author findById(long authorId) throws AuthorNotExistException;
 
     /**
+     * Get Author from repository by name.
+     *
+     * @param authorName - Author's name
+     *
+     * @return Author
+     *
+     * @throws AuthorNotExistException - Informs us, that author not exist
+     */
+    Author findByAuthorName(String authorName) throws AuthorNotExistException;
+
+    /**
      * Remove Author from DB.
      *
      * @param authorId - Author's id

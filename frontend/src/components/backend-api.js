@@ -10,6 +10,9 @@ export default {
     getBooks() {
         return HTTP.get('/books');
     },
+    getGenres() {
+        return HTTP.get('/genres');
+    },
     getBook(bookId) {
         return HTTP.get('/books/' + bookId)
     },

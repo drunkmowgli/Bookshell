@@ -39,6 +39,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public Author findByAuthorName(String authorName) throws AuthorNotExistException {
+        return authorRepository.findByAuthorName(authorName).orElseThrow(AuthorNotExistException::new);
+    }
+
+    @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public void delete(long authorId) throws AuthorNotExistException {
         Author author = authorRepository.findById(authorId).orElseThrow(AuthorNotExistException::new);

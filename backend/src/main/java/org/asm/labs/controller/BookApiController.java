@@ -1,13 +1,12 @@
 package org.asm.labs.controller;
 
 import org.asm.labs.model.Book;
+import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.BookNotExistException;
 import org.asm.labs.service.BookService;
+import org.asm.labs.service.GenreNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +33,16 @@ public class BookApiController {
     @GetMapping("/api/v1/books/{id}")
     public Book getBook(@PathVariable long id) throws BookNotExistException {
         return bookService.findById(id);
+    }
+
+    @PostMapping("/api/v1/books/")
+    @ResponseBody
+    public Book addBook(@RequestBody BookPostRequestBody bookPostRequestBody) throws AuthorNotExistException, GenreNotExistException {
+        String title = bookPostRequestBody.getTitle();
+        String authors = bookPostRequestBody.getAuthors();
+        String genre = bookPostRequestBody.getGenre();
+//        return bookService.save(title, authors, genre);
+        return null;
     }
 
 }

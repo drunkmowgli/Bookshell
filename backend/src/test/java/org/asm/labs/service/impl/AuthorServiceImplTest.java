@@ -1,12 +1,16 @@
 package org.asm.labs.service.impl;
 
 import org.asm.labs.model.Author;
+import org.asm.labs.repository.AuthorRepository;
 import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.AuthorService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +27,12 @@ class AuthorServiceImplTest {
 
     @Autowired
     private AuthorService authorService;
+
+    @MockBean
+    private AuthorRepository authorRepository;
+
+    @Captor
+    ArgumentCaptor<Author> captor;
 
 
     @DisplayName("Должен корректно сохранять информацию об авторе")

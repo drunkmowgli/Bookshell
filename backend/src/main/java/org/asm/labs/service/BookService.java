@@ -11,9 +11,9 @@ public interface BookService {
      *
      * @param title        - Book's title
      * @param authorsNames - List of Authors
-     * @param genreId      - Genre's id
+     * @param genreName      - Genre's name
      */
-    void save(String title, String authorsNames, long genreId) throws AuthorNotExistException, GenreNotExistException;
+    Book save(String title, String authorsNames, String genreName) throws AuthorNotExistException, GenreNotExistException;
 
     /**
      * Get all Books from DB.

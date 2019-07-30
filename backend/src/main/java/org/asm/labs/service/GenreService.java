@@ -23,6 +23,17 @@ public interface GenreService {
     Genre findById(long id) throws GenreNotExistException;
 
     /**
+     * Get genre from repository by name
+     *
+     * @param genreName - genre's name
+     *
+     * @return Genre
+     *
+     * @throws GenreNotExistException - Informs us that genre not exist
+     */
+    Genre findByGenreName(String genreName) throws GenreNotExistException;
+
+    /**
      * Count number of Genres.
      *
      * @return number of Genres

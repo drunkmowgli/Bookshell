@@ -34,7 +34,11 @@
                     offset-md-2
             >
                 <div class="caption grey--text">Genre</div>
-                <div>{{ book.genre }}</div>
+                <div>
+                    <span v-if="book.genre">
+                        {{ book.genre.genreName }}
+                    </span>
+                </div>
             </v-flex>
             <v-flex>
                 <v-btn @click="deleteCurrentBook()" class="red mx0 mt-3">Delete</v-btn>
@@ -66,7 +70,7 @@
             showBookDetails() {
                 return api.getBook(this.id)
                     .then(response => {
-                        this.book = response.data;
+                        this.book = response.data
                     })
                     .catch(e => {
                         this.errors = e
