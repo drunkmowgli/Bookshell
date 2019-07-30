@@ -10,6 +10,9 @@ export default {
     getBooks() {
         return HTTP.get('/books');
     },
+    getAuthors() {
+        return HTTP.get('/authors');
+    },
     getGenres() {
         return HTTP.get('/genres');
     },
@@ -21,6 +24,9 @@ export default {
     },
     getComments(bookId) {
         return HTTP.get('/books/' + bookId +'/comments')
+    },
+    addAuthor(authorName) {
+        return HTTP.post('/authors')
     },
     addComment(comment, bookId) {
         return HTTP.post('/books/' + bookId + '/comments', {

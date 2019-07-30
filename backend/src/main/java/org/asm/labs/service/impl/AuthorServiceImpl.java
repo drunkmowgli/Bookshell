@@ -22,10 +22,10 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void save(Author author) {
-        authorRepository.save(author);
+    public Author save(String authorName) {
+        Author author = new Author(authorName);
+        return authorRepository.save(author);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public Author findByAuthorName(String authorName) throws AuthorNotExistException {
-        return authorRepository.findByAuthorName(authorName).orElseThrow(AuthorNotExistException::new);
+        return authorRepository.findByName(authorName).orElseThrow(AuthorNotExistException::new);
     }
 
     @Override

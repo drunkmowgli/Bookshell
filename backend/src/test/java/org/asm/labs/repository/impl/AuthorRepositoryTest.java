@@ -57,10 +57,18 @@ class AuthorRepositoryTest {
         assertThat(authors).isNotNull().allMatch(author -> !author.getName().equals(""));
     }
 
-    @DisplayName("Должен загружать информацию о нужном авторе")
+    @DisplayName("Должен загружать информацию о нужном авторе по ID")
     @Test
     void shouldFindExpectedAuthorById() {
         Author actualAuthor = authorRepository.findById(1L).orElseThrow();
+        Author expectedAuthor = em.find(Author.class, 1L);
+        assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
+    }
+    
+    @DisplayName("Должен загружать информацию о нужном авторе по имени")
+    @Test
+    void shouldFindExpectedAuthorByName() {
+        Author actualAuthor = authorRepository.findByName("Stan Lee").orElseThrow();
         Author expectedAuthor = em.find(Author.class, 1L);
         assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }

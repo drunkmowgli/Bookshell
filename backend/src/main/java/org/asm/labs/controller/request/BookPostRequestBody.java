@@ -1,4 +1,4 @@
-package org.asm.labs.controller;
+package org.asm.labs.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,17 +22,17 @@ public class BookPostRequestBody {
     private String genre;
 
     @JsonProperty("title")
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
     @JsonProperty("authors")
-    String getAuthors() {
+    public String getAuthors() {
         return authors;
     }
 
     @JsonProperty("genre")
-    String getGenre() {
+    public String getGenre() {
         return genre;
     }
 

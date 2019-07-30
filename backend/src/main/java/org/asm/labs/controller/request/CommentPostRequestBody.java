@@ -1,4 +1,4 @@
-package org.asm.labs.controller;
+package org.asm.labs.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +14,7 @@ public class CommentPostRequestBody {
     private String commentDescription;
     
     @JsonProperty("commentDescription")
-    String getCommentDescription() {
+    public String getCommentDescription() {
         return commentDescription;
     }
     

@@ -1,8 +1,9 @@
 <template>
+  <v-container grid-list-md text-center>
     <v-layout align-center justify-end row fill-height>
         <v-dialog v-model="dialog" persistent max-width="600px">
             <template v-slot:activator="{ on }">
-                <v-btn color="primary" dark v-on="on">Open Dialog</v-btn>
+                <v-btn color="primary" dark v-on="on">Add book</v-btn>
             </template>
             <v-card>
                 <v-card-title>
@@ -14,9 +15,15 @@
                             <v-flex xs12>
                                 <v-text-field label="Book title*" required></v-text-field>
                             </v-flex>
-                            <v-flex xs12>
-                                <v-text-field label="Authors*" type="authors" required></v-text-field>
-                            </v-flex>
+                          <v-flex xs12 sm6>
+                            <v-autocomplete
+                              :items="authors"
+                              item-value="name"
+                              item-text="name"
+                              label="Authors"
+                              multiple
+                            ></v-autocomplete>
+                          </v-flex>
                             <v-flex xs12 sm6>
                                 <v-autocomplete
                                         :items="genres"
@@ -36,6 +43,7 @@
             </v-card>
         </v-dialog>
     </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -46,6 +54,7 @@
         data() {
             return {
                 dialog: false,
+                authors: this.getAllAuthors(),
                 genres: this.getAllGenres(),
             }
         },
@@ -55,6 +64,13 @@
                     .then(response => {
                         this.genres = response.data;
                         console.log(this.genres)
+                    })
+            },
+            getAllAuthors() {
+                return api.getAuthors()
+                    .then(response => {
+                        this.authors = response.data;
+                        console.log(this.authors)
                     })
             }
         }

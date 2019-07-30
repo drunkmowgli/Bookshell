@@ -1,5 +1,6 @@
 package org.asm.labs.controller;
 
+import org.asm.labs.controller.request.BookPostRequestBody;
 import org.asm.labs.model.Book;
 import org.asm.labs.service.AuthorNotExistException;
 import org.asm.labs.service.BookNotExistException;

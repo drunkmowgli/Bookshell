@@ -1,5 +1,6 @@
 package org.asm.labs.controller;
 
+import org.asm.labs.controller.request.CommentPostRequestBody;
 import org.asm.labs.model.Comment;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
