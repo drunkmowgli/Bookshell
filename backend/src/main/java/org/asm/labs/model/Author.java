@@ -38,6 +38,10 @@ public class Author {
         this.name = authorName;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

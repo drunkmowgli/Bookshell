@@ -37,7 +37,6 @@ public class BookApiController {
     }
 
     @PostMapping("/api/v1/books/")
-    @ResponseBody
     public Book addBook(@RequestBody BookPostRequestBody bookPostRequestBody) throws AuthorNotExistException, GenreNotExistException {
         String title = bookPostRequestBody.getTitle();
         String authors = bookPostRequestBody.getAuthors();
