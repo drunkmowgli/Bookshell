@@ -13,7 +13,12 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field v-model="author" label="Author's name*" required></v-text-field>
+                  <v-text-field
+                    v-model="author"
+                    label="Author's name*"
+                    required
+                    clearable
+                  ></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -21,6 +26,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="clearAuthorName">Close</v-btn>
             <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="submitAuthor">Save</v-btn>
           </v-card-actions>
         </v-card>
@@ -44,10 +50,11 @@
         methods: {
             submitAuthor() {
                 let author = this.author;
-                return api.addAuthor(author)
-                    .then( () => {
-                        this.$emit('createAuthorEvent')
-                    })
+                api.addAuthor(author);
+                this.clearAuthorName();
+            },
+            clearAuthorName() {
+                this.author = ''
             }
         }
     }
