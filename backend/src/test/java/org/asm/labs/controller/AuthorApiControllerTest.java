@@ -35,24 +35,25 @@ class AuthorApiControllerTest {
     @DisplayName("Должен вернуть JSON содержащий информацию о всех авторах")
     @Test
     @SneakyThrows
-    void shouldReturnJsonWithAllAuthors() {
+    void shouldReturn200onGetAllAuthors() {
         when(authorService.findAll()).thenReturn(Collections.singletonList(new Author("Author MVC #Test")));
         mockMvc.perform(get("/api/v1/authors"))
                 .andExpect(status().isOk())
-                .andDo(print())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(0)))
-                .andExpect(jsonPath("$[0].name", is("Author MVC #Test")));
+                .andExpect(jsonPath("$[0].name", is("Author MVC #Test")))
+               .andDo(print());
         verify(authorService, times(1)).findAll();
         verifyNoMoreInteractions(authorService);
     }
 
-    @DisplayName("Должен добавить автора, затем вернуть JSON и статус isCreated (201)")
+    @DisplayName("Должен добавить автора, затем вернуть JSON и статус isCreated (200)")
     @Test
     @SneakyThrows
-    void shouldReturnStatusIsCreatedOnAddAuthor() {
+    void shouldReturn200OnCreateAuthor() {
         String authorName = "Author MVC #Test";
         Author author = new Author(authorName);
+        when(authorService.save(authorName)).thenReturn(author);
         ObjectMapper objectMapper = new ObjectMapper();
         String authorJsonString = objectMapper.writeValueAsString(author);
         mockMvc.perform(post("/api/v1/authors")
@@ -60,8 +61,7 @@ class AuthorApiControllerTest {
                 .content(authorJsonString)
 
         )
-                .andExpect(status().isCreated())
-                .andDo(print())
-                .andExpect(jsonPath("$.name", is(authorName)));
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }

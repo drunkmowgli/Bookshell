@@ -22,6 +22,7 @@
                               item-text="name"
                               label="Authors"
                               multiple
+                              v-on:click="submitAuthorResponse"
                             ></v-autocomplete>
                           </v-flex>
                             <v-flex xs12 sm6>
@@ -54,7 +55,7 @@
         data() {
             return {
                 dialog: false,
-                authors: this.getAllAuthors(),
+                authors: [],
                 genres: this.getAllGenres(),
             }
         },
@@ -63,15 +64,16 @@
                 return api.getGenres()
                     .then(response => {
                         this.genres = response.data;
-                        console.log(this.genres)
                     })
             },
-            getAllAuthors() {
+            showAllAuthors() {
                 return api.getAuthors()
                     .then(response => {
                         this.authors = response.data;
-                        console.log(this.authors)
                     })
+            },
+            submitAuthorResponse() {
+                this.showAllAuthors();
             }
         }
     }

@@ -26,7 +26,9 @@ export default {
         return HTTP.get('/books/' + bookId +'/comments')
     },
     addAuthor(authorName) {
-        return HTTP.post('/authors')
+        return HTTP.post('/authors', {
+            name: authorName
+        })
     },
     addComment(comment, bookId) {
         return HTTP.post('/books/' + bookId + '/comments', {

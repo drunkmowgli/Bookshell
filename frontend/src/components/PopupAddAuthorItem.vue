@@ -13,7 +13,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Author's name*" required></v-text-field>
+                  <v-text-field v-model="author" label="Author's name*" required></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -21,7 +21,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="submitAuthor">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -31,13 +31,25 @@
 
 <script>
 
+    import api from './backend-api'
+
     export default {
         name: "PopupAddAuthorItem",
         data() {
             return {
-                dialog: false
+                dialog: false,
+                author: ''
             }
         },
+        methods: {
+            submitAuthor() {
+                let author = this.author;
+                return api.addAuthor(author)
+                    .then( () => {
+                        this.$emit('createAuthorEvent')
+                    })
+            }
+        }
     }
 </script>
 

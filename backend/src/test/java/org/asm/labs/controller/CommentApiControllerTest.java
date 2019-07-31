@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,7 +39,7 @@ class CommentApiControllerTest {
     @DisplayName("Должен вернуть JSON содержащий информацию о всех комментариях к книге")
     @Test
     @SneakyThrows
-    void shouldReturnJsonWithAllCommentToBook() {
+    void shouldReturn200onGetAllCommentToBook() {
         Book book = new Book(
                 0,
                 "Book MVC #Test",
@@ -72,6 +73,7 @@ class CommentApiControllerTest {
                 new Genre(0, "Genre MVC #Test")
         );
         Comment comment = new Comment(commentDescription, book);
+        when(commentService.save(commentDescription, 0L)).thenReturn(comment);
         ObjectMapper objectMapper = new ObjectMapper();
         String commentJsonString = objectMapper.writeValueAsString(comment);
         mockMvc.perform(
@@ -81,8 +83,8 @@ class CommentApiControllerTest {
                         .content(commentJsonString)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         )
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$[0].commentDescription", is(commentDescription)));
+                .andExpect(status().isOk())
+               .andDo(print());
 
     }
 }

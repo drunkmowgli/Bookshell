@@ -26,10 +26,9 @@ public class CommentApiController {
     }
 
     @PostMapping("/api/v1/books/{id}/comments")
-    @ResponseBody
-    public ResponseEntity<Comment> addComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
+    public void addComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
                                               @PathVariable long id) {
         String commentDescription = commentPostRequestBody.getCommentDescription();
-        return new ResponseEntity<>(commentService.save(commentDescription, id), HttpStatus.CREATED);
+        commentService.save(commentDescription, id);
     }
 }
