@@ -17,11 +17,11 @@
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-autocomplete
-                    :items="authors"
-                    item-value="name"
-                    item-text="name"
-                    label="Authors"
-                    multiple
+                          :items="authors"
+                          item-value="id"
+                          item-text="name"
+                          label="Authors"
+                          multiple
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6>

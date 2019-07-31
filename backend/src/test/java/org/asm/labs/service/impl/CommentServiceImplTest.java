@@ -1,50 +1,94 @@
 package org.asm.labs.service.impl;
 
+import lombok.SneakyThrows;
+import org.asm.labs.model.Author;
+import org.asm.labs.model.Book;
+import org.asm.labs.model.Comment;
+import org.asm.labs.model.Genre;
+import org.asm.labs.repository.BookRepository;
+import org.asm.labs.repository.CommentRepository;
 import org.asm.labs.service.CommentNotExistException;
 import org.asm.labs.service.CommentService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @DisplayName("Comment Service test")
-@DataJpaTest(properties = "spring.profiles.active=test")
-@Import({CommentServiceImpl.class})
-@Transactional
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@SpringBootTest
 class CommentServiceImplTest {
 
     @Autowired
     private CommentService commentService;
 
+    @MockBean
+    private CommentRepository commentRepository;
+
+    @MockBean
+    private BookRepository bookRepository;
+
+    @Captor
+    ArgumentCaptor<Comment> commentArgumentCaptor;
+
 
     @DisplayName("Должен корректно сохранять информацию о комментарии")
     @Test
     void shouldSaveCommentInfo() {
-        long beforeInsert = commentService.findAll().size();
-        commentService.save("Comment Service #Test", 1L);
-        long afterInsert = commentService.findAll().size();
-        assertThat(beforeInsert).isLessThan(afterInsert);
+        when(bookRepository.findById(0L)).thenReturn(Optional.of(new Book(
+                0L,
+                "Comment Service #Test",
+                Collections.singleton(new Author("Comment Service #Test")),
+                new Genre(0, "Comment Service #Test")
+        )));
+        commentService.save("Comment Service #Test", 0L);
+        verify(commentRepository).save(commentArgumentCaptor.capture());
+        assertThat(commentArgumentCaptor).isNotNull();
+        assertEquals("Comment Service #Test", commentArgumentCaptor.getValue().getCommentDescription());
     }
 
     @DisplayName("Должен вернуть информацию о всех комментариях")
     @Test
     void shouldReturnCorrectCommentsListWithAllInfo() {
-        assertFalse(commentService.findAll().isEmpty());
+        when(commentService.findAll()).thenReturn(Collections.singletonList(
+                new Comment("Comment Service #Test"))
+        );
+        assertThat(commentService.findAll()).isNotNull();
     }
 
     @DisplayName("Должен загружать информацию о нужном комментарии")
     @Test
-    void shouldFindExpectedCommentById() throws CommentNotExistException {
-        assertEquals(1, commentService.findById(1).getId());
-        assertEquals("Excellent book", commentService.findById(1).getCommentDescription());
+    @SneakyThrows
+    void shouldFindExpectedCommentById() {
+        when(commentService.findById(0)).thenReturn(new Comment("Comment Service #Test"));
+        String actualCommentDescription = commentService.findById(0).getCommentDescription();
+        verify(commentService).findById(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
+        assertEquals("Comment Service #Test", actualCommentDescription);
+    }
+
+    @DisplayName("Должен вернуть список комментариев для конкретной книги")
+    @Test
+    void shouldReturnCommentListByBookId() {
+        when(commentService.findByBookId(0)).thenReturn(Collections.singletonList(
+                new Comment("Comment Service #Test")));
+        List<Comment> actualCommentList = commentService.findByBookId(0);
+        verify(commentService).findByBookId(longArgumentCaptor.capture());
+        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
+        assertEquals("Comment Service #Test", actualCommentList.get(0).getCommentDescription());
     }
 
     @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
@@ -75,4 +119,6 @@ class CommentServiceImplTest {
     void count() {
         assertThat(commentService.count()).isNotNull();
     }
+
+
 }

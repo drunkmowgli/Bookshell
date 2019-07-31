@@ -32,7 +32,7 @@ class AuthorApiControllerTest {
     @MockBean
     private AuthorService authorService;
 
-    @DisplayName("Должен вернуть JSON содержащий информацию о всех авторах")
+    @DisplayName("Должен статус код 200, на запрос получения всех авторов")
     @Test
     @SneakyThrows
     void shouldReturn200onGetAllAuthors() {
@@ -42,7 +42,7 @@ class AuthorApiControllerTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", is(0)))
                 .andExpect(jsonPath("$[0].name", is("Author MVC #Test")))
-               .andDo(print());
+                .andDo(print());
         verify(authorService, times(1)).findAll();
         verifyNoMoreInteractions(authorService);
     }
