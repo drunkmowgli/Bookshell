@@ -61,16 +61,5 @@
 </script>
 
 <style scoped>
-    .item {
-        margin: 5px;
-        border-radius: 4px;
-    }
 
-    .item:hover {
-        background: dodgerblue;
-    }
-
-    .book-item-list {
-        background: grey;
-    }
 </style>

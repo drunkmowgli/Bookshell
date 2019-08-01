@@ -43,7 +43,7 @@ class CommentServiceImplTest {
 
     @Captor
     ArgumentCaptor<Comment> commentArgumentCaptor;
-
+    
 
     @DisplayName("Должен корректно сохранять информацию о комментарии")
     @Test
@@ -73,11 +73,9 @@ class CommentServiceImplTest {
     @Test
     @SneakyThrows
     void shouldFindExpectedCommentById() {
-        when(commentService.findById(0)).thenReturn(new Comment("Comment Service #Test"));
-        String actualCommentDescription = commentService.findById(0).getCommentDescription();
-        verify(commentService).findById(longArgumentCaptor.capture());
-        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
-        assertEquals("Comment Service #Test", actualCommentDescription);
+        when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
+        Comment comment = commentService.findById(0L);
+        assertEquals("Comment Service #Test", comment.getCommentDescription());
     }
 
     @DisplayName("Должен вернуть список комментариев для конкретной книги")
@@ -86,8 +84,6 @@ class CommentServiceImplTest {
         when(commentService.findByBookId(0)).thenReturn(Collections.singletonList(
                 new Comment("Comment Service #Test")));
         List<Comment> actualCommentList = commentService.findByBookId(0);
-        verify(commentService).findByBookId(longArgumentCaptor.capture());
-        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
         assertEquals("Comment Service #Test", actualCommentList.get(0).getCommentDescription());
     }
 
@@ -101,10 +97,10 @@ class CommentServiceImplTest {
     @DisplayName("Должен удалять комментарий")
     @Test
     void shouldRemoveComment() throws CommentNotExistException {
-        long beforeDelete = commentService.findAll().size();
-        commentService.remove(1);
-        long afterDelete = commentService.findAll().size();
-        assertThat(afterDelete).isLessThan(beforeDelete);
+        when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
+        commentService.remove(0L);
+        verify(commentRepository).delete(commentArgumentCaptor.capture());
+        assertEquals(0L, commentArgumentCaptor.getValue().getId());
     }
 
     @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")

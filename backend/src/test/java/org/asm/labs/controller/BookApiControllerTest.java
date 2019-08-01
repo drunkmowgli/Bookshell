@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
 import org.asm.labs.model.Genre;
+import org.asm.labs.repository.BookRepository;
 import org.asm.labs.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,11 +18,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,6 +38,9 @@ class BookApiControllerTest {
 
     @MockBean
     private BookService bookService;
+    
+    @MockBean
+    private BookRepository bookRepository;
 
     @Captor
     ArgumentCaptor<Long> longArgumentCaptor;
@@ -93,5 +99,23 @@ class BookApiControllerTest {
                 .andExpect(jsonPath("$.id", is(0)))
                 .andExpect(jsonPath("$.title", is("Book MVC #Test")))
                 .andDo(print());
+    }
+    
+    @DisplayName("Должен вернуть статус код 204 на запрос удаления книги")
+    @Test
+    @SneakyThrows
+    void shouldReturn204onDeleteBook() {
+        Book book = new Book(
+            0,
+            "Book MVC #Test",
+            Collections.singleton(new Author(0, "Author MVC #Test")),
+            new Genre(0, "Genre MVC #Test")
+    
+        );
+        when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
+        doNothing().when(bookService).remove(0L);
+        mockMvc.perform(delete("/api/v1/books/{id}/delete", "0"))
+               .andExpect(status().isOk())
+               .andDo(print());
     }
 }

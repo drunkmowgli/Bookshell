@@ -32,13 +32,7 @@ class AuthorServiceImplTest {
     private AuthorRepository authorRepository;
 
     @Captor
-    ArgumentCaptor<Author> authorArgumentCaptor;
-    
-    @Captor
-    ArgumentCaptor<Long> longArgumentCaptor;
-    
-    @Captor
-    ArgumentCaptor<String> stringArgumentCaptor;
+    private ArgumentCaptor<Author> authorArgumentCaptor;
 
 
     @DisplayName("Должен корректно сохранять информацию об авторе")
@@ -63,8 +57,6 @@ class AuthorServiceImplTest {
     void shouldFindExpectedAuthorById() {
         when(authorRepository.findById(1234567890L)).thenReturn(Optional.of(new Author("Author Service #Test")));
         String actualAuthorName = authorService.findById(1234567890L).getName();
-        verify(authorRepository).findById(longArgumentCaptor.capture());
-        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
         assertEquals("Author Service #Test", actualAuthorName);
     }
     
@@ -74,8 +66,6 @@ class AuthorServiceImplTest {
     void shouldFindExpectedAuthorByName() {
         when(authorRepository.findByName("Author Service #Test")).thenReturn(Optional.of(new Author("Author Service #Test")));
         String actualAuthorName = authorService.findByAuthorName("Author Service #Test").getName();
-        verify(authorRepository).findByName(stringArgumentCaptor.capture());
-        assertThat(longArgumentCaptor.getAllValues()).isNotNull();
         assertEquals("Author Service #Test", actualAuthorName);
     }
     
@@ -94,6 +84,7 @@ class AuthorServiceImplTest {
         when(authorRepository.findById(1234567890L)).thenReturn(Optional.of(new Author("Author Service #Test")));
         authorService.delete(1234567890);
         verify(authorRepository).delete(authorArgumentCaptor.capture());
+        assertThat(authorArgumentCaptor.getAllValues()).isNotNull();
         assertEquals("Author Service #Test", authorArgumentCaptor.getValue().getName());
     }
 

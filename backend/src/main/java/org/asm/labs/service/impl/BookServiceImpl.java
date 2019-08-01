@@ -38,22 +38,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public Book save(String title, String authorsNames, String genreName) throws GenreNotExistException {
+    public void save(String title, String authorsNames, String genreName) throws GenreNotExistException, AuthorNotExistException {
         String[] authorsArrayNames = authorsNames.split(",");
         Set<Author> authors = new HashSet<>();
         for (String authorName :
                 authorsArrayNames) {
-            try {
                 Author author = authorService.findByAuthorName(authorName);
                 authors.add(author);
-            } catch (AuthorNotExistException e) {
-                Author author = new Author(authorName);
-                authors.add(author);
-            }
         }
         Genre genre = genreService.findByGenreName(genreName);
         Book book = new Book(title, authors, genre);
-        return bookRepository.save(book);
+        bookRepository.save(book);
     }
 
     @Override
