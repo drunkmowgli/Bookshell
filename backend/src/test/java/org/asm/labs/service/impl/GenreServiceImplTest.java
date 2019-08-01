@@ -8,8 +8,9 @@ import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.when;
 
 
 @DisplayName("Genre Service test")
-@SpringBootTest
+@DataJpaTest
+@Import({GenreServiceImpl.class})
 class GenreServiceImplTest {
 
     @Autowired

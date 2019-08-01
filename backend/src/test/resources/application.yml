@@ -10,7 +10,7 @@ spring:
     data: data-test.sql
     initialization-mode: always
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: create-drop
     generate-ddl: false
     show-sql: true
     properties:

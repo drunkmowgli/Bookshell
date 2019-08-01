@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Author Service test")
-@SpringBootTest
+@DataJpaTest
+@Import({AuthorServiceImpl.class})
 class AuthorServiceImplTest {
 
     @Autowired
@@ -50,7 +52,7 @@ class AuthorServiceImplTest {
         List<Author> authors = authorService.findAll();
         assertTrue(authors.isEmpty());
     }
-    
+
     @DisplayName("Должен загружать информацию о нужном авторе по ID")
     @Test
     @SneakyThrows
@@ -59,7 +61,7 @@ class AuthorServiceImplTest {
         String actualAuthorName = authorService.findById(1234567890L).getName();
         assertEquals("Author Service #Test", actualAuthorName);
     }
-    
+
     @DisplayName("Должен загружать информацию о нужном авторе по имени")
     @Test
     @SneakyThrows
@@ -68,7 +70,7 @@ class AuthorServiceImplTest {
         String actualAuthorName = authorService.findByAuthorName("Author Service #Test").getName();
         assertEquals("Author Service #Test", actualAuthorName);
     }
-    
+
 
     @DisplayName("Должен выбрасывать исключение AuthorNotExistException, если автора не существует")
     @Test
@@ -76,7 +78,7 @@ class AuthorServiceImplTest {
         assertThrows(AuthorNotExistException.class,
                 () -> authorService.findById(10L));
     }
-    
+
     @DisplayName("Должен удалять автора")
     @Test
     @SneakyThrows

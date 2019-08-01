@@ -67,7 +67,7 @@ class AuthorRepositoryTest {
         Author expectedAuthor = em.find(Author.class, 1L);
         assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
     }
-    
+
     @DisplayName("Должен загружать информацию о нужном авторе по имени")
     @Test
     void shouldFindExpectedAuthorByName() {
