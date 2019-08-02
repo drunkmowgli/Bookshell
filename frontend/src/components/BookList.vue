@@ -56,7 +56,12 @@
                         this.errors = e
                     })
             }
-        }
+        },
+        mounted() {
+            this.$root.$on('bookSubmittedEvent', () => {
+                this.showBooks()
+            })
+        },
     }
 </script>
 

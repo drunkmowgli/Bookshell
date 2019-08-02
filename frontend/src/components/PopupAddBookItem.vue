@@ -17,21 +17,21 @@
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-autocomplete
-                          :items="authors"
-                          item-value="id"
-                          item-text="name"
-                          label="Authors"
-                          multiple
-                          v-model="selectedAuthors"
+                    :items="authors"
+                    item-value="id"
+                    item-text="name"
+                    label="Authors"
+                    multiple
+                    v-model="selectedAuthors"
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-autocomplete
-                          :items="genres"
-                          item-value="genreName"
-                          item-text="genreName"
-                          label="Genre"
-                          v-model="selectedGenre"
+                    :items="genres"
+                    item-value="genreName"
+                    item-text="genreName"
+                    label="Genre"
+                    v-model="selectedGenre"
                   ></v-autocomplete>
                 </v-flex>
               </v-layout>
@@ -49,18 +49,18 @@
 </template>
 
 <script>
-  import api from './backend-api'
+    import api from './backend-api'
 
-  export default {
+    export default {
         name: "PopupAddBookItem",
         data() {
             return {
                 dialog: false,
-              title: '',
+                title: '',
                 authors: [],
-              selectedAuthors: [],
+                selectedAuthors: [],
                 genres: [],
-              selectedGenre: []
+                selectedGenre: []
             }
         },
         methods: {
@@ -80,14 +80,15 @@
                 this.fillAuthorsList();
                 this.fillGenresList()
             },
-          submitBook() {
-            let selectedAuthors = this.selectedAuthors;
-            let selectedGenre = this.selectedGenre;
-            let title = this.title;
-            console.log(selectedAuthors);
-            console.log(selectedGenre);
-            api.addBook(title, selectedAuthors, selectedGenre)
-          }
+            submitBook() {
+                let title = this.title;
+                let selectedAuthors = this.selectedAuthors;
+                let selectedGenre = this.selectedGenre;
+                return api.addBook(title, selectedAuthors, selectedGenre)
+                    .then( () => {
+                        this.$root.$emit('bookSubmittedEvent')
+                    })
+            }
         }
     }
 </script>

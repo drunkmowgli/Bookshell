@@ -39,7 +39,6 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
     public Book save(String title, List<Long> authorIds, String genreName) throws GenreNotExistException, AuthorNotExistException {
-        System.out.println(title + " " + authorIds + " " + genreName); // TODO: Debug output
         Set<Author> authors = new HashSet<>();
         for (long authorId :
                 authorIds) {
@@ -48,7 +47,6 @@ public class BookServiceImpl implements BookService {
         }
         Genre genre = genreService.findByGenreName(genreName);
         Book book = new Book(title, authors, genre);
-        System.out.println(book); // TODO: Debug output
         return bookRepository.save(book);
     }
 
