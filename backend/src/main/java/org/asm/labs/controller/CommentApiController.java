@@ -4,8 +4,11 @@ import org.asm.labs.controller.request.CommentPostRequestBody;
 import org.asm.labs.model.Comment;
 import org.asm.labs.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,9 +27,16 @@ public class CommentApiController {
     }
 
     @PostMapping("/api/v1/books/{id}/comments")
-    public void addComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
-                                              @PathVariable long id) {
+    public ResponseEntity addComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
+                                     @PathVariable long id) {
         String commentDescription = commentPostRequestBody.getCommentDescription();
-        commentService.save(commentDescription, id);
+        Comment comment = commentService.save(commentDescription, id);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/{id}")
+            .buildAndExpand(comment.getId())
+            .toUri();
+        
+        return ResponseEntity.created(location).build();
+        
     }
 }

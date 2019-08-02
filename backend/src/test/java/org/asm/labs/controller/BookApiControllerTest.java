@@ -27,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BookApiController.class)
 class BookApiControllerTest {
@@ -40,13 +39,7 @@ class BookApiControllerTest {
     private BookService bookService;
 
     @MockBean
-    private AuthorService authorService;
-
-    @MockBean
     private BookRepository bookRepository;
-
-    @MockBean
-    private GenreService genreService;
 
     @Captor
     ArgumentCaptor<Long> longArgumentCaptor;
@@ -130,24 +123,27 @@ class BookApiControllerTest {
     @SneakyThrows
     void shouldReturnStatusCode200OnRequestToCreateBook() {
         String bookTitle = "Book MVC #Test";
-        String genreName = "Genre MVC #Test";
-        Genre genre = new Genre(0L, genreName);
         List<Long> authorsIds = new ArrayList<>();
         authorsIds.add(1L);
         authorsIds.add(2L);
+        String payloadBook = "{\"title\" : \"Book MVC #Test\", \"authors\" : [1, 2], \"genre\" : \"Genre MVC #Test\"}";
         Set<Author> authors = new HashSet<>();
-        Author authorOne = new Author(1L, "Author #1");
-        Author authorTwo = new Author(2L, "Author #2");
+        Author authorOne = new Author(1, "Author #1");
+        Author authorTwo = new Author(2, "Author #2");
         authors.add(authorOne);
         authors.add(authorTwo);
-        Book book = new Book(bookTitle, authors, genre);
-        ObjectMapper objectMapper = new ObjectMapper();
-        when(bookService.save(bookTitle, authorsIds, genreName)).thenReturn(book);
-        String payloadBook = objectMapper.writeValueAsString(book);
+        Book book = new Book(
+            "Book MVC #Test",
+            authors,
+            new Genre(1, "Genre MVC #Test")
+        );
+        when(bookService.save(bookTitle, authorsIds, "Genre MVC #Test")).thenReturn(book);
         mockMvc.perform(post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(payloadBook)
         )
+                .andExpect(status().isCreated())
+                .andExpect(redirectedUrl("http://localhost/api/v1/books/0"))
                 .andDo(print());
     }
 }

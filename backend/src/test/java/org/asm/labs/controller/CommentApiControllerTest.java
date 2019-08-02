@@ -23,8 +23,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(CommentApiController.class)
 class CommentApiControllerTest {
@@ -65,6 +64,7 @@ class CommentApiControllerTest {
     @Test
     @SneakyThrows
     void shouldReturnStatusCode200OnAddComment() {
+        long bookId = 0L;
         String commentDescription = "Comment MVC #Test";
         Book book = new Book(
                 0,
@@ -73,18 +73,18 @@ class CommentApiControllerTest {
                 new Genre(0, "Genre MVC #Test")
         );
         Comment comment = new Comment(commentDescription, book);
-        when(commentService.save(commentDescription, 0L)).thenReturn(comment);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String commentJsonString = objectMapper.writeValueAsString(comment);
+        when(commentService.save(commentDescription, bookId)).thenReturn(comment);
+        String payloadComment = "{ \"commentDescription\" : \"Comment MVC #Test\" }";
         mockMvc.perform(
                 post(
                         "/api/v1/books/{id}/comments", "0"
                 )
-                        .content(commentJsonString)
+                        .content(payloadComment)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         )
-                .andExpect(status().isOk())
-                .andDo(print());
+               .andExpect(status().isCreated())
+               .andExpect(redirectedUrl("http://localhost/api/v1/books/0/comments/0"))
+               .andDo(print());
 
     }
 }
