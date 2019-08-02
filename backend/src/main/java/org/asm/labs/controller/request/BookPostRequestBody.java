@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "title",
@@ -16,7 +18,7 @@ public class BookPostRequestBody {
     private String title;
 
     @JsonProperty("authors")
-    private String authors;
+    private List<Long> authors;
 
     @JsonProperty("genre")
     private String genre;
@@ -27,7 +29,7 @@ public class BookPostRequestBody {
     }
 
     @JsonProperty("authors")
-    public String getAuthors() {
+    public List<Long> getAuthors() {
         return authors;
     }
 
@@ -42,7 +44,7 @@ public class BookPostRequestBody {
     }
 
     @JsonProperty("authors")
-    public void setAuthors(String authors) {
+    public void setAuthors(List<Long> authors) {
         this.authors = authors;
     }
 

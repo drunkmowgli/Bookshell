@@ -39,7 +39,7 @@ class CommentApiControllerTest {
     @DisplayName("Должен вернуть JSON содержащий информацию о всех комментариях к книге")
     @Test
     @SneakyThrows
-    void shouldReturn200onGetAllCommentToBook() {
+    void shouldReturnStatusCode200onGetAllCommentToBook() {
         Book book = new Book(
                 0,
                 "Book MVC #Test",
@@ -64,7 +64,7 @@ class CommentApiControllerTest {
     @DisplayName("Должен добавить комментарий к книге, затем вернуть JSON и статус isCreated (201)")
     @Test
     @SneakyThrows
-    void shouldReturnStatusIsCreatedOnAddComment() {
+    void shouldReturnStatusCode200OnAddComment() {
         String commentDescription = "Comment MVC #Test";
         Book book = new Book(
                 0,
@@ -84,7 +84,7 @@ class CommentApiControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
         )
                 .andExpect(status().isOk())
-               .andDo(print());
+                .andDo(print());
 
     }
 }

@@ -34,5 +34,10 @@ export default {
         return HTTP.post('/books/' + bookId + '/comments', {
             commentDescription: comment
         })
+    },
+    addBook(title, authorIds, genre) {
+        return HTTP.post('/books/', {
+            title: title, authors: authorIds, genre: genre
+        })
     }
 }

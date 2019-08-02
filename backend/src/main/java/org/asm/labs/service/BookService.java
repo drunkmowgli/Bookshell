@@ -9,11 +9,11 @@ public interface BookService {
     /**
      * Add book to DB.
      *
-     * @param title        - Book's title
-     * @param authorsNames - List of Authors
-     * @param genreName      - Genre's name
+     * @param title      - Book's title
+     * @param authorsIds - IDs of Authors
+     * @param genreName  - Genre's name
      */
-    void save(String title, String authorsNames, String genreName) throws AuthorNotExistException, GenreNotExistException;
+    Book save(String title, List<Long> authorsIds, String genreName) throws AuthorNotExistException, GenreNotExistException;
 
     /**
      * Get all Books from DB.

@@ -13,7 +13,7 @@
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12>
-                  <v-text-field label="Book title*" required></v-text-field>
+                  <v-text-field label="Book title*" required v-model="title"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-autocomplete
@@ -22,14 +22,16 @@
                           item-text="name"
                           label="Authors"
                           multiple
+                          v-model="selectedAuthors"
                   ></v-autocomplete>
                 </v-flex>
                 <v-flex xs12 sm6>
                   <v-autocomplete
-                    :items="genres"
-                    item-value="genreName"
-                    item-text="genreName"
-                    label="Genre"
+                          :items="genres"
+                          item-value="genreName"
+                          item-text="genreName"
+                          label="Genre"
+                          v-model="selectedGenre"
                   ></v-autocomplete>
                 </v-flex>
               </v-layout>
@@ -38,7 +40,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+            <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="submitBook">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -47,15 +49,18 @@
 </template>
 
 <script>
-    import api from './backend-api'
+  import api from './backend-api'
 
-    export default {
+  export default {
         name: "PopupAddBookItem",
         data() {
             return {
                 dialog: false,
+              title: '',
                 authors: [],
+              selectedAuthors: [],
                 genres: [],
+              selectedGenre: []
             }
         },
         methods: {
@@ -74,7 +79,15 @@
             onBookAddBtnClick() {
                 this.fillAuthorsList();
                 this.fillGenresList()
-            }
+            },
+          submitBook() {
+            let selectedAuthors = this.selectedAuthors;
+            let selectedGenre = this.selectedGenre;
+            let title = this.title;
+            console.log(selectedAuthors);
+            console.log(selectedGenre);
+            api.addBook(title, selectedAuthors, selectedGenre)
+          }
         }
     }
 </script>

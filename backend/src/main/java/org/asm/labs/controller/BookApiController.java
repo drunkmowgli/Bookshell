@@ -36,10 +36,10 @@ public class BookApiController {
         return bookService.findById(id);
     }
 
-    @PostMapping("/api/v1/books/")
+    @PostMapping("/api/v1/books")
     public void addBook(@RequestBody BookPostRequestBody bookPostRequestBody) throws AuthorNotExistException, GenreNotExistException {
         String title = bookPostRequestBody.getTitle();
-        String authors = bookPostRequestBody.getAuthors();
+        List<Long> authors = bookPostRequestBody.getAuthors();
         String genre = bookPostRequestBody.getGenre();
         bookService.save(title, authors, genre);
     }

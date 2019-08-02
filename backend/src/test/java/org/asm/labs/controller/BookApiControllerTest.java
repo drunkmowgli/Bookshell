@@ -6,7 +6,9 @@ import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
 import org.asm.labs.model.Genre;
 import org.asm.labs.repository.BookRepository;
+import org.asm.labs.service.AuthorService;
 import org.asm.labs.service.BookService;
+import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -17,15 +19,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,9 +38,15 @@ class BookApiControllerTest {
 
     @MockBean
     private BookService bookService;
-    
+
+    @MockBean
+    private AuthorService authorService;
+
     @MockBean
     private BookRepository bookRepository;
+
+    @MockBean
+    private GenreService genreService;
 
     @Captor
     ArgumentCaptor<Long> longArgumentCaptor;
@@ -100,22 +106,48 @@ class BookApiControllerTest {
                 .andExpect(jsonPath("$.title", is("Book MVC #Test")))
                 .andDo(print());
     }
-    
+
     @DisplayName("Должен вернуть статус код 204 на запрос удаления книги")
     @Test
     @SneakyThrows
     void shouldReturn204onDeleteBook() {
         Book book = new Book(
-            0,
-            "Book MVC #Test",
-            Collections.singleton(new Author(0, "Author MVC #Test")),
-            new Genre(0, "Genre MVC #Test")
-    
+                0,
+                "Book MVC #Test",
+                Collections.singleton(new Author(0, "Author MVC #Test")),
+                new Genre(0, "Genre MVC #Test")
+
         );
         when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
         doNothing().when(bookService).remove(0L);
         mockMvc.perform(delete("/api/v1/books/{id}/delete", "0"))
-               .andExpect(status().isOk())
-               .andDo(print());
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @DisplayName("Должен вернуть статус код 200 на запрос создания книги")
+    @Test
+    @SneakyThrows
+    void shouldReturnStatusCode200OnRequestToCreateBook() {
+        String bookTitle = "Book MVC #Test";
+        String genreName = "Genre MVC #Test";
+        Genre genre = new Genre(0L, genreName);
+        List<Long> authorsIds = new ArrayList<>();
+        authorsIds.add(1L);
+        authorsIds.add(2L);
+        Set<Author> authors = new HashSet<>();
+        Author authorOne = new Author(1L, "Author #1");
+        Author authorTwo = new Author(2L, "Author #2");
+        authors.add(authorOne);
+        authors.add(authorTwo);
+        Book book = new Book(bookTitle, authors, genre);
+        ObjectMapper objectMapper = new ObjectMapper();
+        when(bookService.save(bookTitle, authorsIds, genreName)).thenReturn(book);
+        String payloadBook = objectMapper.writeValueAsString(book);
+        mockMvc.perform(post("/api/v1/books")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(payloadBook)
+        )
+                .andDo(print());
     }
 }
