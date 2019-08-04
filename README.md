@@ -26,12 +26,56 @@
 Билиотеку на Spring Data JPA
 Реализовать весь функционал работы с БД в приложении книг с использованием spring-data-jpa репозиториев.
 
+# OTUS Homework 8
+
+Использовать MogoDB и spring-data для хранения информации о книгах
+Тесты можно реализовать с помощью spring-boot-strter-embedded-mongodb
+
+# OTUS Homework 9
+
+Использовать MogoDB и spring-data для хранения информации о книгах
+Тесты можно реализовать с помощью spring-boot-strter-embedded-mongodb
+
+#OTUS Homework 10
+
+Переписать приложение с использованием AJAX и REST-контроллеров
+Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры.
+
+Опционально: Сделать SPA приложение на любом из Web-фреймоврков
+
 #### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 
 #### For production:
 `docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres`
 
-## Done:
-    1. Implemented basic functionality
-    2. Implemented JDBC to JPA with Comments
+# Deploy:
+
+`1. mvn clean install`
+
+`2. NGINX configuration:`
+```
+server {
+    listen 80;
+    location / {
+
+        proxy_pass http://localhost:8080;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_set_header Connection $connection_upgrade;
+    }
+
+    location /api {
+
+        proxy_pass http://localhost:9999;
+    }
+}
+```
+
+`3. mvn --projects backend spring-boot:run`
+
+`4. cd frontend/`
+
+`5. npm run serve`
+
+`6. Go to localhost`
+
