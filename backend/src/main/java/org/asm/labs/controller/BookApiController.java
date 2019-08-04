@@ -46,11 +46,26 @@ public class BookApiController {
         String genre = bookPostRequestBody.getGenre();
         Book book = bookService.save(title, authors, genre);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(book.getId())
-            .toUri();
+                .path("/{id}")
+                .buildAndExpand(book.getId())
+                .toUri();
         return ResponseEntity.created(location).build();
-        
+
+    }
+
+    @PutMapping("/api/v1/books/{id}")
+    public ResponseEntity updateBook(@PathVariable long id, @RequestBody BookPostRequestBody bookPostRequestBody) throws
+            BookNotExistException,
+            AuthorNotExistException,
+            GenreNotExistException {
+        String title = bookPostRequestBody.getTitle();
+        List<Long> authors = bookPostRequestBody.getAuthors();
+        String genre = bookPostRequestBody.getGenre();
+        bookService.update(id, title, authors, genre);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .buildAndExpand(id)
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
 }

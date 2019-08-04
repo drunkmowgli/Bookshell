@@ -166,4 +166,17 @@ class BookServiceImplTest {
     }
 
 
+    @DisplayName("Должен обновить информацию о существующей книге")
+    @Test
+    @SneakyThrows
+    void shouldCorrectlyUpdateExistingBookInfo() {
+        Book book = new Book(0,
+                "Book Service #Test",
+                Collections.singleton(new Author("Author Service #Test")),
+                new Genre(0L, "Genre Service #Test")
+        );
+        when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
+        bookService.update(0L, "New Book Title", Collections.singletonList(1L), "New Genre");
+        assertEquals("New Book Title", book.getTitle());
+    }
 }

@@ -6,9 +6,7 @@ import org.asm.labs.model.Author;
 import org.asm.labs.model.Book;
 import org.asm.labs.model.Genre;
 import org.asm.labs.repository.BookRepository;
-import org.asm.labs.service.AuthorService;
 import org.asm.labs.service.BookService;
-import org.asm.labs.service.GenreService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -118,10 +116,10 @@ class BookApiControllerTest {
                 .andDo(print());
     }
 
-    @DisplayName("Должен вернуть статус код 200 на запрос создания книги")
+    @DisplayName("Должен вернуть статус код 201 на запрос создания книги")
     @Test
     @SneakyThrows
-    void shouldReturnStatusCode200OnRequestToCreateBook() {
+    void shouldReturnStatusCode201OnRequestToCreateBook() {
         String bookTitle = "Book MVC #Test";
         List<Long> authorsIds = new ArrayList<>();
         authorsIds.add(1L);
@@ -141,6 +139,31 @@ class BookApiControllerTest {
         mockMvc.perform(post("/api/v1/books")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(payloadBook)
+        )
+                .andExpect(status().isCreated())
+                .andExpect(redirectedUrl("http://localhost/api/v1/books/0"))
+                .andDo(print());
+    }
+
+    @DisplayName("Должен вернуть статус код 201 на запрос об обновлении информации о книге")
+    @Test
+    @SneakyThrows
+    void shouldReturnStatusCode201OnRequestToUpdateBook() {
+        Set<Author> authors = new HashSet<>();
+        Author authorOne = new Author(1, "Author #1");
+        Author authorTwo = new Author(2, "Author #2");
+        authors.add(authorOne);
+        authors.add(authorTwo);
+        Book book = new Book(
+                "Book MVC #Test",
+                authors,
+                new Genre(1, "Genre MVC #Test")
+        );
+        String payloadBookUpdate = "{\"title\" : \"New Book MVC #Test\", \"authors\" : [1], \"genre\" : \"New Genre MVC #Test\"}";
+        when(bookService.findById(0L)).thenReturn(book);
+        mockMvc.perform(put("/api/v1/books/{id}", "0")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(payloadBookUpdate)
         )
                 .andExpect(status().isCreated())
                 .andExpect(redirectedUrl("http://localhost/api/v1/books/0"))

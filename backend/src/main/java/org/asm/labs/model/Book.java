@@ -51,12 +51,24 @@ public class Book {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public Genre getGenre() {
         return genre;
     }
 
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     public Set<Author> getAuthors() {
         return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
     }
 
     @Override

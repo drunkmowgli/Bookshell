@@ -16,6 +16,16 @@ public interface BookService {
     Book save(String title, List<Long> authorsIds, String genreName) throws AuthorNotExistException, GenreNotExistException;
 
     /**
+     * Update existing book
+     *
+     * @param bookId - Book's is needed to update
+     * @param title  - New book title
+     *
+     * @return Updated Book
+     */
+    Book update(long bookId, String title, List<Long> authorsIds, String genreName) throws BookNotExistException, AuthorNotExistException, GenreNotExistException;
+
+    /**
      * Get all Books from DB.
      *
      * @return List of Books

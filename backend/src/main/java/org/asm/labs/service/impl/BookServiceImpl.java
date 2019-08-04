@@ -51,6 +51,22 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+    public Book update(long bookId, String title, List<Long> authorsIds, String genreName) throws BookNotExistException, AuthorNotExistException, GenreNotExistException {
+        Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
+        book.setTitle(title);
+        Set<Author> authors = new HashSet<>();
+        for (long authorId : authorsIds) {
+            Author author = authorService.findById(authorId);
+            authors.add(author);
+        }
+        book.setAuthors(authors);
+        Genre genre = genreService.findByGenreName(genreName);
+        book.setGenre(genre);
+        return bookRepository.save(book);
+    }
+
+    @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
     }
