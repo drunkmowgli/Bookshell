@@ -39,5 +39,10 @@ export default {
         return HTTP.post('/books/', {
             title: title, authors: authorIds, genre: genre
         })
+    },
+    updateBook(bookId, title, authorsIds, genre) {
+        return HTTP.put('/books/' + bookId, {
+            title: title, authors: authorsIds, genre: genre
+        })
     }
 }

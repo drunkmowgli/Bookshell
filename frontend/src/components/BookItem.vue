@@ -41,6 +41,9 @@
                 </div>
             </v-flex>
             <v-flex>
+                <PopupEditBookItem :book-id="book.id" v-on:bookUpdatedEvent="bookUpdatedResponse"></PopupEditBookItem>
+            </v-flex>
+            <v-flex>
                 <v-btn @click="deleteCurrentBook()" class="red mx0 mt-3">Delete</v-btn>
             </v-flex>
         </v-layout>
@@ -51,13 +54,15 @@
 
 <script>
     import api from './backend-api'
-    import CommentList from '@/components/CommentList'
+    import CommentList from './CommentList'
+    import PopupEditBookItem from "./PopupEditBookItem";
 
 
     export default {
         name: 'BookItem',
         props: ['id'],
         components: {
+            PopupEditBookItem,
             CommentList
         },
         data() {
@@ -79,6 +84,9 @@
             deleteCurrentBook() {
                 api.deleteBook(this.id);
                 this.$router.push('/books')
+            },
+            bookUpdatedResponse() {
+                this.showBookDetails();
             }
         }
     }

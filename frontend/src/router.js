@@ -21,8 +21,8 @@ export default new Router({
     },
     {
       path: '/books/:id',
-        name: 'BookItem',
-        component: BookItem,
+      name: 'BookItem',
+      component: BookItem,
       props: true
     }
   ]

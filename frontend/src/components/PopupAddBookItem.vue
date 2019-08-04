@@ -40,6 +40,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="clearBookInfo">Close</v-btn>
             <v-btn color="blue darken-1" text @click="dialog = false" v-on:click="submitBook">Save</v-btn>
           </v-card-actions>
         </v-card>
@@ -49,9 +50,9 @@
 </template>
 
 <script>
-    import api from './backend-api'
+  import api from './backend-api'
 
-    export default {
+  export default {
         name: "PopupAddBookItem",
         data() {
             return {
@@ -78,7 +79,7 @@
             },
             onBookAddBtnClick() {
                 this.fillAuthorsList();
-                this.fillGenresList()
+              this.fillGenresList();
             },
             submitBook() {
                 let title = this.title;
@@ -86,9 +87,15 @@
                 let selectedGenre = this.selectedGenre;
                 return api.addBook(title, selectedAuthors, selectedGenre)
                     .then( () => {
-                        this.$root.$emit('bookSubmittedEvent')
+                      this.$root.$emit('bookSubmittedEvent');
+                      this.clearBookInfo();
                     })
-            }
+            },
+          clearBookInfo() {
+            this.selectedAuthors = [];
+            this.selectedGenre = [];
+            this.title = ''
+          }
         }
     }
 </script>
