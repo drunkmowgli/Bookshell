@@ -67,5 +67,4 @@ public class BookApiController {
                 .toUri();
         return ResponseEntity.created(location).build();
     }
-
 }

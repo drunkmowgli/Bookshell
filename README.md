@@ -53,29 +53,7 @@
 
 `1. mvn clean install`
 
-`2. NGINX configuration:`
-```
-server {
-    listen 80;
-    location / {
+`2. java -jar backend/target/backend-1.0-SNAPSHOT.jar`
 
-        proxy_pass http://localhost:8080;
-  proxy_set_header Upgrade $http_upgrade;
-  proxy_set_header Connection $connection_upgrade;
-    }
-
-    location /api {
-
-        proxy_pass http://localhost:9999;
-    }
-}
-```
-
-`3. mvn --projects backend spring-boot:run`
-
-`4. cd frontend/`
-
-`5. npm run serve`
-
-`6. Go to localhost`
+`3. Go to http://localhost:9999`
 
