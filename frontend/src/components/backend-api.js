@@ -20,7 +20,7 @@ export default {
         return HTTP.get('/books/' + bookId)
     },
     deleteBook(bookId) {
-        return HTTP.delete('/books/' + bookId + '/delete')
+        return HTTP.delete('/books/' + bookId)
     },
     getComments(bookId) {
         return HTTP.get('/books/' + bookId +'/comments')

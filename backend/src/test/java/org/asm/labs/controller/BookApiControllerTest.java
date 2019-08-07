@@ -111,7 +111,7 @@ class BookApiControllerTest {
         );
         when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
         doNothing().when(bookService).remove(0L);
-        mockMvc.perform(delete("/api/v1/books/{id}/delete", "0"))
+        mockMvc.perform(delete("/api/v1/books/{id}", "0"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

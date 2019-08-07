@@ -29,7 +29,7 @@ public class BookApiController {
         return bookService.findAll();
     }
 
-    @DeleteMapping("/api/v1/books/{id}/delete")
+    @DeleteMapping("/api/v1/books/{id}")
     public void deleteBook(@PathVariable long id) throws BookNotExistException {
         bookService.remove(id);
     }
