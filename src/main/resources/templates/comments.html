@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all comments</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .comments, .comments td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="add_comment_form :: comment-form"></div>
+
+<h1>Comments for book:</h1>
+
+
+<table class="comments">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.id}">
+            1
+        </td>
+        <td th:text="${comment.description}">
+            Good book
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

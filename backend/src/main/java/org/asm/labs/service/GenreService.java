@@ -5,6 +5,12 @@ import org.asm.labs.model.Genre;
 import java.util.List;
 
 public interface GenreService {
+    
+    /**
+     * Save Genre in DB.
+     * @param genreName - genre
+     */
+    void save(String genreName);
 
     /**
      * Get all genres from DB.
@@ -16,11 +22,17 @@ public interface GenreService {
     /**
      * Get Genre from DB by id.
      *
-     * @param id - Genre's id
+     * @param genreId - Genre's id
      *
      * @return Genre
      */
-    Genre findById(long id) throws GenreNotExistException;
+    Genre findById(String genreId) throws GenreNotExistException;
+    
+    /**
+     * Remove genre from DB.
+     * @param genreId - Genre
+     */
+    void remove(String genreId) throws GenreNotExistException;
 
     /**
      * Get genre from repository by name

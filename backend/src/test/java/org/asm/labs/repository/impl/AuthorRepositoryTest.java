@@ -60,7 +60,7 @@ class AuthorRepositoryTest {
         assertThat(authors).isNotNull().allMatch(author -> !author.getName().equals(""));
     }
 
-    @DisplayName("Должен загружать информацию о нужном авторе по ID")
+    @DisplayName("Должен загружать информацию о нужном авторе")
     @Test
     void shouldFindExpectedAuthorById() {
         Author actualAuthor = authorRepository.findById(1L).orElseThrow();

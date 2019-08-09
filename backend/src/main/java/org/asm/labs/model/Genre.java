@@ -1,39 +1,38 @@
 package org.asm.labs.model;
 
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "genre")
+
+@Document(collection = "genres")
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(name = "genre_name")
-    private String genreName;
+    private String name;
 
-    public Genre() {}
-
-    public Genre(long id, String genreName) {
-        this.id = id;
-        this.genreName = genreName;
+    public Genre() {
     }
 
-    public long getId() {
+    public Genre(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getName() {
+        return name;
     }
 
     @Override
     public String toString() {
         return "Genre{" +
-                "id=" + id +
-                ", genreName='" + genreName + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
