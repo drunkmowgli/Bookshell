@@ -31,15 +31,15 @@ public class GenreServiceImpl implements GenreService {
     public Genre findById(long id) throws GenreNotExistException {
         return genreRepository.findById(id).orElseThrow(GenreNotExistException::new);
     }
-
+    
     @Override
     public Genre findByGenreName(String genreName) throws GenreNotExistException {
         return genreRepository.findByGenreName(genreName).orElseThrow(GenreNotExistException::new);
     }
-
+    
     @Override
     public long count() {
         return genreRepository.count();
     }
-
+    
 }

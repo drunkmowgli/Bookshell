@@ -7,33 +7,21 @@ import java.util.List;
 public interface GenreService {
     
     /**
-     * Save Genre in DB.
-     * @param genreName - genre
-     */
-    void save(String genreName);
-
-    /**
      * Get all genres from DB.
      *
      * @return List of Genres
      */
     List<Genre> findAll();
-
+    
     /**
      * Get Genre from DB by id.
      *
-     * @param genreId - Genre's id
+     * @param id - Genre's id
      *
      * @return Genre
      */
-    Genre findById(String genreId) throws GenreNotExistException;
+    Genre findById(long id) throws GenreNotExistException;
     
-    /**
-     * Remove genre from DB.
-     * @param genreId - Genre
-     */
-    void remove(String genreId) throws GenreNotExistException;
-
     /**
      * Get genre from repository by name
      *
@@ -44,7 +32,7 @@ public interface GenreService {
      * @throws GenreNotExistException - Informs us that genre not exist
      */
     Genre findByGenreName(String genreName) throws GenreNotExistException;
-
+    
     /**
      * Count number of Genres.
      *
