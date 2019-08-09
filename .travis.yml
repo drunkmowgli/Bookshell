@@ -15,7 +15,7 @@ cache:
 before_deploy:
   - git config --local user.name "drunkmowgli"
   - git config --local user.email "drunkmowgli@gmail.com"
-  - export NAME="$(basename target/Bookshell-*.jar .jar)"
+  - export NAME="$(basename backend/target/Bookshell-*.jar .jar)"
   - git tag $NAME
 
 jobs:
