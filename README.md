@@ -28,20 +28,31 @@
 
 # OTUS Homework 8
 
-Использовать MongoDB и spring-data для хранения информации о книгах
-Тесты можно реализовать с помощью spring-boot-starter-embedded-mongodb
+Использовать MogoDB и spring-data для хранения информации о книгах
+Тесты можно реализовать с помощью spring-boot-strter-embedded-mongodb
 
 # OTUS Homework 9
 
-CRUD приложение с Web UI и хранением данных в БД
-Создайте приложение с хранением сущностей в БД (можно взять DAOs из прошлых занятий)
+Использовать MogoDB и spring-data для хранения информации о книгах
+Тесты можно реализовать с помощью spring-boot-strter-embedded-mongodb
 
-Использовать классический View, предусмотреть страницу отображения всех сущностей и создания/редактирования.
+#OTUS Homework 10
 
-View на Thymeleaf, classic Controllers.
+Переписать приложение с использованием AJAX и REST-контроллеров
+Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры.
+
+Опционально: Сделать SPA приложение на любом из Web-фреймоврков
 
 #### For develop (branch HW05 only):
 `docker run --name postgres-develop -p 6543:5432 -e POSTGRES_USER=test_user -e POSTGRES_PASSWORD=test_password -d postgres`
 
 #### For production:
 `docker run --name postgres -p 5432:5432 -e POSTGRES_USER=prod_user -e POSTGRES_PASSWORD=prod_password -d postgres`
+
+# Deploy:
+
+`1. mvn clean install`
+
+`2. java -jar backend/target/backend-1.0-SNAPSHOT.jar`
+
+`3. Go to http://localhost:9999`
