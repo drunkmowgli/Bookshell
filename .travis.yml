@@ -31,7 +31,7 @@ jobs:
           overwrite: true
           api_key: $GITHUB_DEPLOY_KEY
           file_glob: true
-          file: "target/Bookshell-*.jar"
+          file: "backend/target/backend-*.jar"
           skip_cleanup: true
           name: $NAME
           on:
