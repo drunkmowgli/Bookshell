@@ -56,4 +56,3 @@
 `2. java -jar backend/target/backend-1.0-SNAPSHOT.jar`
 
 `3. Go to http://localhost:9999`
-
