@@ -36,7 +36,7 @@
 Использовать MogoDB и spring-data для хранения информации о книгах
 Тесты можно реализовать с помощью spring-boot-strter-embedded-mongodb
 
-#OTUS Homework 10
+# OTUS Homework 10
 
 Переписать приложение с использованием AJAX и REST-контроллеров
 Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры.
