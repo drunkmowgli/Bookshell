@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2019.
  *
- * Created by drunkmowgli on 3/11/2019
+ * Created by drunkmowgli on 15/11/2019
  *
  * @author drunkmowgli
  */
@@ -17,16 +17,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Data
 @AllArgsConstructor
-@Document(collection = "authors")
-public class Author {
+@Document(collection = "genres")
+public class Genre {
     
     @Id
     private String id;
     
     private String name;
     
-    public Author(String name) {
+    public Genre(String name) {
         this.name = name;
     }
-    
 }

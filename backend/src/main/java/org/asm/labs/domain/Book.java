@@ -10,16 +10,16 @@ package org.asm.labs.domain;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Data
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
+@Setter
+@Getter
 @Document(collection = "books")
 public class Book {
     
@@ -28,9 +28,12 @@ public class Book {
     
     private String title;
     
-    private List<Author> authors = new ArrayList<>();
+    @DBRef
+    private List<Author> authors;
     
-//    private List<Genre> genres = new ArrayList<>();
+    @DBRef
+    private Genre genre;
+
 //    private List<Comment> comments = new ArrayList<>();
     
     public Book(String title, List<Author> authors) {
@@ -38,5 +41,10 @@ public class Book {
         this.authors = authors;
     }
     
+    public Book(String title, List<Author> authors, Genre genre) {
+        this.title = title;
+        this.authors = authors;
+        this.genre = genre;
+    }
     
 }

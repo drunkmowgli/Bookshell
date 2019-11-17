@@ -36,7 +36,7 @@
                 <div class="caption grey--text">Genre</div>
                 <div>
                     <span v-if="book.genre">
-                        {{ book.genre.genreName }}
+                        {{ book.genre.name }}
                     </span>
                 </div>
             </v-flex>
@@ -75,7 +75,8 @@
             showBookDetails() {
                 return api.getBook(this.id)
                     .then(response => {
-                        this.book = response.data
+                        this.book = response.data;
+                        console.log(this.book)
                     })
                     .catch(e => {
                         this.errors = e

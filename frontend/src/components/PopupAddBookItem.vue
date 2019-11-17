@@ -28,8 +28,8 @@
                 <v-flex xs12 sm6>
                   <v-autocomplete
                     :items="genres"
-                    item-value="genreName"
-                    item-text="genreName"
+                    item-value="id"
+                    item-text="name"
                     label="Genre"
                     v-model="selectedGenre"
                   ></v-autocomplete>
@@ -61,7 +61,7 @@
                 authors: [],
                 selectedAuthors: [],
                 genres: [],
-                selectedGenre: []
+                selectedGenre: ''
             }
         },
         methods: {
@@ -79,7 +79,7 @@
             },
             onBookAddBtnClick() {
                 this.fillAuthorsList();
-              this.fillGenresList();
+                this.fillGenresList();
             },
             submitBook() {
                 let title = this.title;
@@ -93,7 +93,7 @@
             },
           clearBookInfo() {
             this.selectedAuthors = [];
-            this.selectedGenre = [];
+            this.selectedGenre = '';
             this.title = ''
           }
         }

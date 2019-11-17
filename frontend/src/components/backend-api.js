@@ -23,7 +23,7 @@ export default {
         return HTTP.delete('/books/' + bookId)
     },
     getComments(bookId) {
-        return HTTP.get('/books/' + bookId +'/comments')
+        return HTTP.get('/books/' + bookId + '/comments')
     },
     addAuthor(authorName) {
         return HTTP.post('/authors', {
@@ -35,14 +35,19 @@ export default {
             commentDescription: comment
         })
     },
-    addBook(title, authorIds, genre) {
+    addBook(title, authorIds, genreId) {
         return HTTP.post('/books/', {
-            title: title, authors: authorIds, genre: genre
+            title: title, authors: authorIds, genre: genreId
         })
     },
     updateBook(bookId, title, authorsIds, genre) {
         return HTTP.put('/books/' + bookId, {
             title: title, authors: authorsIds, genre: genre
+        })
+    },
+    addGenre(name) {
+        return HTTP.post('/genres', {
+            name: name
         })
     }
 }
