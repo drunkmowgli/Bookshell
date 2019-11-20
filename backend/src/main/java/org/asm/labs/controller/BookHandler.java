@@ -91,12 +91,9 @@ public class BookHandler {
         log.info("Новая книга с Название: {}, Идентификатором(ами) автора(ов): {}, Идентификатором(ами) жанра {}",
             title, authorsIds, genreId);
         
-        var authors = Flux.fromIterable(authorsIds)
-                          .flatMap(authorRepository::findById)
-                          .collectList();
+        var authors = authorRepository.findAllById(authorsIds).collectList();
         
-        var genre = Mono.just(genreId)
-                        .flatMap(genreRepository::findById);
+        var genre = genreRepository.findById(genreId);
         
         return authors
             .flatMap(as -> genre
