@@ -56,3 +56,22 @@
 `2. java -jar backend/target/backend-1.0-SNAPSHOT.jar`
 
 `3. Go to http://localhost:9999`
+
+# OTUS Homework 11
+
+Использовать WebFlux
+Вместо классического потока и embedded Web-сервера использовать WebFlux.
+
+PR этой Домашней Работы пойдет на отдельную ветку `master-webflux`
+
+#### For production:
+`docker run --restart=always --name mongo -p 8081:8081 -p 27017:27017 -d mongo`
+
+# Deploy
+
+`1. mvn clean install`
+
+`2. java -jar backend/target/backend-*.jar`
+
+`Go to http://localhost:9999`
+
