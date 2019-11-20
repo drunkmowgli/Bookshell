@@ -9,7 +9,6 @@
 package org.asm.labs.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.asm.labs.domain.Author;
 import org.asm.labs.domain.Book;
 import org.asm.labs.repository.AuthorRepository;
 import org.asm.labs.repository.BookRepository;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.util.UriComponentsBuilder;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -78,7 +76,6 @@ public class BookHandler {
                                                                   .fromPath(serverRequest
                                                                       .uri()
                                                                       .toString())
-                                                                  .path("/{id}")
                                                                   .buildAndExpand(response.getId()).toUri()).build()));
     }
     
@@ -102,9 +99,9 @@ public class BookHandler {
     }
     
     private Mono<Book> updateBook(Book book, String title, List<String> authorsIds, String genreId) {
-    
+        
         var authors = authorRepository.findAllById(authorsIds).collectList();
-    
+        
         var genre = genreRepository.findById(genreId);
         
         return authors

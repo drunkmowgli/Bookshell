@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
@@ -189,13 +188,66 @@ public class RestRouteConfigTest {
             .bindToRouterFunction(routerFunction)
             .build();
         
-        webTestClient.post()
-                     .uri("/api/v1/books")
-                     .contentType(MediaType.APPLICATION_JSON_UTF8)
-                     .syncBody("{\"title\": \"Title Test\", \"authors\": [\"1\", \"2\"], \"genre\": \"1\"}")
-                     .exchange()
-                     .expectStatus()
-                     .isCreated();
+        EntityExchangeResult<Book> result = webTestClient
+            .post()
+            .uri("/api/v1/books")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .syncBody("{\"title\": \"Title Test\", \"authors\": [\"1\", \"2\"], \"genre\": \"1\"}")
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(Book.class)
+            .consumeWith(response -> {
+                assertEquals("/api/v1/books/1",
+                    String.valueOf(response.getResponseHeaders().getLocation()));
+            }).returnResult();
+        
+        System.out.println(result.getResponseHeaders().getLocation());
+        
+    }
+    
+    @Test
+    @DisplayName("Должен корректно обновить сущность книга и вернуть статус код 201")
+    public void shouldReturnStatusCode201onRequestUpdateBook() {
+        List<Author> authors = new ArrayList<>() {
+            {
+                add(new Author("1", "Author #Test 1"));
+                add(new Author("2", "Author #Test 2"));
+            }
+        };
+        List<String> authorsIds = List.of("1", "2");
+        given(authorRepository.findAllById(authorsIds)).willReturn(Flux.fromIterable(authors));
+        Genre genre = new Genre("1", "Comics");
+        given(genreRepository.findById("1")).willReturn(Mono.just(genre));
+        
+        Book book = new Book("1", "Title Test Before", authors, genre);
+        Book updatedBook = new Book("1", "Title Test After", authors, genre);
+        
+        given(bookRepository.findById("1")).willReturn(Mono.just(book));
+        
+        given(bookRepository.save(updatedBook)).willReturn(Mono.just(updatedBook));
+        
+        
+        WebTestClient webTestClient = WebTestClient
+            .bindToRouterFunction(routerFunction)
+            .build();
+        
+        EntityExchangeResult<Book> result = webTestClient
+            .put()
+            .uri("/api/v1/books/1")
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .syncBody("{\"title\": \"Title Test After\", \"authors\": [\"1\", \"2\"], \"genre\": \"1\"}")
+            .exchange()
+            .expectStatus()
+            .isCreated()
+            .expectBody(Book.class)
+            .consumeWith(response -> {
+                assertEquals("/api/v1/books/1",
+                    String.valueOf(response.getResponseHeaders().getLocation()));
+            }).returnResult();
+        
+        System.out.println(result.getResponseHeaders().getLocation());
+        
         
     }
     
