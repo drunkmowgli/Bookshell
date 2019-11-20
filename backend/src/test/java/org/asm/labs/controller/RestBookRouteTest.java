@@ -1,11 +1,3 @@
-/*
- * Copyright (c) 2019.
- *
- * Created by drunkmowgli on 4/11/2019
- *
- * @author drunkmowgli
- */
-
 package org.asm.labs.controller;
 
 import org.asm.labs.domain.Author;
@@ -37,8 +29,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RestRouteConfigTest {
-    
+public class RestBookRouteTest {
     
     @MockBean
     private AuthorRepository authorRepository;
@@ -51,120 +42,6 @@ public class RestRouteConfigTest {
     
     @Autowired
     RouterFunction routerFunction;
-    
-    
-    @Test
-    @DisplayName("Должен вернуть статус код 200 на запрос получения всех авторов")
-    public void shouldReturnStatusCode200onRequestReadAllAuthors() {
-        Author authorOne = new Author("1", "Author Test #1");
-        Author authorTwo = new Author("2", "Author Test #2");
-        
-        given(authorRepository.findAll()).willReturn(Flux.just(authorOne, authorTwo));
-        
-        WebTestClient webTestClient = WebTestClient
-            .bindToRouterFunction(routerFunction)
-            .build();
-        
-        EntityExchangeResult<List<Author>> result = webTestClient
-            .get()
-            .uri("/api/v1/authors")
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBodyList(Author.class)
-            .returnResult();
-        
-        Objects.requireNonNull(result.getResponseBody()).forEach(System.out::println);
-        
-    }
-    
-    @Test
-    @DisplayName("Должен корректно создать сущность автора и вернуть статус код 201")
-    public void shouldReturnStatusCode201onRequestCreateAuthor() {
-        Author authorNew = new Author("Author Test #1");
-        Author authorSaved = new Author("1", "Author Test #1");
-        
-        given(authorRepository.save(authorNew)).willReturn(Mono.just(authorSaved));
-        
-        WebTestClient webTestClient = WebTestClient
-            .bindToRouterFunction(routerFunction)
-            .build();
-        
-        EntityExchangeResult<Author> result = webTestClient
-            .post()
-            .uri("/api/v1/authors")
-            .accept(MediaType.APPLICATION_JSON_UTF8)
-            .body(Mono.just(authorNew), Author.class)
-            .exchange()
-            .expectStatus()
-            .isCreated()
-            .expectBody(Author.class)
-            .consumeWith(response -> {
-                assertEquals("/api/v1/authors/1",
-                    String.valueOf(response.getResponseHeaders().getLocation()));
-            })
-            .returnResult();
-        
-        System.out.println(result.getResponseHeaders().getLocation());
-    }
-    
-    @Test
-    @DisplayName("Должен корректно вернуть статус код 200 на запрос получения списка жанров")
-    public void shouldReturnStatusCode200onRequestReadAllGenres() {
-        Genre genreOne = new Genre("1", "Comics");
-        Genre genreTwo = new Genre("2", "Novel");
-        
-        given(genreRepository.findAll()).willReturn(Flux.just(genreOne, genreTwo));
-        
-        WebTestClient webTestClient = WebTestClient
-            .bindToRouterFunction(routerFunction)
-            .build();
-        
-        EntityExchangeResult<List<Genre>> result = webTestClient
-            .get()
-            .uri("/api/v1/genres")
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBodyList(Genre.class)
-            .returnResult();
-        
-        Objects.requireNonNull(result.getResponseBody()).forEach(System.out::println);
-    }
-    
-    @Test
-    @DisplayName("Должен корректно создать сущность жанр и вернуть статус код 201")
-    public void shouldReturnStatusCode201onRequestCreateGenre() {
-        Genre genreNew = new Genre("Comics");
-        Genre genreSaved = new Genre("1", "Comics");
-        
-        given(genreRepository.save(genreNew)).willReturn(Mono.just(genreSaved));
-        
-        WebTestClient webTestClient = WebTestClient
-            .bindToRouterFunction(routerFunction)
-            .build();
-        
-        EntityExchangeResult<Genre> result = webTestClient
-            .post()
-            .uri("/api/v1/genres")
-            .accept(MediaType.APPLICATION_JSON_UTF8)
-            .body(Mono.just(genreNew), Genre.class)
-            .exchange()
-            .expectStatus()
-            .isCreated()
-            .expectBody(Genre.class)
-            .consumeWith(response -> {
-                assertEquals("/api/v1/genres/1",
-                    String.valueOf(response.getResponseHeaders().getLocation()));
-            })
-            .returnResult();
-        
-        System.out.println(result.getResponseHeaders().getLocation());
-    }
     
     @Test
     @DisplayName("Должен корректно создать сущность книга и вернуть статус код 201")
@@ -203,6 +80,78 @@ public class RestRouteConfigTest {
             }).returnResult();
         
         System.out.println(result.getResponseHeaders().getLocation());
+        
+    }
+    
+    @Test
+    @DisplayName("Должен корректно вернуть список книг и статус код 200")
+    public void shouldReturnStatusCode200onRequestReadAllBook() {
+        List<Author> authors = new ArrayList<>() {
+            {
+                add(new Author("1", "Author #Test 1"));
+                add(new Author("2", "Author #Test 2"));
+            }
+        };
+        Genre genre = new Genre("1", "Comics");
+        List<Book> books = new ArrayList<>() {
+            {
+                add(new Book("1", "Test Title #1", authors, genre));
+                add(new Book("2", "Test Title #2", authors, genre));
+            }
+        };
+        
+        given(bookRepository.findAll()).willReturn(Flux.fromIterable(books));
+        
+        WebTestClient webTestClient = WebTestClient
+            .bindToRouterFunction(routerFunction)
+            .build();
+        
+        EntityExchangeResult<List<Book>> result = webTestClient
+            .get()
+            .uri("/api/v1/books")
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectHeader()
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .expectBodyList(Book.class)
+            .returnResult();
+        
+        Objects.requireNonNull(result.getResponseBody()).forEach(System.out::println);
+        
+    }
+    
+    @Test
+    @DisplayName("Должен корректно вернуть книгку и статус код 200")
+    public void shouldReturnStatusCode200onRequestReadBook() {
+        List<Author> authors = new ArrayList<>() {
+            {
+                add(new Author("1", "Author #Test 1"));
+                add(new Author("2", "Author #Test 2"));
+            }
+        };
+        Genre genre = new Genre("1", "Comics");
+        Book book = new Book("1", "Title Test #1", authors, genre);
+        
+        given(bookRepository.findById("1")).willReturn(Mono.just(book));
+        
+        WebTestClient webTestClient = WebTestClient
+            .bindToRouterFunction(routerFunction)
+            .build();
+        
+        EntityExchangeResult<Book> result = webTestClient
+            .get()
+            .uri("/api/v1/books/1")
+            .exchange()
+            .expectStatus()
+            .isOk()
+            .expectHeader()
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .expectBody(Book.class)
+            .returnResult();
+        
+        System.out.println(result.getResponseBody());
+        
         
     }
     
@@ -248,7 +197,22 @@ public class RestRouteConfigTest {
         
         System.out.println(result.getResponseHeaders().getLocation());
         
-        
     }
     
+    @Test
+    @DisplayName("Должен корректно удалить сущность книга и вернуть статус код 204")
+    public void shouldReturnStatusCode204onRequestDeleteBook() {
+        given(bookRepository.deleteById("1")).willReturn(Mono.empty());
+        
+        WebTestClient webTestClient = WebTestClient
+            .bindToRouterFunction(routerFunction)
+            .build();
+        
+        webTestClient
+            .delete()
+            .uri("/api/v1/books/1")
+            .exchange()
+            .expectStatus()
+            .isOk();
+    }
 }

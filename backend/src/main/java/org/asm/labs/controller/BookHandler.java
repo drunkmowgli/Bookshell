@@ -81,7 +81,7 @@ public class BookHandler {
     
     public Mono<ServerResponse> delete(ServerRequest serverRequest) {
         return bookRepository.deleteById(serverRequest.pathVariable("id"))
-                             .flatMap(response -> ServerResponse.noContent().build());
+                             .flatMap(response -> ServerResponse.ok().build());
     }
     
     private Mono<Book> newBook(String title, List<String> authorsIds, String genreId) {
