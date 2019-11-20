@@ -29,7 +29,7 @@
         name: "CommentList",
         components: {CommentAddForm},
         props: {
-            bookId: Number
+            bookId: String
         },
         data() {
             return {

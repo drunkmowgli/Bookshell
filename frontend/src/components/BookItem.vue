@@ -76,7 +76,6 @@
                 return api.getBook(this.id)
                     .then(response => {
                         this.book = response.data;
-                        console.log(this.book)
                     })
                     .catch(e => {
                         this.errors = e

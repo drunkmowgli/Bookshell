@@ -163,41 +163,5 @@ public class RestRouteConfigTest {
         
         System.out.println(result.getResponseHeaders().getLocation());
     }
-
-//    @Test
-//    public void addBookTest() {
-//        List<Author> authors = new ArrayList<>() {
-//            {
-//                add(new Author("1", "Author Test #1"));
-//                add(new Author("2", "Author Test #2"));
-//            }
-//        };
-//        Genre genre = new Genre("1", "Comics");
-//        Book bookNew = new Book("Book Test #1", authors, genre);
-//        Book bookSaved = new Book("1", "Book Test #1", authors, genre);
-//        given(bookRepository.save(bookNew)).willReturn(Mono.just(bookSaved));
-//
-//        WebTestClient webTestClient = WebTestClient
-//            .bindToRouterFunction(routerFunction)
-//            .build();
-//
-//        EntityExchangeResult<Book> result = webTestClient
-//            .post()
-//            .uri("/api/v1/books")
-//            .accept(MediaType.APPLICATION_JSON_UTF8)
-//            .body(Mono.just(bookNew), Book.class)
-//            .exchange()
-//            .expectStatus()
-//            .isCreated()
-//            .expectBody(Book.class)
-//            .consumeWith(response -> {
-//                assertEquals("/api/v1/books/1",
-//                    String.valueOf(response.getResponseHeaders().getLocation()));
-//            })
-//            .returnResult();
-//
-//        System.out.println(result.getResponseHeaders().getLocation());
-//
-//    }
     
 }

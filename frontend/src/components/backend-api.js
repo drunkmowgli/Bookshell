@@ -40,9 +40,9 @@ export default {
             title: title, authors: authorIds, genre: genreId
         })
     },
-    updateBook(bookId, title, authorsIds, genre) {
+    updateBook(bookId, title, authorIds, genreId) {
         return HTTP.put('/books/' + bookId, {
-            title: title, authors: authorsIds, genre: genre
+            title: title, authors: authorIds, genre: genreId
         })
     },
     addGenre(name) {
