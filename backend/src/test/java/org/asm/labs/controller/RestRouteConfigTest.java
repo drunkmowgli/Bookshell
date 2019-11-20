@@ -9,6 +9,7 @@
 package org.asm.labs.controller;
 
 import org.asm.labs.domain.Author;
+import org.asm.labs.domain.Book;
 import org.asm.labs.domain.Genre;
 import org.asm.labs.repository.AuthorRepository;
 import org.asm.labs.repository.BookRepository;
@@ -27,6 +28,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -162,6 +164,36 @@ public class RestRouteConfigTest {
             .returnResult();
         
         System.out.println(result.getResponseHeaders().getLocation());
+    }
+    
+    @Test
+    @DisplayName("Должен корректно создать сущность книга и вернуть статус код 201")
+    public void shouldReturnStatusCode201onRequestCreateBook() {
+        List<Author> authors = new ArrayList<>() {
+            {
+                add(new Author("1", "Author #Test 1"));
+                add(new Author("2", "Author #Test 2"));
+            }
+        };
+        List<String> authorIds = List.of("1", "2");
+        given(authorRepository.findAllById(authorIds)).willReturn(Flux.fromIterable(authors));
+        Genre genre = new Genre("1", "Comics");
+        given(genreRepository.findById("1")).willReturn(Mono.just(genre));
+        Book book = new Book("1", "Title Test", authors, genre);
+        given(bookRepository.findById("1")).willReturn(Mono.just(book));
+        
+        WebTestClient webTestClient = WebTestClient
+            .bindToRouterFunction(routerFunction)
+            .build();
+        
+        webTestClient.post()
+                     .uri("/api/v1/books")
+                     .contentType(MediaType.APPLICATION_JSON_UTF8)
+                     .syncBody("{\"title\": \"Title Test\", \"authors\": [\"1\", \"2\"], \"genre\": \"1\"}")
+                     .exchange()
+                     .expectStatus()
+                     .isCreated();
+        
     }
     
 }
