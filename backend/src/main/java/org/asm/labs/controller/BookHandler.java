@@ -9,6 +9,7 @@
 package org.asm.labs.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.asm.labs.domain.Author;
 import org.asm.labs.domain.Book;
 import org.asm.labs.repository.AuthorRepository;
 import org.asm.labs.repository.BookRepository;
@@ -104,13 +105,10 @@ public class BookHandler {
     }
     
     private Mono<Book> updateBook(Book book, String title, List<String> authorsIds, String genreId) {
-        
-        var authors = Flux.fromIterable(authorsIds)
-                          .flatMap(authorRepository::findById)
-                          .collectList();
-        
-        var genre = Mono.just(genreId)
-                        .flatMap(genreRepository::findById);
+    
+        var authors = authorRepository.findAllById(authorsIds).collectList();
+    
+        var genre = genreRepository.findById(genreId);
         
         return authors
             .flatMap(as -> genre

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(SpringRunner.class)
@@ -175,12 +176,14 @@ public class RestRouteConfigTest {
                 add(new Author("2", "Author #Test 2"));
             }
         };
-        List<String> authorIds = List.of("1", "2");
-        given(authorRepository.findAllById(authorIds)).willReturn(Flux.fromIterable(authors));
+        List<String> authorsIds = List.of("1", "2");
+        given(authorRepository.findAllById(authorsIds)).willReturn(Flux.fromIterable(authors));
         Genre genre = new Genre("1", "Comics");
         given(genreRepository.findById("1")).willReturn(Mono.just(genre));
-        Book book = new Book("1", "Title Test", authors, genre);
-        given(bookRepository.findById("1")).willReturn(Mono.just(book));
+        Book bookNew = new Book("Title Test", authors, genre);
+        Book bookSaved = new Book("1", "Title Test", authors, genre);
+        
+        given(bookRepository.save(any())).willReturn(Mono.just(bookSaved));
         
         WebTestClient webTestClient = WebTestClient
             .bindToRouterFunction(routerFunction)
