@@ -183,7 +183,7 @@ public class RestRouteConfigTest {
         Book bookNew = new Book("Title Test", authors, genre);
         Book bookSaved = new Book("1", "Title Test", authors, genre);
         
-        given(bookRepository.save(any())).willReturn(Mono.just(bookSaved));
+        given(bookRepository.save(bookNew)).willReturn(Mono.just(bookSaved));
         
         WebTestClient webTestClient = WebTestClient
             .bindToRouterFunction(routerFunction)
