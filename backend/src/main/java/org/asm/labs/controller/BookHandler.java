@@ -43,7 +43,7 @@ public class BookHandler {
     
     public Mono<ServerResponse> create(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(HashMap.class)
-                            .flatMap(payload -> newBook(String.valueOf(payload.get("title")),
+                            .flatMap(payload -> createBook(String.valueOf(payload.get("title")),
                                 (List<String>) payload.get("authors"),
                                 (String) payload.get("genre"))
                             )
@@ -79,12 +79,13 @@ public class BookHandler {
                                                                   .buildAndExpand(response.getId()).toUri()).build()));
     }
     
+    // TODO: Разобраться с статус кодом 204
     public Mono<ServerResponse> delete(ServerRequest serverRequest) {
         return bookRepository.deleteById(serverRequest.pathVariable("id"))
                              .flatMap(response -> ServerResponse.ok().build());
     }
     
-    private Mono<Book> newBook(String title, List<String> authorsIds, String genreId) {
+    private Mono<Book> createBook(String title, List<String> authorsIds, String genreId) {
         log.info("Новая книга с Название: {}, Идентификатором(ами) автора(ов): {}, Идентификатором(ами) жанра {}",
             title, authorsIds, genreId);
         

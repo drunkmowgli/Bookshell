@@ -17,9 +17,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @Data
-@AllArgsConstructor
 @Setter
 @Getter
+@AllArgsConstructor
 @Document(collection = "books")
 public class Book {
     
@@ -33,13 +33,6 @@ public class Book {
     
     @DBRef
     private Genre genre;
-
-//    private List<Comment> comments = new ArrayList<>();
-    
-    public Book(String title, List<Author> authors) {
-        this.title = title;
-        this.authors = authors;
-    }
     
     public Book(String title, List<Author> authors, Genre genre) {
         this.title = title;
