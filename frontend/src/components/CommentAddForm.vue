@@ -24,7 +24,7 @@
     export default {
         name: "CommentAddForm",
         props: {
-            bookId: Number
+            bookId: String
         },
         data() {
             return {

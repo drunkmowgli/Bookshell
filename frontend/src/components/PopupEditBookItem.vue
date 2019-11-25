@@ -28,8 +28,8 @@
                                 <v-flex xs12 sm6>
                                     <v-autocomplete
                                             :items="genres"
-                                            item-value="genreName"
-                                            item-text="genreName"
+                                            item-value="id"
+                                            item-text="name"
                                             label="Genre"
                                             v-model="selectedGenre"
                                     ></v-autocomplete>
@@ -56,7 +56,7 @@
     export default {
         name: "PopupEditBookItem",
         props: {
-            bookId: Number
+            bookId: String
         },
         data() {
             return {
@@ -65,7 +65,7 @@
                 authors: [],
                 selectedAuthors: [],
                 genres: [],
-                selectedGenre: []
+                selectedGenre: ''
             }
         },
         methods: {
@@ -93,11 +93,12 @@
                     .then(() => {
                         this.$emit('bookUpdatedEvent');
                         this.clearBookInfo();
+                        console.log("bookId: " + this.bookId + " title: " + title);
                     })
             },
             clearBookInfo() {
                 this.selectedAuthors = [];
-                this.selectedGenre = [];
+                this.selectedGenre = '';
                 this.title = ''
             }
         }

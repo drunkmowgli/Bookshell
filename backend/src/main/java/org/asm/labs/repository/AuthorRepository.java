@@ -1,13 +1,9 @@
 package org.asm.labs.repository;
 
-import org.asm.labs.model.Author;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.asm.labs.domain.Author;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-import java.util.Optional;
+public interface AuthorRepository extends ReactiveMongoRepository<Author, String> {
 
-@Repository
-public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    Optional<Author> findByName(String authorName);
 }

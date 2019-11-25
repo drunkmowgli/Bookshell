@@ -1,14 +1,10 @@
 package org.asm.labs.repository;
 
-import org.asm.labs.model.Comment;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.asm.labs.domain.Comment;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import reactor.core.publisher.Flux;
 
-import java.util.List;
-
-@Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends ReactiveMongoRepository<Comment, String> {
     
-    List<Comment> findByBookId(long id);
-    
+    Flux<Comment> findByBookId(String id);
 }

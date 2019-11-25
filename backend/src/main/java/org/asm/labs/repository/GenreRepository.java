@@ -1,12 +1,16 @@
+/*
+ * Copyright (c) 2019.
+ *
+ * Created by drunkmowgli on 15/11/2019
+ *
+ * @author drunkmowgli
+ */
+
 package org.asm.labs.repository;
 
-import org.asm.labs.model.Genre;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.asm.labs.domain.Genre;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-import java.util.Optional;
+public interface GenreRepository extends ReactiveMongoRepository<Genre, String> {
 
-@Repository
-public interface GenreRepository extends JpaRepository<Genre, Long> {
-    Optional<Genre> findByGenreName(String genreName);
 }
