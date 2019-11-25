@@ -10,8 +10,8 @@ package org.asm.labs.controller;
 
 import org.asm.labs.domain.Author;
 import org.asm.labs.repository.AuthorRepository;
+import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
