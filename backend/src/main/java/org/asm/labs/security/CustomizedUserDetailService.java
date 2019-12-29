@@ -1,6 +1,5 @@
 package org.asm.labs.security;
 
-import org.asm.labs.model.User;
 import org.asm.labs.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +17,9 @@ public class CustomizedUserDetailService implements UserDetailsService {
 		this.userRepository = userRepository;
 	}
 
-	public User findAndAuthenticate(String login) {
-		return userRepository.findByLogin(login);
-	}
-
 	@Override
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-		return userRepository.findByLogin(login);
+		return userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
 	}
 
 }

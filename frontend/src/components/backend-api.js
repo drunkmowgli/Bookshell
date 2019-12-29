@@ -39,7 +39,7 @@ export default {
         })
     },
     addBook(title, authorIds, genre) {
-        return HTTP.post('/books/', {
+        return HTTP.post('/books', {
             title: title, authors: authorIds, genre: genre
         })
     },
