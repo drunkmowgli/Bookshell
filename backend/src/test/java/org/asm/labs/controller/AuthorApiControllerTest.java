@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -26,42 +27,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AuthorApiController.class)
 class AuthorApiControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private AuthorService authorService;
+	@MockBean
+	private AuthorService authorService;
 
-    @DisplayName("Должен статус код 200, на запрос получения всех авторов")
-    @Test
-    @SneakyThrows
-    void shouldReturn200onGetAllAuthors() {
-        when(authorService.findAll()).thenReturn(Collections.singletonList(new Author("Author MVC #Test")));
-        mockMvc.perform(get("/api/v1/authors"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(0)))
-                .andExpect(jsonPath("$[0].name", is("Author MVC #Test")))
-                .andDo(print());
-        verify(authorService, times(1)).findAll();
-        verifyNoMoreInteractions(authorService);
-    }
+	@WithMockUser
+	@DisplayName("Должен статус код 200, на запрос получения всех авторов")
+	@Test
+	@SneakyThrows
+	void shouldReturn200onGetAllAuthors() {
+		when(authorService.findAll()).thenReturn(Collections.singletonList(new Author("Author MVC #Test")));
+		mockMvc.perform(get("/api/v1/authors"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].id", is(0)))
+				.andExpect(jsonPath("$[0].name", is("Author MVC #Test")))
+				.andDo(print());
+		verify(authorService, times(1)).findAll();
+		verifyNoMoreInteractions(authorService);
+	}
 
-    @DisplayName("Должен добавить автора, затем вернуть JSON и статус isCreated (200)")
-    @Test
-    @SneakyThrows
-    void shouldReturn200OnCreateAuthor() {
-        String authorName = "Author MVC #Test";
-        Author author = new Author(authorName);
-        when(authorService.save(authorName)).thenReturn(author);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String authorJsonString = objectMapper.writeValueAsString(author);
-        mockMvc.perform(post("/api/v1/authors")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(authorJsonString)
+	@WithMockUser
+	@DisplayName("Должен добавить автора, затем вернуть JSON и статус isCreated (201)")
+	@Test
+	@SneakyThrows
+	void shouldReturn201OnCreateAuthor() {
+		String authorName = "Author MVC #Test";
+		Author author = new Author(authorName);
+		when(authorService.save(authorName)).thenReturn(author);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String authorJsonString = objectMapper.writeValueAsString(author);
+		mockMvc.perform(post("/api/v1/authors")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(authorJsonString)
 
-        )
-                .andExpect(status().isOk())
-                .andDo(print());
-    }
+		)
+				.andExpect(status().isCreated())
+				.andDo(print());
+	}
 }

@@ -32,7 +32,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="headline">Library</v-toolbar-title>
       <v-layout align-start justify-end wrap>
-        <v-flex xs6 md2 order-md3 order-sm2>
+        <v-flex xs6 md2 order-md3 order-sm1>
           <PopupAddBookItem></PopupAddBookItem>
         </v-flex>
         <v-flex xs6 md2 order-md2 order-sm1>

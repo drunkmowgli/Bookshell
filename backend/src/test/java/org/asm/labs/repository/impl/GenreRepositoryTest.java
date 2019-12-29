@@ -24,31 +24,31 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class GenreRepositoryTest {
 
-    @Autowired
-    private GenreRepository genreRepository;
+	@Autowired
+	private GenreRepository genreRepository;
 
-    @Autowired
-    private TestEntityManager em;
+	@Autowired
+	private TestEntityManager em;
 
-    @DisplayName("Должен загружать список всех жанров с полной информацией о них")
-    @Test
-    void shouldReturnCorrectGenresListWithAllInfo() {
-        List<Genre> genres = genreRepository.findAll();
-        assertThat(genres).isNotNull().allMatch(g -> !g.getGenreName().equals(""));
-    }
+	@DisplayName("Должен загружать список всех жанров с полной информацией о них")
+	@Test
+	void shouldReturnCorrectGenresListWithAllInfo() {
+		List<Genre> genres = genreRepository.findAll();
+		assertThat(genres).isNotNull().allMatch(g -> !g.getGenreName().equals(""));
+	}
 
-    @DisplayName("Должен загружать информацию о нужном жанре")
-    @Test
-    void shouldFindExpectedGenreById() {
-        Genre actualGenre = genreRepository.findById(1L).orElseThrow();
-        Genre expectedGenre = em.find(Genre.class, 1L);
-        assertThat(actualGenre).isEqualToComparingFieldByField(expectedGenre);
-    }
+	@DisplayName("Должен загружать информацию о нужном жанре")
+	@Test
+	void shouldFindExpectedGenreById() {
+		Genre actualGenre = genreRepository.findById(1L).orElseThrow();
+		Genre expectedGenre = em.find(Genre.class, 1L);
+		assertThat(actualGenre).isEqualToComparingFieldByField(expectedGenre);
+	}
 
-    @DisplayName("Должен вернуть количество жанров")
-    @Test
-    void count() {
-        assertThat(genreRepository.count()).isNotNull();
-    }
+	@DisplayName("Должен вернуть количество жанров")
+	@Test
+	void count() {
+		assertThat(genreRepository.count()).isNotNull();
+	}
 
 }

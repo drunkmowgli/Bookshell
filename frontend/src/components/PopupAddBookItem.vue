@@ -79,7 +79,7 @@
             },
             onBookAddBtnClick() {
                 this.fillAuthorsList();
-              this.fillGenresList();
+                this.fillGenresList();
             },
             submitBook() {
                 let title = this.title;

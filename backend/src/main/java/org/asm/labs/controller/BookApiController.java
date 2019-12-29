@@ -17,54 +17,54 @@ import java.util.List;
 @RestController
 public class BookApiController {
 
-    private final BookService bookService;
+	private final BookService bookService;
 
-    @Autowired
-    public BookApiController(BookService bookService) {
-        this.bookService = bookService;
-    }
+	@Autowired
+	public BookApiController(BookService bookService) {
+		this.bookService = bookService;
+	}
 
-    @GetMapping("/api/v1/books")
-    public List<Book> getAllBooks() {
-        return bookService.findAll();
-    }
+	@GetMapping("/api/v1/books")
+	public List<Book> getAllBooks() {
+		return bookService.findAll();
+	}
 
-    @DeleteMapping("/api/v1/books/{id}")
-    public void deleteBook(@PathVariable long id) throws BookNotExistException {
-        bookService.remove(id);
-    }
+	@DeleteMapping("/api/v1/books/{id}")
+	public void deleteBook(@PathVariable long id) throws BookNotExistException {
+		bookService.remove(id);
+	}
 
-    @GetMapping("/api/v1/books/{id}")
-    public Book getBook(@PathVariable long id) throws BookNotExistException {
-        return bookService.findById(id);
-    }
+	@GetMapping("/api/v1/books/{id}")
+	public Book getBook(@PathVariable long id) throws BookNotExistException {
+		return bookService.findById(id);
+	}
 
-    @PostMapping("/api/v1/books")
-    public ResponseEntity addBook(@RequestBody BookPostRequestBody bookPostRequestBody) throws AuthorNotExistException, GenreNotExistException {
-        String title = bookPostRequestBody.getTitle();
-        List<Long> authors = bookPostRequestBody.getAuthors();
-        String genre = bookPostRequestBody.getGenre();
-        Book book = bookService.save(title, authors, genre);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(book.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+	@PostMapping("/api/v1/books")
+	public ResponseEntity<Book> addBook(@RequestBody BookPostRequestBody bookPostRequestBody) throws AuthorNotExistException, GenreNotExistException {
+		String title = bookPostRequestBody.getTitle();
+		List<Long> authors = bookPostRequestBody.getAuthors();
+		String genre = bookPostRequestBody.getGenre();
+		Book book = bookService.save(title, authors, genre);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(book.getId())
+				.toUri();
+		return ResponseEntity.created(location).build();
 
-    }
+	}
 
-    @PutMapping("/api/v1/books/{id}")
-    public ResponseEntity updateBook(@PathVariable long id, @RequestBody BookPostRequestBody bookPostRequestBody) throws
-            BookNotExistException,
-            AuthorNotExistException,
-            GenreNotExistException {
-        String title = bookPostRequestBody.getTitle();
-        List<Long> authors = bookPostRequestBody.getAuthors();
-        String genre = bookPostRequestBody.getGenre();
-        bookService.update(id, title, authors, genre);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .buildAndExpand(id)
-                .toUri();
-        return ResponseEntity.created(location).build();
-    }
+	@PutMapping("/api/v1/books/{id}")
+	public ResponseEntity<Book> updateBook(@PathVariable long id, @RequestBody BookPostRequestBody bookPostRequestBody) throws
+			BookNotExistException,
+			AuthorNotExistException,
+			GenreNotExistException {
+		String title = bookPostRequestBody.getTitle();
+		List<Long> authors = bookPostRequestBody.getAuthors();
+		String genre = bookPostRequestBody.getGenre();
+		bookService.update(id, title, authors, genre);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.buildAndExpand(id)
+				.toUri();
+		return ResponseEntity.created(location).build();
+	}
 }

@@ -24,71 +24,71 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AuthorRepositoryTest {
 
-    @Autowired
-    private AuthorRepository authorRepository;
+	@Autowired
+	private AuthorRepository authorRepository;
 
-    @Autowired
-    private TestEntityManager em;
+	@Autowired
+	private TestEntityManager em;
 
 
-    @DisplayName("Должен корректно сохранять всю информацию об авторе")
-    @Test
-    void shouldSaveAuthorInfo() {
-        Author actualAuthor = new Author("Author Test");
-        authorRepository.save(actualAuthor);
-        assertThat(actualAuthor.getId()).isGreaterThan(0);
-        Author expectedAuthor = em.find(Author.class, actualAuthor.getId());
-        assertThat(expectedAuthor).isNotNull().matches(author -> !author.getName().equals(""));
-    }
+	@DisplayName("Должен корректно сохранять всю информацию об авторе")
+	@Test
+	void shouldSaveAuthorInfo() {
+		Author actualAuthor = new Author("Author Test");
+		authorRepository.save(actualAuthor);
+		assertThat(actualAuthor.getId()).isGreaterThan(0);
+		Author expectedAuthor = em.find(Author.class, actualAuthor.getId());
+		assertThat(expectedAuthor).isNotNull().matches(author -> !author.getName().equals(""));
+	}
 
-    @DisplayName("Должен обновить информацию об Авторе")
-    @Test
-    void shouldUpdateAuthorInfo() {
-        Author updatedAuthor = new Author(1, "Update Author");
-        authorRepository.save(updatedAuthor);
-        assertThat(updatedAuthor.getId()).isGreaterThan(0);
-        Author actualAuthor = em.find(Author.class, updatedAuthor.getId());
-        assertThat(actualAuthor).isNotNull()
-                .matches(author -> !author.getName().equals(""))
-                .matches(author -> author.getName().equals("Update Author"));
-    }
+	@DisplayName("Должен обновить информацию об Авторе")
+	@Test
+	void shouldUpdateAuthorInfo() {
+		Author updatedAuthor = new Author(1, "Update Author");
+		authorRepository.save(updatedAuthor);
+		assertThat(updatedAuthor.getId()).isGreaterThan(0);
+		Author actualAuthor = em.find(Author.class, updatedAuthor.getId());
+		assertThat(actualAuthor).isNotNull()
+				.matches(author -> !author.getName().equals(""))
+				.matches(author -> author.getName().equals("Update Author"));
+	}
 
-    @DisplayName("Должен загружать список всех авторов с полной информацией о них")
-    @Test
-    void shouldReturnCorrectAuthorsListWithAllInfo() {
-        List<Author> authors = authorRepository.findAll();
-        assertThat(authors).isNotNull().allMatch(author -> !author.getName().equals(""));
-    }
+	@DisplayName("Должен загружать список всех авторов с полной информацией о них")
+	@Test
+	void shouldReturnCorrectAuthorsListWithAllInfo() {
+		List<Author> authors = authorRepository.findAll();
+		assertThat(authors).isNotNull().allMatch(author -> !author.getName().equals(""));
+	}
 
-    @DisplayName("Должен загружать информацию о нужном авторе по ID")
-    @Test
-    void shouldFindExpectedAuthorById() {
-        Author actualAuthor = authorRepository.findById(1L).orElseThrow();
-        Author expectedAuthor = em.find(Author.class, 1L);
-        assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
-    }
+	@DisplayName("Должен загружать информацию о нужном авторе по ID")
+	@Test
+	void shouldFindExpectedAuthorById() {
+		Author actualAuthor = authorRepository.findById(1L).orElseThrow();
+		Author expectedAuthor = em.find(Author.class, 1L);
+		assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
+	}
 
-    @DisplayName("Должен загружать информацию о нужном авторе по имени")
-    @Test
-    void shouldFindExpectedAuthorByName() {
-        Author actualAuthor = authorRepository.findByName("Stan Lee").orElseThrow();
-        Author expectedAuthor = em.find(Author.class, 1L);
-        assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
-    }
+	@DisplayName("Должен загружать информацию о нужном авторе по имени")
+	@Test
+	void shouldFindExpectedAuthorByName() {
+		Author actualAuthor = authorRepository.findByName("Stan Lee").orElseThrow();
+		Author expectedAuthor = em.find(Author.class, 1L);
+		assertThat(actualAuthor).isEqualToComparingFieldByFieldRecursively(expectedAuthor);
+	}
 
-    @DisplayName("Должен удалять автора")
-    @Test
-    void shouldRemoveAuthor() {
-        Author deletedAuthor = authorRepository.findById(1L).orElseThrow();
-        authorRepository.delete(deletedAuthor);
-        Author expectedAuthor = em.find(Author.class, deletedAuthor.getId());
-        assertThat(expectedAuthor).isNull();
-    }
+	@DisplayName("Должен удалять автора")
+	@Test
+	void shouldRemoveAuthor() {
+		Author deletedAuthor = authorRepository.findById(1L).orElseThrow();
+		authorRepository.delete(deletedAuthor);
+		Author expectedAuthor = em.find(Author.class, deletedAuthor.getId());
+		assertThat(expectedAuthor).isNull();
+	}
 
-    @DisplayName("Должен вернуть количество авторов")
-    @Test
-    void count() {
-        assertThat(authorRepository.count()).isNotNull();
-    }
+	@DisplayName("Должен вернуть количество авторов")
+	@Test
+	void count() {
+		assertThat(authorRepository.count()).isNotNull();
+	}
 
 }

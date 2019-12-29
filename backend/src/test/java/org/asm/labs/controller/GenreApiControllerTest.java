@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
@@ -24,25 +25,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(GenreApiController.class)
 class GenreApiControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @MockBean
-    private GenreService genreService;
+	@MockBean
+	private GenreService genreService;
 
-    @DisplayName("Должен вернуть статус код 200 на запрос получения всех жанров")
-    @Test
-    @SneakyThrows
-    void shouldReturn200onGetAllGenres() {
-        when(genreService.findAll()).thenReturn(Collections.singletonList(new Genre(0, "Genre MVC #Test")));
-        mockMvc.perform(get("/api/v1/genres"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(0)))
-                .andExpect(jsonPath("$[0].genreName", is("Genre MVC #Test")))
-                .andDo(print());
-        verify(genreService, times(1)).findAll();
-        verifyNoMoreInteractions(genreService);
+	@WithMockUser
+	@DisplayName("Должен вернуть статус код 200 на запрос получения всех жанров")
+	@Test
+	@SneakyThrows
+	void shouldReturn200onGetAllGenres() {
+		when(genreService.findAll()).thenReturn(Collections.singletonList(new Genre(0, "Genre MVC #Test")));
+		mockMvc.perform(get("/api/v1/genres"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$", hasSize(1)))
+				.andExpect(jsonPath("$[0].id", is(0)))
+				.andExpect(jsonPath("$[0].genreName", is("Genre MVC #Test")))
+				.andDo(print());
+		verify(genreService, times(1)).findAll();
+		verifyNoMoreInteractions(genreService);
 
-    }
+	}
 }
