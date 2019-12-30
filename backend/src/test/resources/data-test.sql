@@ -25,3 +25,9 @@ INSERT INTO book_authors (book_id, author_id) VALUES (3, 2);
 INSERT INTO book_authors (book_id, author_id) VALUES (4, 3);
 INSERT INTO book_authors (book_id, author_id) VALUES (4, 2);
 INSERT INTO book_authors (book_id, author_id) VALUES (5, 1);
+
+INSERT INTO users (login, password) VALUES ('root', 'root');
+INSERT INTO users (login, password) VALUES ('user', 'password');
+
+INSERT INTO user_roles (user_id, role)
+VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_USER');

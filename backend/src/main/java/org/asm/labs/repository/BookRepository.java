@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Override
-    @EntityGraph("bookGraph")
-    List<Book> findAll();
+	@Override
+	@EntityGraph("bookGraph")
+	List<Book> findAll();
 
 }

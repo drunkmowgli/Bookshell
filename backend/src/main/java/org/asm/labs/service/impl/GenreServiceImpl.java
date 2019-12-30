@@ -14,32 +14,32 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true, isolation = Isolation.READ_COMMITTED)
 public class GenreServiceImpl implements GenreService {
-    
-    private final GenreRepository genreRepository;
-    
-    @Autowired
-    public GenreServiceImpl(GenreRepository genreRepository) {
-        this.genreRepository = genreRepository;
-    }
-    
-    @Override
-    public List<Genre> findAll() {
-        return genreRepository.findAll();
-    }
-    
-    @Override
-    public Genre findById(long id) throws GenreNotExistException {
-        return genreRepository.findById(id).orElseThrow(GenreNotExistException::new);
-    }
 
-    @Override
-    public Genre findByGenreName(String genreName) throws GenreNotExistException {
-        return genreRepository.findByGenreName(genreName).orElseThrow(GenreNotExistException::new);
-    }
+	private final GenreRepository genreRepository;
 
-    @Override
-    public long count() {
-        return genreRepository.count();
-    }
+	@Autowired
+	public GenreServiceImpl(GenreRepository genreRepository) {
+		this.genreRepository = genreRepository;
+	}
+
+	@Override
+	public List<Genre> findAll() {
+		return genreRepository.findAll();
+	}
+
+	@Override
+	public Genre findById(long id) throws GenreNotExistException {
+		return genreRepository.findById(id).orElseThrow(GenreNotExistException::new);
+	}
+
+	@Override
+	public Genre findByGenreName(String genreName) throws GenreNotExistException {
+		return genreRepository.findByGenreName(genreName).orElseThrow(GenreNotExistException::new);
+	}
+
+	@Override
+	public long count() {
+		return genreRepository.count();
+	}
 
 }

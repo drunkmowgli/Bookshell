@@ -8,48 +8,48 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "title",
-        "authors",
-        "genre"
+		"title",
+		"authors",
+		"genre"
 })
 public class BookPostRequestBody {
 
-    @JsonProperty("title")
-    private String title;
+	@JsonProperty("title")
+	private String title;
 
-    @JsonProperty("authors")
-    private List<Long> authors;
+	@JsonProperty("authors")
+	private List<Long> authors;
 
-    @JsonProperty("genre")
-    private String genre;
+	@JsonProperty("genre")
+	private String genre;
 
-    @JsonProperty("title")
-    public String getTitle() {
-        return title;
-    }
+	@JsonProperty("title")
+	public String getTitle() {
+		return title;
+	}
 
-    @JsonProperty("authors")
-    public List<Long> getAuthors() {
-        return authors;
-    }
+	@JsonProperty("title")
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    @JsonProperty("genre")
-    public String getGenre() {
-        return genre;
-    }
+	@JsonProperty("authors")
+	public List<Long> getAuthors() {
+		return authors;
+	}
 
-    @JsonProperty("title")
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	@JsonProperty("authors")
+	public void setAuthors(List<Long> authors) {
+		this.authors = authors;
+	}
 
-    @JsonProperty("authors")
-    public void setAuthors(List<Long> authors) {
-        this.authors = authors;
-    }
+	@JsonProperty("genre")
+	public String getGenre() {
+		return genre;
+	}
 
-    @JsonProperty("genre")
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
+	@JsonProperty("genre")
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 }

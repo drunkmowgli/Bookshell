@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Bookshell {
-    public static void main(String[] args) {
-        SpringApplication.run(Bookshell.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(Bookshell.class, args);
+	}
 }

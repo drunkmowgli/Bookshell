@@ -32,151 +32,151 @@ import static org.mockito.Mockito.when;
 @Import({BookServiceImpl.class})
 class BookServiceImplTest {
 
-    @Autowired
-    private BookService bookService;
+	@Autowired
+	private BookService bookService;
 
-    @MockBean
-    private BookRepository bookRepository;
+	@MockBean
+	private BookRepository bookRepository;
 
-    @MockBean
-    private AuthorService authorService;
+	@MockBean
+	private AuthorService authorService;
 
-    @MockBean
-    private GenreService genreService;
+	@MockBean
+	private GenreService genreService;
 
-    @Captor
-    private ArgumentCaptor<Book> bookArgumentCaptor;
-
-
-    @DisplayName("Должен корректно сохранять всю информацию о книге")
-    @Test
-    @SneakyThrows
-    void shouldSaveBookInfo() {
-        String bookTitle = "Book Service #Test";
-        List<Long> authorsIds = new ArrayList<>();
-        authorsIds.add(1L);
-        authorsIds.add(2L);
-        String genre = "Genre Service #Test";
-        for (long authorId :
-                authorsIds) {
-            when(authorService.findById(authorId)).thenReturn(new Author("Author Service #Test" + authorId));
-        }
-        when(genreService.findByGenreName(genre)).thenReturn(new Genre(0L, genre));
-        bookService.save(bookTitle, authorsIds, genre);
-        verify(bookRepository).save(bookArgumentCaptor.capture());
-        assertThat(bookArgumentCaptor.getAllValues()).isNotNull();
-        assertEquals("Book Service #Test", bookArgumentCaptor.getValue().getTitle());
-    }
-
-    @DisplayName("Должен выбросить исключение на добавление книги, если жанра не существует")
-    @Test
-    @SneakyThrows
-    void shouldThrowGenreNotExistExceptionWhenGenreDoesntExist() {
-        String bookTitle = "Book Service #Test";
-        List<Long> authorsIds = new ArrayList<>();
-        authorsIds.add(1L);
-        authorsIds.add(2L);
-        String genre = "Genre Service #Test";
-        for (long authorId :
-                authorsIds) {
-            when(authorService.findById(authorId)).thenReturn(new Author("Author Service #Test" + authorId));
-        }
-        when(genreService.findByGenreName(genre)).thenThrow(new GenreNotExistException());
-        assertThrows(GenreNotExistException.class,
-                () -> bookService.save(bookTitle, authorsIds, genre));
-    }
-
-    @DisplayName("Должен выбросить исключение на добавление книги, автора не существует")
-    @Test
-    @SneakyThrows
-    void shouldThrowAuthorNotExistExceptionWhenAuthorsDoesntExist() {
-        String bookTitle = "Book Service #Test";
-        List<Long> authorsIds = new ArrayList<>();
-        authorsIds.add(1L);
-        String genre = "Genre Service #Test";
-        when(authorService.findById(authorsIds.get(0))).thenThrow(new AuthorNotExistException());
-        when(genreService.findByGenreName(genre)).thenReturn(new Genre(0L, "Genre Service #Test"));
-        assertThrows(AuthorNotExistException.class,
-                () -> bookService.save(bookTitle, authorsIds, genre));
-    }
-
-    @DisplayName("Должен загружать список всех ниг с полной информацией о них")
-    @Test
-    void shouldReturnCorrectBooksListWithAllInfo() {
-        Book book = new Book(
-            "Book Service #Test",
-            Collections.singleton(new Author("Author Service #Test")),
-            new Genre(0L, "Genre Service #Test")
-        );
-        when(bookRepository.findAll()).thenReturn(Collections.singletonList(book));
-        List<Book> books = bookService.findAll();
-        assertThat(books).isNotNull();
-        assertEquals("Book Service #Test", books.get(0).getTitle());
-    }
-
-    @DisplayName("Должен загружать информацию о нужной книги")
-    @Test
-    @SneakyThrows
-    void shouldFindExpectedBookById() {
-        Book book = new Book(0,
-            "Book Service #Test",
-            Collections.singleton(new Author("Author Service #Test")),
-            new Genre(0L, "Genre Service #Test")
-        );
-        when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
-        Book actualBook = bookService.findById(0L);
-        assertEquals("Book Service #Test", actualBook.getTitle());
-
-    }
-
-    @DisplayName("Должен выбрасывать исключение BookNotExistException, если книги не существует")
-    @Test
-    void shouldThrowBookNotExistExceptionWhenBookNotExist() {
-        assertThrows(BookNotExistException.class,
-                () -> bookService.findById(10));
-    }
-
-    @DisplayName("Должен удалить книгу")
-    @Test
-    @SneakyThrows
-    void shouldRemoveBook() {
-        Book book = new Book(0,
-            "Book Service #Test",
-            Collections.singleton(new Author("Author Service #Test")),
-            new Genre(0L, "Genre Service #Test")
-        );
-        when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
-        bookService.remove(0L);
-        verify(bookRepository).delete(bookArgumentCaptor.capture());
-        assertThat(bookArgumentCaptor.getAllValues()).isNotNull();
-        assertEquals("Book Service #Test", bookArgumentCaptor.getValue().getTitle());
-    }
-
-    @DisplayName("Должен выбросить исключение на удалении книги, если такой книги не существует")
-    @Test
-    void shouldThrowBookDoesntExistExceptionOnDelete() {
-        assertThrows(BookNotExistException.class,
-                () -> bookService.remove(10));
-    }
-
-    @DisplayName("Должен вернуть количество всех книг")
-    @Test
-    void count() {
-        assertThat(bookService.count()).isNotNull();
-    }
+	@Captor
+	private ArgumentCaptor<Book> bookArgumentCaptor;
 
 
-    @DisplayName("Должен обновить информацию о существующей книге")
-    @Test
-    @SneakyThrows
-    void shouldCorrectlyUpdateExistingBookInfo() {
-        Book book = new Book(0,
-                "Book Service #Test",
-                Collections.singleton(new Author("Author Service #Test")),
-                new Genre(0L, "Genre Service #Test")
-        );
-        when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
-        bookService.update(0L, "New Book Title", Collections.singletonList(1L), "New Genre");
-        assertEquals("New Book Title", book.getTitle());
-    }
+	@DisplayName("Должен корректно сохранять всю информацию о книге")
+	@Test
+	@SneakyThrows
+	void shouldSaveBookInfo() {
+		String bookTitle = "Book Service #Test";
+		List<Long> authorsIds = new ArrayList<>();
+		authorsIds.add(1L);
+		authorsIds.add(2L);
+		String genre = "Genre Service #Test";
+		for (long authorId :
+				authorsIds) {
+			when(authorService.findById(authorId)).thenReturn(new Author("Author Service #Test" + authorId));
+		}
+		when(genreService.findByGenreName(genre)).thenReturn(new Genre(0L, genre));
+		bookService.save(bookTitle, authorsIds, genre);
+		verify(bookRepository).save(bookArgumentCaptor.capture());
+		assertThat(bookArgumentCaptor.getAllValues()).isNotNull();
+		assertEquals("Book Service #Test", bookArgumentCaptor.getValue().getTitle());
+	}
+
+	@DisplayName("Должен выбросить исключение на добавление книги, если жанра не существует")
+	@Test
+	@SneakyThrows
+	void shouldThrowGenreNotExistExceptionWhenGenreDoesntExist() {
+		String bookTitle = "Book Service #Test";
+		List<Long> authorsIds = new ArrayList<>();
+		authorsIds.add(1L);
+		authorsIds.add(2L);
+		String genre = "Genre Service #Test";
+		for (long authorId :
+				authorsIds) {
+			when(authorService.findById(authorId)).thenReturn(new Author("Author Service #Test" + authorId));
+		}
+		when(genreService.findByGenreName(genre)).thenThrow(new GenreNotExistException());
+		assertThrows(GenreNotExistException.class,
+				() -> bookService.save(bookTitle, authorsIds, genre));
+	}
+
+	@DisplayName("Должен выбросить исключение на добавление книги, автора не существует")
+	@Test
+	@SneakyThrows
+	void shouldThrowAuthorNotExistExceptionWhenAuthorsDoesntExist() {
+		String bookTitle = "Book Service #Test";
+		List<Long> authorsIds = new ArrayList<>();
+		authorsIds.add(1L);
+		String genre = "Genre Service #Test";
+		when(authorService.findById(authorsIds.get(0))).thenThrow(new AuthorNotExistException());
+		when(genreService.findByGenreName(genre)).thenReturn(new Genre(0L, "Genre Service #Test"));
+		assertThrows(AuthorNotExistException.class,
+				() -> bookService.save(bookTitle, authorsIds, genre));
+	}
+
+	@DisplayName("Должен загружать список всех ниг с полной информацией о них")
+	@Test
+	void shouldReturnCorrectBooksListWithAllInfo() {
+		Book book = new Book(
+				"Book Service #Test",
+				Collections.singleton(new Author("Author Service #Test")),
+				new Genre(0L, "Genre Service #Test")
+		);
+		when(bookRepository.findAll()).thenReturn(Collections.singletonList(book));
+		List<Book> books = bookService.findAll();
+		assertThat(books).isNotNull();
+		assertEquals("Book Service #Test", books.get(0).getTitle());
+	}
+
+	@DisplayName("Должен загружать информацию о нужной книги")
+	@Test
+	@SneakyThrows
+	void shouldFindExpectedBookById() {
+		Book book = new Book(0,
+				"Book Service #Test",
+				Collections.singleton(new Author("Author Service #Test")),
+				new Genre(0L, "Genre Service #Test")
+		);
+		when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
+		Book actualBook = bookService.findById(0L);
+		assertEquals("Book Service #Test", actualBook.getTitle());
+
+	}
+
+	@DisplayName("Должен выбрасывать исключение BookNotExistException, если книги не существует")
+	@Test
+	void shouldThrowBookNotExistExceptionWhenBookNotExist() {
+		assertThrows(BookNotExistException.class,
+				() -> bookService.findById(10));
+	}
+
+	@DisplayName("Должен удалить книгу")
+	@Test
+	@SneakyThrows
+	void shouldRemoveBook() {
+		Book book = new Book(0,
+				"Book Service #Test",
+				Collections.singleton(new Author("Author Service #Test")),
+				new Genre(0L, "Genre Service #Test")
+		);
+		when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
+		bookService.remove(0L);
+		verify(bookRepository).delete(bookArgumentCaptor.capture());
+		assertThat(bookArgumentCaptor.getAllValues()).isNotNull();
+		assertEquals("Book Service #Test", bookArgumentCaptor.getValue().getTitle());
+	}
+
+	@DisplayName("Должен выбросить исключение на удалении книги, если такой книги не существует")
+	@Test
+	void shouldThrowBookDoesntExistExceptionOnDelete() {
+		assertThrows(BookNotExistException.class,
+				() -> bookService.remove(10));
+	}
+
+	@DisplayName("Должен вернуть количество всех книг")
+	@Test
+	void count() {
+		assertThat(bookService.count()).isNotNull();
+	}
+
+
+	@DisplayName("Должен обновить информацию о существующей книге")
+	@Test
+	@SneakyThrows
+	void shouldCorrectlyUpdateExistingBookInfo() {
+		Book book = new Book(0,
+				"Book Service #Test",
+				Collections.singleton(new Author("Author Service #Test")),
+				new Genre(0L, "Genre Service #Test")
+		);
+		when(bookRepository.findById(0L)).thenReturn(Optional.of(book));
+		bookService.update(0L, "New Book Title", Collections.singletonList(1L), "New Genre");
+		assertEquals("New Book Title", book.getTitle());
+	}
 }

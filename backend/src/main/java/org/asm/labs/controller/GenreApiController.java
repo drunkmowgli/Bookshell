@@ -10,15 +10,15 @@ import java.util.List;
 @RestController
 public class GenreApiController {
 
-    private final GenreService genreService;
+	private final GenreService genreService;
 
-    public GenreApiController(GenreService genreService) {
-        this.genreService = genreService;
-    }
+	public GenreApiController(GenreService genreService) {
+		this.genreService = genreService;
+	}
 
-    @GetMapping("/api/v1/genres")
-    public List<Genre> getAllGenres() {
-        return genreService.findAll();
-    }
+	@GetMapping("/api/v1/genres")
+	public List<Genre> getAllGenres() {
+		return genreService.findAll();
+	}
 
 }

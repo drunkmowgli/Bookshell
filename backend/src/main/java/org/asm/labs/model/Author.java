@@ -11,50 +11,51 @@ import java.util.Set;
 @Table(name = "author")
 public class Author {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name")
+	private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "book_authors",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id")
-    )
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Set<Book> books;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+			name = "book_authors",
+			joinColumns = @JoinColumn(name = "author_id"),
+			inverseJoinColumns = @JoinColumn(name = "book_id")
+	)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Set<Book> books;
 
-    public Author() {}
+	public Author() {
+	}
 
-    public Author(String authorName) {
-        this.name = authorName;
-    }
+	public Author(String authorName) {
+		this.name = authorName;
+	}
 
-    public Author(long id, String authorName) {
-        this.id = id;
-        this.name = authorName;
-    }
+	public Author(long id, String authorName) {
+		this.id = id;
+		this.name = authorName;
+	}
 
-    public void setId(long id) {
-        this.id = id;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Author{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				'}';
+	}
 }

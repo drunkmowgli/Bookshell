@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @Slf4j
 public class RedirectApiController {
-    
-    @RequestMapping(value = "/books/**")
-    public String redirectApi() {
-        return "forward:/";
-    }
+
+	@RequestMapping(value = "/books/**")
+	public String redirectApi() {
+		return "forward:/";
+	}
 }

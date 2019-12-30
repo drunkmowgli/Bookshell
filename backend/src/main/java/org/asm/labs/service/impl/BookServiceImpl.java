@@ -19,72 +19,72 @@ import java.util.Set;
 public class BookServiceImpl implements BookService {
 
 
-    private final BookRepository bookRepository;
+	private final BookRepository bookRepository;
 
-    private final AuthorService authorService;
+	private final AuthorService authorService;
 
-    private final GenreService genreService;
-
-
-    @Autowired
-    public BookServiceImpl(BookRepository bookRepository,
-                           AuthorService authorService,
-                           GenreService genreService) {
-        this.bookRepository = bookRepository;
-        this.authorService = authorService;
-        this.genreService = genreService;
-    }
+	private final GenreService genreService;
 
 
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public Book save(String title, List<Long> authorIds, String genreName) throws GenreNotExistException, AuthorNotExistException {
-        Set<Author> authors = new HashSet<>();
-        for (long authorId :
-                authorIds) {
-            Author author = authorService.findById(authorId);
-            authors.add(author);
-        }
-        Genre genre = genreService.findByGenreName(genreName);
-        Book book = new Book(title, authors, genre);
-        return bookRepository.save(book);
-    }
+	@Autowired
+	public BookServiceImpl(BookRepository bookRepository,
+	                       AuthorService authorService,
+	                       GenreService genreService) {
+		this.bookRepository = bookRepository;
+		this.authorService = authorService;
+		this.genreService = genreService;
+	}
 
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public Book update(long bookId, String title, List<Long> authorsIds, String genreName) throws BookNotExistException, AuthorNotExistException, GenreNotExistException {
-        Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
-        book.setTitle(title);
-        Set<Author> authors = new HashSet<>();
-        for (long authorId : authorsIds) {
-            Author author = authorService.findById(authorId);
-            authors.add(author);
-        }
-        book.setAuthors(authors);
-        Genre genre = genreService.findByGenreName(genreName);
-        book.setGenre(genre);
-        return bookRepository.save(book);
-    }
 
-    @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
-    }
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+	public Book save(String title, List<Long> authorIds, String genreName) throws GenreNotExistException, AuthorNotExistException {
+		Set<Author> authors = new HashSet<>();
+		for (long authorId :
+				authorIds) {
+			Author author = authorService.findById(authorId);
+			authors.add(author);
+		}
+		Genre genre = genreService.findByGenreName(genreName);
+		Book book = new Book(title, authors, genre);
+		return bookRepository.save(book);
+	}
 
-    @Override
-    public Book findById(long id) throws BookNotExistException {
-        return bookRepository.findById(id).orElseThrow(BookNotExistException::new);
-    }
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+	public Book update(long bookId, String title, List<Long> authorsIds, String genreName) throws BookNotExistException, AuthorNotExistException, GenreNotExistException {
+		Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
+		book.setTitle(title);
+		Set<Author> authors = new HashSet<>();
+		for (long authorId : authorsIds) {
+			Author author = authorService.findById(authorId);
+			authors.add(author);
+		}
+		book.setAuthors(authors);
+		Genre genre = genreService.findByGenreName(genreName);
+		book.setGenre(genre);
+		return bookRepository.save(book);
+	}
 
-    @Override
-    @Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-    public void remove(long bookId) throws BookNotExistException {
-        Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
-        bookRepository.delete(book);
-    }
+	@Override
+	public List<Book> findAll() {
+		return bookRepository.findAll();
+	}
 
-    @Override
-    public long count() {
-        return bookRepository.count();
-    }
+	@Override
+	public Book findById(long id) throws BookNotExistException {
+		return bookRepository.findById(id).orElseThrow(BookNotExistException::new);
+	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+	public void remove(long bookId) throws BookNotExistException {
+		Book book = bookRepository.findById(bookId).orElseThrow(BookNotExistException::new);
+		bookRepository.delete(book);
+	}
+
+	@Override
+	public long count() {
+		return bookRepository.count();
+	}
 }

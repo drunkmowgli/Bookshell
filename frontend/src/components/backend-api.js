@@ -7,6 +7,9 @@ export const HTTP = axios.create(
 
 
 export default {
+    login() {
+        return HTTP.post('/login')
+    },
     getBooks() {
         return HTTP.get('/books');
     },
@@ -36,7 +39,7 @@ export default {
         })
     },
     addBook(title, authorIds, genre) {
-        return HTTP.post('/books/', {
+        return HTTP.post('/books', {
             title: title, authors: authorIds, genre: genre
         })
     },

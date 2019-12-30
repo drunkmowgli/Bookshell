@@ -34,89 +34,85 @@ import static org.mockito.Mockito.when;
 @Import({CommentServiceImpl.class})
 class CommentServiceImplTest {
 
-    @Autowired
-    private CommentService commentService;
+	@Captor
+	ArgumentCaptor<Comment> commentArgumentCaptor;
+	@Autowired
+	private CommentService commentService;
+	@MockBean
+	private CommentRepository commentRepository;
+	@MockBean
+	private BookRepository bookRepository;
 
-    @MockBean
-    private CommentRepository commentRepository;
+	@DisplayName("Должен корректно сохранять информацию о комментарии")
+	@Test
+	void shouldSaveCommentInfo() {
+		when(bookRepository.findById(0L)).thenReturn(Optional.of(new Book(
+				0L,
+				"Comment Service #Test",
+				Collections.singleton(new Author("Comment Service #Test")),
+				new Genre(0, "Comment Service #Test")
+		)));
+		commentService.save("Comment Service #Test", 0L);
+		verify(commentRepository).save(commentArgumentCaptor.capture());
+		assertThat(commentArgumentCaptor).isNotNull();
+		assertEquals("Comment Service #Test", commentArgumentCaptor.getValue().getCommentDescription());
+	}
 
-    @MockBean
-    private BookRepository bookRepository;
+	@DisplayName("Должен вернуть информацию о всех комментариях")
+	@Test
+	void shouldReturnCorrectCommentsListWithAllInfo() {
+		when(commentService.findAll()).thenReturn(Collections.singletonList(
+				new Comment("Comment Service #Test"))
+		);
+		assertThat(commentService.findAll()).isNotNull();
+	}
 
-    @Captor
-    ArgumentCaptor<Comment> commentArgumentCaptor;
-    
+	@DisplayName("Должен загружать информацию о нужном комментарии")
+	@Test
+	@SneakyThrows
+	void shouldFindExpectedCommentById() {
+		when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
+		Comment comment = commentService.findById(0L);
+		assertEquals("Comment Service #Test", comment.getCommentDescription());
+	}
 
-    @DisplayName("Должен корректно сохранять информацию о комментарии")
-    @Test
-    void shouldSaveCommentInfo() {
-        when(bookRepository.findById(0L)).thenReturn(Optional.of(new Book(
-                0L,
-                "Comment Service #Test",
-                Collections.singleton(new Author("Comment Service #Test")),
-                new Genre(0, "Comment Service #Test")
-        )));
-        commentService.save("Comment Service #Test", 0L);
-        verify(commentRepository).save(commentArgumentCaptor.capture());
-        assertThat(commentArgumentCaptor).isNotNull();
-        assertEquals("Comment Service #Test", commentArgumentCaptor.getValue().getCommentDescription());
-    }
+	@DisplayName("Должен вернуть список комментариев для конкретной книги")
+	@Test
+	void shouldReturnCommentListByBookId() {
+		when(commentService.findByBookId(0)).thenReturn(Collections.singletonList(
+				new Comment("Comment Service #Test")));
+		List<Comment> actualCommentList = commentService.findByBookId(0);
+		assertEquals("Comment Service #Test", actualCommentList.get(0).getCommentDescription());
+	}
 
-    @DisplayName("Должен вернуть информацию о всех комментариях")
-    @Test
-    void shouldReturnCorrectCommentsListWithAllInfo() {
-        when(commentService.findAll()).thenReturn(Collections.singletonList(
-                new Comment("Comment Service #Test"))
-        );
-        assertThat(commentService.findAll()).isNotNull();
-    }
+	@DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
+	@Test
+	void shouldThrowCommentNotExistExceptionWhenCommentNotExist() {
+		assertThrows(CommentNotExistException.class,
+				() -> commentService.findById(10));
+	}
 
-    @DisplayName("Должен загружать информацию о нужном комментарии")
-    @Test
-    @SneakyThrows
-    void shouldFindExpectedCommentById() {
-        when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
-        Comment comment = commentService.findById(0L);
-        assertEquals("Comment Service #Test", comment.getCommentDescription());
-    }
+	@DisplayName("Должен удалять комментарий")
+	@Test
+	void shouldRemoveComment() throws CommentNotExistException {
+		when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
+		commentService.remove(0L);
+		verify(commentRepository).delete(commentArgumentCaptor.capture());
+		assertEquals(0L, commentArgumentCaptor.getValue().getId());
+	}
 
-    @DisplayName("Должен вернуть список комментариев для конкретной книги")
-    @Test
-    void shouldReturnCommentListByBookId() {
-        when(commentService.findByBookId(0)).thenReturn(Collections.singletonList(
-                new Comment("Comment Service #Test")));
-        List<Comment> actualCommentList = commentService.findByBookId(0);
-        assertEquals("Comment Service #Test", actualCommentList.get(0).getCommentDescription());
-    }
+	@DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
+	@Test
+	void shouldThrowCommentNotExistExceptionWhenCommentNotExistOnRemove() {
+		assertThrows(CommentNotExistException.class,
+				() -> commentService.remove(10));
+	}
 
-    @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
-    @Test
-    void shouldThrowCommentNotExistExceptionWhenCommentNotExist() {
-        assertThrows(CommentNotExistException.class,
-                () -> commentService.findById(10));
-    }
-
-    @DisplayName("Должен удалять комментарий")
-    @Test
-    void shouldRemoveComment() throws CommentNotExistException {
-        when(commentRepository.findById(0L)).thenReturn(Optional.of(new Comment("Comment Service #Test")));
-        commentService.remove(0L);
-        verify(commentRepository).delete(commentArgumentCaptor.capture());
-        assertEquals(0L, commentArgumentCaptor.getValue().getId());
-    }
-
-    @DisplayName("Должен выбрасывать исключение CommentNotExistException, если комментария не существует")
-    @Test
-    void shouldThrowCommentNotExistExceptionWhenCommentNotExistOnRemove() {
-        assertThrows(CommentNotExistException.class,
-                () -> commentService.remove(10));
-    }
-
-    @DisplayName("Должен вернуть количество комментариев")
-    @Test
-    void count() {
-        assertThat(commentService.count()).isNotNull();
-    }
+	@DisplayName("Должен вернуть количество комментариев")
+	@Test
+	void count() {
+		assertThat(commentService.count()).isNotNull();
+	}
 
 
 }

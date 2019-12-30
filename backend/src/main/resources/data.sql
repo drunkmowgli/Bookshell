@@ -61,3 +61,9 @@ INSERT INTO comment (comment_description, book_id) VALUES ('Very good book', 1);
 INSERT INTO comment (comment_description, book_id) VALUES ('Good book', 3);
 INSERT INTO comment (comment_description, book_id) VALUES ('Normal book', 4);
 INSERT INTO comment (comment_description, book_id) VALUES ('Bad book', 4);
+
+INSERT INTO users (login, password) VALUES ('root', 'root');
+INSERT INTO users (login, password) VALUES ('user', 'password');
+
+INSERT INTO user_roles (user_id, role)
+VALUES (1, 'ROLE_ADMIN'), (2, 'ROLE_USER');
